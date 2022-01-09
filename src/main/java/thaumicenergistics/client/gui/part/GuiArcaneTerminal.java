@@ -1,17 +1,5 @@
 package thaumicenergistics.client.gui.part;
 
-import java.awt.Color;
-import java.io.IOException;
-import java.util.stream.Stream;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Slot;
-import net.minecraft.util.ResourceLocation;
-
 import appeng.api.config.*;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
@@ -21,7 +9,15 @@ import appeng.api.util.IConfigManager;
 import appeng.client.gui.widgets.GuiImgButton;
 import appeng.client.gui.widgets.GuiTabButton;
 import appeng.core.localization.GuiText;
-
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.Slot;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.client.gui.component.GuiSearchField;
 import thaumicenergistics.client.gui.helpers.GuiScrollBar;
@@ -39,8 +35,9 @@ import thaumicenergistics.network.packets.PacketOpenGUI;
 import thaumicenergistics.network.packets.PacketUIAction;
 import thaumicenergistics.util.AEUtil;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
+import java.awt.*;
+import java.io.IOException;
+import java.util.stream.Stream;
 
 /**
  * @author BrockWS
@@ -74,7 +71,7 @@ public class GuiArcaneTerminal extends GuiAbstractTerminal<IAEItemStack, IItemSt
         this.repo = new MERepo<>(IItemStorageChannel.class);
     }
 
-    public void initSearchField(){
+    public void initSearchField() {
         SearchBoxMode searchModeSetting = ThEApi.instance().config().searchBoxMode();
         this.repo.setSearchBoxMode(searchModeSetting);
         this.isAutoFocus = Stream.of(SearchBoxMode.AUTOSEARCH, SearchBoxMode.JEI_AUTOSEARCH, SearchBoxMode.AUTOSEARCH_KEEP, SearchBoxMode.JEI_AUTOSEARCH_KEEP).anyMatch(m -> m == searchModeSetting);
@@ -82,8 +79,8 @@ public class GuiArcaneTerminal extends GuiAbstractTerminal<IAEItemStack, IItemSt
         boolean isJEIEnabled = Stream.of(SearchBoxMode.JEI_AUTOSEARCH, SearchBoxMode.JEI_MANUAL_SEARCH).anyMatch(m -> m == searchModeSetting);
         this.searchField.setText("");
         this.searchField.setFocused(this.isAutoFocus);
-        if(isJEIEnabled) memoryText = ThEJEI.getSearchText();
-        if(isKeepFilter && !memoryText.isEmpty()){
+        if (isJEIEnabled) memoryText = ThEJEI.getSearchText();
+        if (isKeepFilter && !memoryText.isEmpty()) {
             this.searchField.setText(memoryText);
             this.searchField.selectAll();
             this.repo.setSearchString(memoryText);
@@ -148,7 +145,7 @@ public class GuiArcaneTerminal extends GuiAbstractTerminal<IAEItemStack, IItemSt
         this.inventorySlots.inventorySlots.forEach(this::recalcSlotY);
     }
 
-    protected void recalcSlotY(Slot slot){
+    protected void recalcSlotY(Slot slot) {
         if (slot instanceof ThESlot)
             ((ThESlot) slot).recalculateY(this.rows);
     }
@@ -286,7 +283,7 @@ public class GuiArcaneTerminal extends GuiAbstractTerminal<IAEItemStack, IItemSt
     }
 
     @Override
-    public void onGuiClosed(){
+    public void onGuiClosed() {
         super.onGuiClosed();
         memoryText = this.searchField.getText();
     }
@@ -328,7 +325,7 @@ public class GuiArcaneTerminal extends GuiAbstractTerminal<IAEItemStack, IItemSt
             ThEConfig.save();
             this.reload();
             return true;
-        }else if (btn.getSetting() == Settings.SEARCH_MODE){
+        } else if (btn.getSetting() == Settings.SEARCH_MODE) {
             ThEConfig.client.searchBoxMode = (SearchBoxMode) next;
             ThEConfig.save();
             this.initSearchField();
@@ -366,7 +363,6 @@ public class GuiArcaneTerminal extends GuiAbstractTerminal<IAEItemStack, IItemSt
     }
 
     public void onMEStorageUpdate(IItemList<IAEItemStack> list) {
-        this.repo.clear();
         for (IAEItemStack stack : list)
             this.repo.postUpdate(stack);
         this.repo.updateView();
