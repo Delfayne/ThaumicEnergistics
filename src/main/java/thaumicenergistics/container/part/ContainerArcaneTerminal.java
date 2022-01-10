@@ -1,8 +1,17 @@
 package thaumicenergistics.container.part;
 
-import java.util.Objects;
-
+import appeng.api.AEApi;
 import appeng.api.config.Actionable;
+import appeng.api.networking.security.IActionSource;
+import appeng.api.networking.storage.IBaseMonitor;
+import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.IMEMonitorHandlerReceiver;
+import appeng.api.storage.channels.IItemStorageChannel;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IItemList;
+import appeng.api.util.AEPartLocation;
+import appeng.core.AELog;
+import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IContainerListener;
@@ -18,32 +27,18 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.PlayerArmorInvWrapper;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
-
-import appeng.api.AEApi;
-import appeng.api.networking.security.IActionSource;
-import appeng.api.networking.storage.IBaseMonitor;
-import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.IMEMonitorHandlerReceiver;
-import appeng.api.storage.channels.IItemStorageChannel;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.api.storage.data.IItemList;
-import appeng.api.util.AEPartLocation;
-
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.api.aura.AuraHelper;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.items.ItemsTC;
-
-import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.container.ActionType;
@@ -57,13 +52,18 @@ import thaumicenergistics.container.slot.SlotUpgrade;
 import thaumicenergistics.init.ModGUIs;
 import thaumicenergistics.integration.thaumcraft.TCCraftingManager;
 import thaumicenergistics.network.PacketHandler;
-import thaumicenergistics.network.packets.*;
+import thaumicenergistics.network.packets.PacketInvHeldUpdate;
+import thaumicenergistics.network.packets.PacketMEItemUpdate;
+import thaumicenergistics.network.packets.PacketUIAction;
+import thaumicenergistics.network.packets.PacketVisUpdate;
 import thaumicenergistics.part.PartBase;
 import thaumicenergistics.part.PartSharedTerminal;
 import thaumicenergistics.util.*;
 import thaumicenergistics.util.inventory.ThEInternalInventory;
 
-import com.google.common.collect.Lists;
+import java.io.IOException;
+import java.nio.BufferOverflowException;
+import java.util.Objects;
 
 /**
  * @author BrockWS
@@ -76,11 +76,12 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal implements IM
     protected PartSharedTerminal part;
     protected IItemStorageChannel channel;
     protected IMEMonitor<IAEItemStack> monitor;
+    private final IItemList<IAEItemStack> items = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
     protected IInventory craftingResult;
     protected SlotArcaneResult resultSlot;
 
 
-    public ContainerArcaneTerminal(EntityPlayer player, PartSharedTerminal part){
+    public ContainerArcaneTerminal(EntityPlayer player, PartSharedTerminal part) {
         super(player, part);
         this.part = part;
 
@@ -242,9 +243,41 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal implements IM
 
     @Override
     public void detectAndSendChanges() {
-        super.detectAndSendChanges();
         if (this.player instanceof IContainerListener)
             this.sendVisInfo((IContainerListener) this.player);
+
+        if (ForgeUtil.isServer()) {
+            if (!this.items.isEmpty()) {
+                try {
+                    final IItemList<IAEItemStack> monitorCache = this.monitor.getStorageList();
+
+                    final PacketMEItemUpdate packet = new PacketMEItemUpdate();
+
+                    for (final IAEItemStack is : this.items) {
+                        final IAEItemStack send = monitorCache.findPrecise(is);
+                        if (send == null) {
+                            is.setStackSize(0);
+                            packet.appendStack(is);
+                        } else {
+                            packet.appendStack(send);
+                        }
+                    }
+
+                    if (!packet.isEmpty()) {
+                        this.items.resetStatus();
+
+                        for (final Object c : this.listeners) {
+                            if (c instanceof EntityPlayer) {
+                                PacketHandler.sendToPlayer((EntityPlayerMP) c, packet);
+                            }
+                        }
+                    }
+                } catch (final IOException e) {
+                    AELog.debug(e);
+                }
+            }
+            super.detectAndSendChanges();
+        }
     }
 
     @Override
@@ -263,7 +296,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal implements IM
         this.onMatrixChanged();
     }
 
-    private void handleJEITag(int startAtSlot, NBTBase ingredientGroup){
+    private void handleJEITag(int startAtSlot, NBTBase ingredientGroup) {
         IItemHandler crafting = this.getInventory("crafting");
         IItemHandler playerInv = this.getInventory("player");
 
@@ -309,8 +342,8 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal implements IM
 
     @Override
     public void postChange(IBaseMonitor<IAEItemStack> monitor, Iterable<IAEItemStack> change, IActionSource actionSource) {
-        for (IContainerListener c : this.listeners) {
-            this.sendInventory(c);
+        for (IAEItemStack itemStack : change) {
+            items.add(itemStack);
         }
     }
 
@@ -514,7 +547,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal implements IM
         return ((IArcaneRecipe) recipe).getVis() * (1f - this.getDiscount(player));
     }
 
-    public float getCurrentRequiredVis(){
+    public float getCurrentRequiredVis() {
         return this.getRequiredVis(this.recipe, this.player);
     }
 
@@ -567,11 +600,25 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal implements IM
     protected void sendInventory(IContainerListener listener) {
         if (ForgeUtil.isClient() || !(listener instanceof EntityPlayerMP) || this.monitor == null)
             return;
-        IItemList<IAEItemStack> storage = this.monitor.getStorageList();
-        PacketMEItemUpdate packet = new PacketMEItemUpdate();
-        for (IAEItemStack stack : storage)
-            packet.appendStack(stack);
-        PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
+
+        try {
+            PacketMEItemUpdate packet = new PacketMEItemUpdate();
+            IItemList<IAEItemStack> storage = monitor.getStorageList();
+
+            for (IAEItemStack stack : storage) {
+                try {
+                    packet.appendStack(stack);
+                } catch (BufferOverflowException e) {
+                    PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
+
+                    packet = new PacketMEItemUpdate();
+                    packet.appendStack(stack);
+                }
+            }
+            PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
+        } catch (IOException e) {
+            ThELog.error("sendInventory", e);
+        }
     }
 
     private InventoryCrafting getInvCrafting(IItemHandler handler, IRecipe recipe) {

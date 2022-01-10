@@ -53,9 +53,9 @@ public class PacketHandler {
 
     public static void sendToPlayer(EntityPlayerMP player, IMessage message) {
         if (!(message instanceof PacketVisUpdate)) {
-            ByteBuf buf = Unpooled.buffer();
-            message.toBytes(buf);
-            ThELog.trace("sendToPlayer readableBytes {} | read {} | write {} | message {}", buf.readableBytes(), buf.readerIndex(), buf.writerIndex(), message.getClass().getSimpleName());
+//            ByteBuf buf = Unpooled.buffer();
+//            message.toBytes(buf);
+//            ThELog.info("sendToPlayer readableBytes {} | read {} | write {} | message {}", buf.readableBytes(), buf.readerIndex(), buf.writerIndex(), message.getClass().getSimpleName());
         }
         PacketHandler.INSTANCE.sendTo(message, player);
     }
