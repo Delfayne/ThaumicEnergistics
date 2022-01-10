@@ -4,7 +4,6 @@ import appeng.api.config.*;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
-import appeng.api.storage.data.IItemList;
 import appeng.api.util.IConfigManager;
 import appeng.client.gui.widgets.GuiImgButton;
 import appeng.client.gui.widgets.GuiTabButton;
@@ -37,6 +36,7 @@ import thaumicenergistics.util.AEUtil;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -362,7 +362,7 @@ public class GuiArcaneTerminal extends GuiAbstractTerminal<IAEItemStack, IItemSt
         }
     }
 
-    public void onMEStorageUpdate(IItemList<IAEItemStack> list) {
+    public void onMEStorageUpdate(List<IAEItemStack> list) {
         for (IAEItemStack stack : list)
             this.repo.postUpdate(stack);
         this.repo.updateView();

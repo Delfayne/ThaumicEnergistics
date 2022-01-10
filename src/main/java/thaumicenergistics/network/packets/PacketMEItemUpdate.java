@@ -1,8 +1,6 @@
 package thaumicenergistics.network.packets;
 
-import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -13,13 +11,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import thaumicenergistics.client.gui.part.GuiArcaneInscriber;
 import thaumicenergistics.client.gui.part.GuiArcaneTerminal;
-import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ThELog;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.BufferOverflowException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -32,7 +31,7 @@ public class PacketMEItemUpdate implements IMessage {
     private static final int OPERATION_BYTE_LIMIT = 2 * 1024;
     private static final int TEMP_BUFFER_SIZE = 1024;
 
-    private IItemList<IAEItemStack> list;
+    private List<IAEItemStack> list;
 
     private final ByteBuf data;
 
@@ -42,7 +41,7 @@ public class PacketMEItemUpdate implements IMessage {
     private boolean empty = true;
 
     public PacketMEItemUpdate() throws IOException {
-        this.list = AEUtil.getStorageChannel(IItemStorageChannel.class).createList();
+        this.list = new ArrayList<>();
 
         this.data = Unpooled.buffer(OPERATION_BYTE_LIMIT);
         compressFrame = new GZIPOutputStream(new OutputStream() {
