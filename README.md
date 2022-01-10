@@ -1,6 +1,20 @@
 # ThaumicEnergistics
 *Because the digital age could use some magic!*
 
+Preface
+---
+This is a fork to try and improve the usability of Thaumic Energistics. This is currently being updated to help current
+players during Divine Journey 2.
+
+Some warnings
+* I know development, but I don't know Minecraft modding. I've not done this before. I might break 
+things. Backup before you use this.
+* If you're worried about security, don't use this. This isn't yet vetted by anyone, or Curseforge or the like.
+Not only that, but it's a fork, of a fork, of a fork. I haven't thoroughly checked the previous contributors for
+potential security problems either. It looks fine on the surface, but I haven't gone deep.
+
+---
+
 [![discord]](https://discord.gg/ywBJYK6)
 [![curseforge-downloads]](https://minecraft.curseforge.com/projects/thaumic-energistics)
 [![curseforge-versions]](https://minecraft.curseforge.com/projects/thaumic-energistics)
