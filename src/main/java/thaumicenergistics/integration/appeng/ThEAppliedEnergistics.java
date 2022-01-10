@@ -5,21 +5,21 @@ import io.netty.buffer.ByteBuf;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.AEApi;
 import appeng.api.config.Upgrades;
 import appeng.api.storage.data.IItemList;
-
 import thaumcraft.api.aspects.Aspect;
-
 import thaumicenergistics.api.EssentiaStack;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
-import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.integration.IThEIntegration;
 import thaumicenergistics.integration.appeng.cell.CreativeEssentiaCellHandler;
+import thaumicenergistics.item.ItemDummyAspect;
 
 /**
  * @author BrockWS
@@ -69,6 +69,19 @@ public class ThEAppliedEnergistics implements IThEIntegration {
         public IAEEssentiaStack createStack(@Nonnull Object o) {
             if (o instanceof Aspect) {
                 return this.createStack(new EssentiaStack((Aspect) o, Integer.MAX_VALUE));
+            } else if (o instanceof ItemStack) {
+
+                ItemStack itemStack = (ItemStack) o;
+
+                Item item = itemStack.getItem();
+
+                if (!(item instanceof ItemDummyAspect)) {
+                    return null;
+                }
+
+                ItemDummyAspect dummyAspect = (ItemDummyAspect) item;
+
+                return this.createStack(new EssentiaStack(dummyAspect.getAspect(itemStack), Integer.MAX_VALUE));
             } else if (o instanceof EssentiaStack) {
                 return AEEssentiaStack.fromEssentiaStack((EssentiaStack) o);
             } else if (o instanceof AEEssentiaStack) {
