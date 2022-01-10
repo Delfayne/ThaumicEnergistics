@@ -13,6 +13,16 @@ things. Backup before you use this.
 Not only that, but it's a fork, of a fork, of a fork. I haven't thoroughly checked the previous contributors for
 potential security problems either. It looks fine on the surface, but I haven't gone deep.
 
+Changes in this fork
+* Essentia cell partitioning has been fixed. Previously, you could partition a cell, but the logic was not checked for
+correctly.
+* Arcane Crafting Terminal efficiency improvements. In a test world the ACT is fine, but in a big network
+with many items, it was very laggy. By the looks of things, this was getting the entire list of viewable
+items, sometimes multiple times. The fixes for this involved just checking the AE2 code base and porting their
+efficiency fixes into a form that is compatible with Thaumic Energistics.
+  * Changing the ACT to work on a diff of items instead of the entire list.
+  * Compressing the packet data sent to the user when data was changed.
+
 ---
 
 [![discord]](https://discord.gg/ywBJYK6)
