@@ -1,24 +1,20 @@
 package thaumicenergistics.part;
 
-import javax.annotation.Nonnull;
-
-import appeng.api.parts.IPartCollisionHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
-
 import appeng.api.config.Actionable;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
+import appeng.api.parts.IPartCollisionHelper;
 import appeng.api.parts.IPartModel;
 import appeng.api.storage.IMEMonitor;
-
+import com.google.common.collect.Lists;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectContainer;
-
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.client.gui.GuiHandler;
@@ -30,6 +26,8 @@ import thaumicenergistics.item.part.ItemEssentiaExportBus;
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ForgeUtil;
 import thaumicenergistics.util.ThELog;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author BrockWS
@@ -102,6 +100,11 @@ public class PartEssentiaExportBus extends PartSharedEssentiaBus {
                     reportedWarning = false;
                     // Couldn't contain it all
                     extracted.decStackSize(notAdded);
+
+                    if (extracted.getStackSize() == 0) {
+                        continue;
+                    }
+
                     // Only remove from system the amount the container accepted
                     storage.extractItems(extracted, Actionable.MODULATE, this.source);
                     return TickRateModulation.FASTER; // Only do one every tick
