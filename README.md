@@ -4,7 +4,7 @@
 Preface
 ---
 This is a fork to try and improve the usability of Thaumic Energistics. This is currently being updated to help current
-players during Divine Journey 2.
+players during Divine Journey 2. Now also used by FTB Interactions 2.12+.
 
 Some warnings
 * I know development, but I don't know Minecraft modding. I've not done this before. I might break 
