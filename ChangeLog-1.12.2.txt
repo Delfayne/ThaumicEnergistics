@@ -1,4 +1,16 @@
-﻿2019/07/28 - 2.2.3 - Release
+﻿2022/07/09 - 2.2.5 Release
+  Corrected Essentia cell partitioning. Previously cells could be partitioned, but this was being ignored. Now
+  partitioned cells will only accept the filtered essentia.
+  Improved net handling code around Arcane Crafting Terminal to handle diffs of the AE2 inventory changes rather than
+  the entire inventory. Should be a bit faster.
+  Fixing Essentia export buses not respecting export cards. This continued to work on the first aspect in the list,
+  without checking if it was needed or not. Now this will pass to the next essentia if none would be transferred.
+
+  (build) Fixed a number of issues around the use of the CurseMaven plugin, probably fallout from the CurseForge API
+  changes lately. Builds simply broke with missing dependencies, and some version numbers for dependent mods seemed
+  shifted.
+
+2019/07/28 - 2.2.3 - Release
   You can now scan any item or block from AE2 to unlock research
   Added ME Controller as a Research Aid
   Added Buttons & Scroll to Essentia Terminal

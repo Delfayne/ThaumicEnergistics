@@ -12,11 +12,9 @@ buildscript {
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:${version_forgegradle}"
-        classpath "com.wynprice.cursemaven:CurseMaven:${version_cursemaven}"
     }
 }
 apply plugin: "net.minecraftforge.gradle.forge"
-apply plugin: "com.wynprice.cursemaven"
 
 version = "${version_the}"
 group = "thaumicenergistics"
@@ -46,6 +44,9 @@ runServer {
 
 repositories {
     maven {
+        url "https://cursemaven.com"
+    }
+    maven {
         name = "progwml6"
         url = "http://dvs1.progwml6.com/files/maven"
     }
@@ -65,11 +66,11 @@ repositories {
 
 dependencies {
     provided "mezz.jei:jei_${version_jei}:api"
-    provided "curse.maven:inventory-tweaks:${version_it}:api"
-    provided "curse.maven:hwyla:${version_hwyla}:api"
+    provided "curse.maven:inventory-tweaks-223094:${version_it}"
+    provided "curse.maven:hwyla-253449:${version_hwyla}"
     provided "mcjty.theoneprobe:TheOneProbe-${version_mc_no_patch}:${version_top}:api"
-    deobfCompile("curse.maven:baubles:${version_ba}")
-    deobfCompile("curse.maven:thaumcraft:${version_tc}")
+    deobfCompile("curse.maven:baubles-227083:${version_ba}")
+    deobfCompile("curse.maven:thaumcraft-223628:${version_tc}")
     deobfCompile("curse.maven:appliedenergistics2-223794:${version_ae2}") {
         transitive = false
     }
@@ -77,7 +78,7 @@ dependencies {
     // Testing mods
     runtime "mezz.jei:jei_${version_jei}"
     //runtime "curse.maven:inventory-tweaks:${version_it}" // Causes issues
-    runtime "curse.maven:hwyla:${version_hwyla}"
+    provided "curse.maven:hwyla-253449:${version_hwyla}"
     runtime "mcjty.theoneprobe:TheOneProbe-${version_mc_no_patch}:${version_top}"
     runtime("curse.maven:thaumic-jei:${version_tjei}") {
         transitive = false
