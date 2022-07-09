@@ -120,38 +120,38 @@ research.essentiastorage64k.stage.2=I can now store massive amounts of essentia 
 
 # Research Essentia Buses
 research.essentiabuses.title=Digisentia Transportation
-research.essentiabuses.stage.1=Now that I can digitize essentia, it's time to put that technology to work
-research.essentiabuses.stage.2=I can now make Essentia Buses
+research.essentiabuses.stage.1=Now that I have the components to safely transport essentia with my ME system, I can now work on creating buses for essentia.
+research.essentiabuses.stage.2=I can now make Import, Export, and Storage Buses. They all function exactly like their item counterparts.
 
 # Research Essentia Terminal
 research.essentiaterminal.title=Essentia Monitoring
-research.essentiaterminal.stage.1=Now that I can digitize essentia, it's time to put that technology to work
-research.essentiaterminal.stage.2=I can now make Essentia Terminals
+research.essentiaterminal.stage.1=While I can now digitize essentia, I have realized this means I can no longer observe the quantities of essentia I have digitalized - an urgent problem.
+research.essentiaterminal.stage.2=The ME Essentia Terminal allows me to see all essentia my ME network can access. Additionally, I can insert and extract essentia with phials through it.
 
 # Research Infusion Provider
 research.infusionprovider.title=Infusion Provider
-research.infusionprovider.stage.1=Now that I can digitize essentia, it's time to put that technology to work
-research.infusionprovider.stage.2=I can now make Infusion Provider
+research.infusionprovider.stage.1=While being able to manipulate essentia with my ME system has proven invaluable, I am frustrated with the process required for Infusion - I have to extract all my essentia into jars on-site. Perhaps if I could expose my essentia to the Runic Matrix similar to the Essentia Terminal...
+research.infusionprovider.stage.2=Success! The Essentia Infusion Provider will expose the entire ME network's essentia to the Infusion process! As a bonus, it also works with my ME Essentia Storage Buses, allowing me to create essentia subnetworks, should I ever need those.
 
 # Research Arcane Crafting Terminal
 research.arcaneterminal.title=Arcane Crafting Terminal
-research.arcaneterminal.stage.1=Maybe I can combine a ME Terminal with a Arcane Workbench to get something that will help me with my arcane endeavours
-research.arcaneterminal.stage.2=I can now make Arcane Crafting Terminal
-research.arcaneterminal.addenda.1=I can upgrade my Arcane Crafting Terminal to increase its vis draw range
+research.arcaneterminal.stage.1=Having to hop back and forth between my ME system and my Arcane Workbench for every craft is getting frustrating. While it is vastly more complex than a mere Crafting Terminal, using the same principles, I should be able to hook my Arcane Workbench into my ME system.
+research.arcaneterminal.stage.2=The Arcane Crafting Terminal allows my Arcane Workbench to take full advantage of my ME system.
+research.arcaneterminal.addenda.1=I can upgrade my Arcane Crafting Terminal with the Arcane Charging Upgrade to allow it to access and draw vis from all neighboring chunks.
 
 # Research Arcane Assembler
 research.arcaneassembler.title=Arcane Assembler
-research.arcaneassembler.stage.1=Mixing technology and magic has proven a challenge, but so far it's been going well, so what could possibly go wrong if I take it a step further? I'm currently fed up with having to craft a bunch of things on my own, surely I can come up with a way to make a Molecular Assembler able to craft arcane objects!
-research.arcaneassembler.stage.2=As I suspected, arcane recipes don't play nicely with Matter/Energy devices, explosions may have happened. I'm sure I'll figure out a way to make it happen eventually, though. For now however, after studying Matter/Energy a bunch, I came up with a design for a Molecular Assembler that can use Vis Crystals. There's yet another issue though... it doesn't know how to craft the things I know how to craft. It's like it's missing something.
-research.arcaneassembler.addenda.1=I can upgrade my Arcane Assembler to increase its vis draw range, like with my Arcane Crafting Terminal
-research.arcaneassembler.addenda.2=Note: when I request something to be crafted, my ME system will not show the cost of Vis and Vis Crystals, even though those are still required. If I have a problem crafting things, I should take a look at the Arcane Assembler's interface, since it might have the answer. Lastly, I can upgrade the Arcane Assembler with Acceleration Cards to make it even faster.
+research.arcaneassembler.stage.1=While being able to manually craft arcane items with my ME network is very helpful, the true power of ME is its auto-crafting ability. I should look into some way to make a Molecular Assembler able to craft arcane objects.
+research.arcaneassembler.stage.2=Everything ought to work - it can get the items, the vis, the Essentia crystals, the power. Yet it doesn't even attempt to craft! I have invented nothing more than a, albeit quite heavy, paperweight. A paperweight which can be augmented with multiple Acceleration Cards. This has been a massive disappointment.
+research.arcaneassembler.addenda.1=I can upgrade my Arcane Assembler with the Arcane Charging Upgrade to allow it to access and draw vis from all neighbouring chunks.
+research.arcaneassembler.addenda.2=Now that I have seen the Arcane Assembler in use, I have realised a pair of problems - the first being that Vis is consumed at an alarming rate while auto-crafting, often slowing down the process massively, and the second being that Vis Crystals are not shown in the recipe cost. I will need to figure out ways to avoid both of these problems to efficiently auto-craft.
 
 # Research Knowledge Core
 research.knowledgecore.title=Knowledge Core
-research.knowledgecore.stage.1=I've been thinking about my current paperweight: the Arcane Assembler. I've been thinking about it... a lot. The whispers are not helping either. I think my mind needs some rest, but I can't sleep until I figure this one out! Hmm, mind... I can't fuse my brain into the Arcane Assembler, that would defeat the purpose and I kind of still need it. I can't teach the Arcane Assembler what I know, because it doesn't have a brain. Perhaps I can fix that. Yes! Sleep can wait, I must hunt for brains! I have experiments to run, there is research to be done.
-research.knowledgecore.stage.2=This was a triumph! After smashing a bunch of brains and circuits together for a few hours, I found out how to make this machine work. I've come up with a device that I call the Knowledge Core. The device will work fine for arcane recipes, but I can't use it for anything else, the brain in it explodes into pieces when I try that, but I'll make sure that can't happen. I've cleaned up my jars enough times. Oh right the brain! I forgot to mention, I will need a fresh brain. Well, fresh enough. I'm sure an undead's brain wouldn't mind crafting things for me, on my command, for years to come.
+research.knowledgecore.stage.1=I've been thinking about my current paperweight, the Arcane Assembler. Perhaps the issue is that it doesn't know how to craft - it hasn't spent hours researching, after all. I should look into ways to allow the Arcane Assembler to research.
+research.knowledgecore.stage.2=Eureka! I don't need to have the Arcane Assembler research - likely an impossible task - I merely need to create something that can remember a craft I've done, and do it exactly the same way. A zombie brain is perfect for this - all I have to do is teach the brain to do exactly the recipe I show it.
 
 # Research Arcane Inscriber
 research.arcaneinscriber.title=Arcane Inscriber
-research.arcaneinscriber.stage.1=After getting some sleep I realized something. It seems that the undead are not very bright. I've been talking to this Knowledge Core for a while now, but it doesn't seem to learn anything I teach it. At this rate I will never have a machine that crafts things for me. I need to find a way to force my knowledge straight into the Knowledge Core.
-research.arcaneinscriber.stage.2=I did it! I designed a kind of terminal that can, instead of crafting things, teach recipes to a Knowledge Core. I can also view what they know or make them forget, you never know when that will come in handy. The amount these cores can learn is not infinite, but it's still better than talking to them for years or crafting everything myself. I should also note that I can only teach the Knowledge Cores what I already know, but no more.
+research.arcaneinscriber.stage.1=It appears the undead are not very bright. I've been trying to teach this Knowledge Core how to craft for a while now, yet it hasn't learned anything. I need to find a way to force the Knowledge Core to learn.
+research.arcaneinscriber.stage.2=Basing my design off of an ME Pattern Terminal, I have managed to design a kind of terminal that can teach recipes to a Knowledge Core. I simply load the recipe into the grid and then save it! I can also examine what recipes I have saved to a Knowledge Core, and if so desired, erase recipes from the zombie's memory. While a single zombie brain is limited in how many recipes it can remember, zombies are plentiful.
