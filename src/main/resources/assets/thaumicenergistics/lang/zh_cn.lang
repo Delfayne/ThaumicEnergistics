@@ -92,7 +92,7 @@ card.tinkerae.text=尝试将源质转化为与当前物质/能量网络类似的
 tc.research_category.THAUMICENERGISTICS=神秘能源
 
 # Research Basics
-research.base_energistics.title=质数位化
+research.base_energistics.title=源质数位化
 research.base_energistics.stage.1=作为一名科学家和神秘学者，我假设必须能够以稳定和富有成效的方式将科技与魔法结合起来。<BR>我应该详细研究物质和能量转换的原理来实现。很可能神秘学的某些方面可以实现，以及能够做到这一点的科技。<BR>这需要进行广泛的研究，但我相信这将是我值得投入的时间。
 
 # Research Digisentia
