@@ -2,13 +2,17 @@ package thaumicenergistics.integration.jei;
 
 import mezz.jei.api.gui.IGhostIngredientHandler;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.items.ItemTCEssentiaContainer;
 import thaumicenergistics.client.gui.part.GuiSharedEssentiaBus;
 import thaumicenergistics.container.slot.SlotGhost;
 import thaumicenergistics.container.slot.SlotGhostEssentia;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.network.packets.PacketGhostEssentia;
+import thaumicenergistics.util.ThELog;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -26,10 +30,52 @@ public class GhostEssentiaHandler implements IGhostIngredientHandler<GuiSharedEs
             @Nonnull I ingredient,
             boolean doStart) {
 
-        Stream<Target<I>> essentiaTargets = getForAspectList(gui, ingredient);
+        Stream<Target<I>> essentiaContainers = getForEssentiaContainers(gui, ingredient);
+        Stream<Target<I>> aspectList = getForAspectList(gui, ingredient);
 
-        return Stream.concat(essentiaTargets, Stream.empty())
+        return Stream.concat(aspectList, essentiaContainers)
                 .collect(toList());
+    }
+
+    private <I> Stream<Target<I>> getForEssentiaContainers(GuiSharedEssentiaBus gui, I ingredient) {
+
+        if (ingredient instanceof ItemStack) {
+            ItemStack itemStack = (ItemStack) ingredient;
+            Item item = itemStack.getItem();
+            if ((item instanceof ItemTCEssentiaContainer)) {
+
+                return gui.inventorySlots.inventorySlots.stream()
+                        .filter(it -> it instanceof SlotGhostEssentia)
+                        .filter(Slot::isEnabled)
+                        .map(it -> (SlotGhost) it)
+                        .map(it -> new Target<I>() {
+
+                            @Override
+                            @Nonnull
+                            public Rectangle getArea() {
+                                return new Rectangle(
+                                        gui.getGuiLeft() + it.xPos,
+                                        gui.getGuiTop() + it.yPos,
+                                        17,
+                                        17
+                                );
+                            }
+
+                            @Override
+                            public void accept(@Nonnull I ingredient) {
+
+                                ItemStack itemStack = (ItemStack) ingredient;
+                                Item item = itemStack.getItem();
+                                ItemTCEssentiaContainer essentiaContainer = (ItemTCEssentiaContainer) item;
+                                Aspect aspect = essentiaContainer.getAspects(itemStack).getAspects()[0];
+                                ThELog.debug("TC Essentia container: {}", aspect);
+
+                                PacketHandler.sendToServer(new PacketGhostEssentia(aspect, it.slotNumber));
+                            }
+                        });
+            }
+        }
+        return Stream.empty();
     }
 
     private <I> Stream<Target<I>> getForAspectList(GuiSharedEssentiaBus gui, I ingredient) {
