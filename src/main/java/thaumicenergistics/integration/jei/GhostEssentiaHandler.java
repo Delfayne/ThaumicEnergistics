@@ -47,15 +47,20 @@ public class GhostEssentiaHandler implements IGhostIngredientHandler<GuiSharedEs
                 return gui.inventorySlots.inventorySlots.stream()
                         .filter(it -> it instanceof SlotGhostEssentia)
                         .filter(Slot::isEnabled)
+                        .filter(it -> {
+                            ItemTCEssentiaContainer essentiaContainer = (ItemTCEssentiaContainer) item;
+                            AspectList aspectList = essentiaContainer.getAspects(itemStack);
+                            return aspectList != null;
+                        })
                         .map(it -> (SlotGhost) it)
-                        .map(it -> new Target<I>() {
+                        .map(slot -> new Target<I>() {
 
                             @Override
                             @Nonnull
                             public Rectangle getArea() {
                                 return new Rectangle(
-                                        gui.getGuiLeft() + it.xPos,
-                                        gui.getGuiTop() + it.yPos,
+                                        gui.getGuiLeft() + slot.xPos,
+                                        gui.getGuiTop() + slot.yPos,
                                         17,
                                         17
                                 );
@@ -67,10 +72,14 @@ public class GhostEssentiaHandler implements IGhostIngredientHandler<GuiSharedEs
                                 ItemStack itemStack = (ItemStack) ingredient;
                                 Item item = itemStack.getItem();
                                 ItemTCEssentiaContainer essentiaContainer = (ItemTCEssentiaContainer) item;
-                                Aspect aspect = essentiaContainer.getAspects(itemStack).getAspects()[0];
-                                ThELog.debug("TC Essentia container: {}", aspect);
+                                AspectList aspectList = essentiaContainer.getAspects(itemStack);
+                                if (aspectList != null) {
+                                    Aspect[] aspects = aspectList.getAspects();
+                                    Aspect aspect = aspects[0];
+                                    ThELog.debug("TC Essentia container: {}", aspect);
 
-                                PacketHandler.sendToServer(new PacketGhostEssentia(aspect, it.slotNumber));
+                                    PacketHandler.sendToServer(new PacketGhostEssentia(aspect, slot.slotNumber));
+                                }
                             }
                         });
             }
