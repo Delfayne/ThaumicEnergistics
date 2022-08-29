@@ -154,7 +154,19 @@ public class GuiArcaneTerminal extends GuiAbstractTerminal<IAEItemStack, IItemSt
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
-        this.fontRenderer.drawString(ThEApi.instance().lang().guiVisRequiredOutOf().getLocalizedKey(this.visRequired > -1 ? this.visRequired : 0, (int) (this.visAvailable > -1 ? this.visAvailable : 0)), 35, this.getYSize() - 168, this.visRequired > this.visAvailable ? Color.RED.getRGB() : 4210752);
+        this.fontRenderer.drawString(
+                ThEApi.instance()
+                        .lang()
+                        .guiVisRequiredOutOf()
+                        .getLocalizedKey(
+                                getVisIfSet(this.visRequired),
+                                (int) (getVisIfSet(this.visAvailable))
+                        ),
+                35,
+                this.getYSize() - 168,
+                this.visRequired > this.visAvailable
+                        ? Color.RED.getRGB()
+                        : 4210752);
 
         if (this.discount > 0f)
             this.fontRenderer.drawString(ThEApi.instance().lang().guiVisDiscount().getLocalizedKey((int) (this.discount * 100)), 90, this.getYSize() - 94, 4210752);
@@ -225,7 +237,8 @@ public class GuiArcaneTerminal extends GuiAbstractTerminal<IAEItemStack, IItemSt
                     if (stack != null &&
                             action == ActionType.PICKUP_OR_SETDOWN &&
                             stack.getStackSize() == 0 &&
-                            player.inventory.getItemStack().isEmpty())
+                            player.inventory.getItemStack().isEmpty() &&
+                            sufficientVis())
                         action = ActionType.AUTO_CRAFT;
                     break;
                 case QUICK_MOVE:
@@ -378,5 +391,14 @@ public class GuiArcaneTerminal extends GuiAbstractTerminal<IAEItemStack, IItemSt
     public void updateScroll() {
         this.scrollBar.setRows(this.rows);
         this.scrollBar.setRange(0, (this.repo.size() + 8) / 9 - this.rows, Math.max(1, this.rows / 6));
+    }
+
+
+    private float getVisIfSet(float vis) {
+        return vis > -1 ? vis : 0;
+    }
+
+    private boolean sufficientVis() {
+        return visAvailable - (visRequired * (1f - discount)) > 0f;
     }
 }

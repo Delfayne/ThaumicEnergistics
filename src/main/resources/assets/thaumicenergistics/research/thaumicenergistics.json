@@ -64,10 +64,6 @@
                     ]
                 }
             ],
-            "reward_item": [
-                "thaumicenergistics:diffusion_core;2",
-                "thaumicenergistics:coalescence_core;2"
-            ],
             "reward_knowledge": [
                 "OBSERVATION;THAUMICENERGISTICS;1"
             ]
@@ -109,9 +105,6 @@
                         "thaumicenergistics:cells/essentia_cell_1k"
                     ]
                 }
-            ],
-            "reward_item": [
-                "thaumicenergistics:essentia_component_1k"
             ],
             "reward_knowledge": [
                 "OBSERVATION;THAUMICENERGISTICS;1"
@@ -156,9 +149,6 @@
                     ]
                 }
             ],
-            "reward_item": [
-                "thaumicenergistics:essentia_component_4k"
-            ],
             "reward_knowledge": [
                 "OBSERVATION;THAUMICENERGISTICS;1"
             ]
@@ -202,9 +192,6 @@
                     ]
                 }
             ],
-            "reward_item": [
-                "thaumicenergistics:essentia_component_16k"
-            ],
             "reward_knowledge": [
                 "OBSERVATION;THAUMICENERGISTICS;1"
             ]
@@ -247,9 +234,6 @@
                         "thaumicenergistics:cells/essentia_cell_64k"
                     ]
                 }
-            ],
-            "reward_item": [
-                "thaumicenergistics:essentia_component_64k"
             ],
             "reward_knowledge": [
                 "OBSERVATION;THAUMICENERGISTICS;2"
