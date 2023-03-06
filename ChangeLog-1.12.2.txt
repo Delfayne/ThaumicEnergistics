@@ -1,4 +1,8 @@
-﻿2022/07/09 - 2.2.5 Release
+﻿2023/03/06 - 2.2.6
+  Creative Essentia Cells now list MAX_INT essentia instead of 1000. They were previously still infinite, but with
+  a cap of 1000 present in the AE system would prohibit large crafts.
+
+2022/07/09 - 2.2.5 Release
   Corrected Essentia cell partitioning. Previously cells could be partitioned, but this was being ignored. Now
   partitioned cells will only accept the filtered essentia.
   Improved net handling code around Arcane Crafting Terminal to handle diffs of the AE2 inventory changes rather than
