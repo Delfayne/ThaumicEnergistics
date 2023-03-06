@@ -29,7 +29,7 @@ public class CreativeEssentiaCellInventory implements ICellInventoryHandler<IAEE
     private IItemList<IAEEssentiaStack> storedAspects = new EssentiaList();
 
     private CreativeEssentiaCellInventory() {
-        Aspect.aspects.forEach((s, aspect) -> storedAspects.add(AEUtil.getAEStackFromAspect(aspect, 1000)));
+        Aspect.aspects.forEach((s, aspect) -> storedAspects.add(AEUtil.getAEStackFromAspect(aspect, Integer.MAX_VALUE)));
     }
 
     public static ICellInventoryHandler getCell(ItemStack s, ISaveProvider c) {
