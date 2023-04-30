@@ -23,6 +23,7 @@ import appeng.api.util.IConfigurableObject;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 
+import thaumcraft.common.items.consumables.ItemPhial;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
@@ -91,7 +92,9 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal implements 
                 return;
             stack.setStackSize(max);
             containerItem.setAspects(toFill, new AspectList().add(stack.getAspect(), max));
-            toFill.setItemDamage(1);
+            if (toFill.getItem() instanceof ItemPhial) {
+                toFill.setItemDamage(1);
+            }
             boolean filledItem = false;
             if (inv.getItemStack().getCount() > 1) { // Player tried to fill multiple at once
                 if (inv.addItemStackToInventory(toFill)) {
