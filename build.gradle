@@ -18,7 +18,7 @@ apply plugin: "net.minecraftforge.gradle.forge"
 
 version = "${version_the}"
 group = "thaumicenergistics"
-archivesBaseName = "thaumicenergistics"
+archivesBaseName = "thaumicenergistics-extended_life"
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
