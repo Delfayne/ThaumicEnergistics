@@ -3,6 +3,7 @@
 * Jars and Void Jars can now be filled with the Essentia Terminal
 ## Bugs
 * Fix overflow issues when creative essentia cells coexist with other cells
+* Fixed a duplication bug where ghost items in the Arcane Inscriber would drop when broken or wrenched
 ## Misc
 * Building off AE2 Extended Life now rather than base AE2
 * Converted changelog to markdown
