@@ -2,19 +2,22 @@ package thaumicenergistics.part;
 
 import appeng.api.parts.IPartModel;
 import appeng.api.parts.PartItemStack;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import thaumicenergistics.init.ModGUIs;
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.integration.appeng.ThEPartModel;
 import thaumicenergistics.item.part.ItemArcaneInscriber;
+import thaumicenergistics.util.ItemHandlerUtil;
 import thaumicenergistics.util.inventory.ThEKnowledgeCoreInventory;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * @author Alex811
  */
-public class PartArcaneInscriber extends PartArcaneTerminal{
+public class PartArcaneInscriber extends PartArcaneTerminal {
 
     public static ResourceLocation[] MODELS = new ResourceLocation[]{
             new ResourceLocation(ModGlobals.MOD_ID, "part/arcane_inscriber/base"), // 0
@@ -43,5 +46,10 @@ public class PartArcaneInscriber extends PartArcaneTerminal{
             else
                 return MODEL_ON;
         return MODEL_OFF;
+    }
+
+    @Override
+    public void getDrops(List<ItemStack> list, boolean b) {
+        list.addAll(ItemHandlerUtil.getInventoryAsList(this.getInventoryByName("upgrades")));
     }
 }
