@@ -1,4 +1,6 @@
 ﻿# 2023/04/30 - 2.2.7
+## Mod
+* Jars and Void Jars can now be filled with the Essentia Terminal
 ## Misc
 * Building off AE2 Extended Life now rather than base AE2
 * Converted changelog to markdown

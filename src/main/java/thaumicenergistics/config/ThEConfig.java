@@ -92,6 +92,8 @@ public class ThEConfig implements IThEConfig {
 
     static {
         essentiaContainerCapacity.put("thaumcraft:phial", 10);
+        essentiaContainerCapacity.put("thaumcraft:jar_normal", 250);
+        essentiaContainerCapacity.put("thaumcraft:jar_void", 250);
     }
 
     public ThEConfig() {
