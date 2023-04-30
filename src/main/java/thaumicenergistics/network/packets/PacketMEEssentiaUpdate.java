@@ -23,7 +23,7 @@ import thaumicenergistics.integration.appeng.EssentiaList;
  */
 public class PacketMEEssentiaUpdate implements IMessage {
 
-    public IItemList<IAEEssentiaStack> list;
+    private IItemList<IAEEssentiaStack> list;
 
     public PacketMEEssentiaUpdate() {
         this.list = new EssentiaList();
