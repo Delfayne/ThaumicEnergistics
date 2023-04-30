@@ -2,6 +2,7 @@
 ## Misc
 * Converted changelog to markdown
 * Relocated primary git branch to main
+* Artifact name changed to reflect extended life
 
 # 2023/03/06 - 2.2.6
 * Creative Essentia Cells now list MAX_INT essentia instead of 1000. They were previously still infinite, but with

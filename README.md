@@ -1,4 +1,4 @@
-# ThaumicEnergistics Extended Life
+# Thaumic Energistics Extended Life
 *Because the digital age could use some magic!*
 
 About
