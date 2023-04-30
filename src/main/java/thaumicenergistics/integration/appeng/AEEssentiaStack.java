@@ -19,6 +19,8 @@ import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.item.ItemDummyAspect;
 
+import static java.lang.Math.min;
+
 /**
  * @author BrockWS
  */
@@ -120,7 +122,7 @@ public class AEEssentiaStack implements IAEEssentiaStack, Comparable<AEEssentiaS
 
     @Override
     public void incStackSize(long l) {
-        this.setStackSize(this.getStackSize() + l);
+        this.setStackSize(min(Integer.MAX_VALUE, this.getStackSize() + l));
     }
 
     @Override
@@ -145,7 +147,7 @@ public class AEEssentiaStack implements IAEEssentiaStack, Comparable<AEEssentiaS
 
     @Override
     public EssentiaStack getStack() {
-        return new EssentiaStack(this.getAspect(), (int) Math.min(Integer.MAX_VALUE, this.stackSize));
+        return new EssentiaStack(this.getAspect(), (int) min(Integer.MAX_VALUE, this.stackSize));
     }
 
     @Override
