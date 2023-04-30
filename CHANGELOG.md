@@ -1,6 +1,8 @@
 ﻿# 2023/04/30 - 2.2.7
-## Mod
+## Features
 * Jars and Void Jars can now be filled with the Essentia Terminal
+## Bugs
+* Fix overflow issues when creative essentia cells coexist with other cells
 ## Misc
 * Building off AE2 Extended Life now rather than base AE2
 * Converted changelog to markdown
