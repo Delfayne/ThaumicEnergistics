@@ -1,5 +1,6 @@
 ﻿# 2023/04/30 - 2.2.7
 ## Misc
+* Building off AE2 Extended Life now rather than base AE2
 * Converted changelog to markdown
 * Relocated primary git branch to main
 * Artifact name changed to reflect extended life
