@@ -16,8 +16,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import org.apache.logging.log4j.Logger;
 import thaumicenergistics.api.IThEBlocks;
 import thaumicenergistics.api.IThEItems;
 import thaumicenergistics.api.IThEUpgrades;
@@ -30,10 +30,9 @@ import thaumicenergistics.command.CommandDrainVis;
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.integration.ThEIntegrationLoader;
 import thaumicenergistics.network.PacketHandler;
+import thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.tile.TileArcaneAssembler;
 import thaumicenergistics.util.ForgeUtil;
-
-import org.apache.logging.log4j.Logger;
 
 /**
  * <strong>Thaumic Energistics</strong>
@@ -42,9 +41,16 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Nividica
  */
-@Mod(modid = ModGlobals.MOD_ID, name = ModGlobals.MOD_NAME, version = ModGlobals.MOD_VERSION, dependencies = ModGlobals.MOD_DEPENDENCIES)
+@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, dependencies = ThaumicEnergistics.MOD_DEPENDENCIES)
 @Mod.EventBusSubscriber
 public class ThaumicEnergistics {
+
+    static final String MOD_DEPENDENCIES = "required-after:appliedenergistics2@[rv6-stable-6,);" +
+            "required-after:thaumcraft@[6.1.BETA26,);" +
+            "after:thaumicjei;" +
+            "after:inventorytweaks;" +
+            "after:waila;" +
+            "after:theoneprobe";
 
     /**
      * Singleton instance
@@ -122,7 +128,7 @@ public class ThaumicEnergistics {
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
-        if(ModGlobals.DEBUG_MODE){
+        if (ModGlobals.DEBUG_MODE) {
             event.registerServerCommand(new CommandAddVis());
             event.registerServerCommand(new CommandDrainVis());
         }
@@ -145,27 +151,32 @@ public class ThaumicEnergistics {
             ConfigManager.sync(ModGlobals.MOD_ID, Config.Type.INSTANCE);
     }
 
-    public static class ClientProxy implements IProxy{
-        public void init(FMLInitializationEvent event){
+    public static class ClientProxy implements IProxy {
+        public void init(FMLInitializationEvent event) {
             // Init TESR
             ClientRegistry.bindTileEntitySpecialRenderer(TileArcaneAssembler.class, new ArcaneAssemblerRenderer());
         }
 
-        public EntityPlayer getPlayerEntFromCtx(MessageContext ctx){
+        public EntityPlayer getPlayerEntFromCtx(MessageContext ctx) {
             return ctx.side.isClient() ? Minecraft.getMinecraft().player : ctx.getServerHandler().player;
         }
     }
 
-    public static class ServerProxy implements IProxy{
-        public EntityPlayer getPlayerEntFromCtx(MessageContext ctx){
+    public static class ServerProxy implements IProxy {
+        public EntityPlayer getPlayerEntFromCtx(MessageContext ctx) {
             return ctx.getServerHandler().player;
         }
     }
 
-    public interface IProxy{
-        default void preInit(FMLPreInitializationEvent event){}
-        default void init(FMLInitializationEvent event){}
-        default void postInit(FMLPostInitializationEvent event){}
+    public interface IProxy {
+        default void preInit(FMLPreInitializationEvent event) {
+        }
+
+        default void init(FMLInitializationEvent event) {
+        }
+
+        default void postInit(FMLPostInitializationEvent event) {
+        }
 
         EntityPlayer getPlayerEntFromCtx(MessageContext ctx);
     }

@@ -12,15 +12,9 @@ import thaumicenergistics.api.ThEApi;
  */
 public class ModGlobals {
 
+    // TODO: 2023/06/05 clean more of this up.
+
     public static final String MOD_ID = "thaumicenergistics";
-    public static final String MOD_NAME = "Thaumic Energistics";
-    public static final String MOD_VERSION = "2.2.6";
-    public static final String MOD_DEPENDENCIES = "required-after:appliedenergistics2@[rv6-stable-6,);" +
-            "required-after:thaumcraft@[6.1.BETA26,);" +
-            "after:thaumicjei;" +
-            "after:inventorytweaks;" +
-            "after:waila;" +
-            "after:theoneprobe";
 
     /**
      * Creative tab.
