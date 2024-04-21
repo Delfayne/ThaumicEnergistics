@@ -14,6 +14,7 @@ import java.util.HashMap;
  */
 public final class AESettings {
     private static final HashMap<SUBJECT, HashMap<Settings, Enum<?>>> SETTINGS = new HashMap<>();
+
     public enum SUBJECT {
         ARCANE_TERMINAL,
         ESSENTIA_TERMINAL,
@@ -38,14 +39,14 @@ public final class AESettings {
         addSetting(SUBJECT.ESSENTIA_STORAGE_BUS, Settings.STORAGE_FILTER, StorageFilter.EXTRACTABLE_ONLY);
     }
 
-    private static void addSetting(SUBJECT settingSubject, Settings setting, Enum<?> def){
-        if(!SETTINGS.containsKey(settingSubject))
+    private static void addSetting(SUBJECT settingSubject, Settings setting, Enum<?> def) {
+        if (!SETTINGS.containsKey(settingSubject))
             SETTINGS.put(settingSubject, new HashMap<>());
         SETTINGS.get(settingSubject).put(setting, def);
     }
 
-    public static void registerSettings(@Nullable SUBJECT settingSubject, @Nonnull IConfigManager configManager){
-        if(settingSubject != null)
+    public static void registerSettings(@Nullable SUBJECT settingSubject, @Nonnull IConfigManager configManager) {
+        if (settingSubject != null)
             SETTINGS.get(settingSubject).forEach(configManager::registerSetting);
     }
 }

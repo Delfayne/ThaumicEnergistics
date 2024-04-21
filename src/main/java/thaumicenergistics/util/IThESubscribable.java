@@ -11,15 +11,15 @@ import java.util.function.Consumer;
 public interface IThESubscribable {
     ArrayList<EntityPlayer> subscribers = new ArrayList<>();
 
-    default void subscribe(EntityPlayer player){
+    default void subscribe(EntityPlayer player) {
         subscribers.add(player);
     }
 
-    default void unsubscribe(EntityPlayer player){
+    default void unsubscribe(EntityPlayer player) {
         subscribers.remove(player);
     }
 
-    default void notifySubs(Consumer<EntityPlayer> consumer){
+    default void notifySubs(Consumer<EntityPlayer> consumer) {
         subscribers.forEach(consumer);
     }
 }

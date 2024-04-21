@@ -1,17 +1,15 @@
 package thaumicenergistics.container.slot;
 
+import appeng.util.helpers.ItemHandlerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
-
-import appeng.util.helpers.ItemHandlerUtil;
 
 /**
  * @author BrockWS

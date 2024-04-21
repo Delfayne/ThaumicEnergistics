@@ -1,7 +1,6 @@
 package thaumicenergistics.definitions;
 
-import java.util.Optional;
-
+import appeng.api.definitions.IBlockDefinition;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -9,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-import appeng.api.definitions.IBlockDefinition;
+import java.util.Optional;
 
 /**
  * @author BrockWS

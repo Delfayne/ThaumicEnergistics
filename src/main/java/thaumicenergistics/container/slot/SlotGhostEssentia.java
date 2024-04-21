@@ -2,9 +2,7 @@ package thaumicenergistics.container.slot;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-
 import thaumcraft.api.aspects.Aspect;
-
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.EssentiaFilter;
 

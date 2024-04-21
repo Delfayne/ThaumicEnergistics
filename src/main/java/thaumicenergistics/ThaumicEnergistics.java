@@ -121,7 +121,7 @@ public class ThaumicEnergistics {
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
-        if(ModGlobals.DEBUG_MODE){
+        if (ModGlobals.DEBUG_MODE) {
             event.registerServerCommand(new CommandAddVis());
             event.registerServerCommand(new CommandDrainVis());
         }
@@ -144,27 +144,32 @@ public class ThaumicEnergistics {
             ConfigManager.sync(Reference.MOD_ID, Config.Type.INSTANCE);
     }
 
-    public static class ClientProxy implements IProxy{
-        public void init(FMLInitializationEvent event){
+    public static class ClientProxy implements IProxy {
+        public void init(FMLInitializationEvent event) {
             // Init TESR
             ClientRegistry.bindTileEntitySpecialRenderer(TileArcaneAssembler.class, new ArcaneAssemblerRenderer());
         }
 
-        public EntityPlayer getPlayerEntFromCtx(MessageContext ctx){
+        public EntityPlayer getPlayerEntFromCtx(MessageContext ctx) {
             return ctx.side.isClient() ? Minecraft.getMinecraft().player : ctx.getServerHandler().player;
         }
     }
 
-    public static class ServerProxy implements IProxy{
-        public EntityPlayer getPlayerEntFromCtx(MessageContext ctx){
+    public static class ServerProxy implements IProxy {
+        public EntityPlayer getPlayerEntFromCtx(MessageContext ctx) {
             return ctx.getServerHandler().player;
         }
     }
 
-    public interface IProxy{
-        default void preInit(FMLPreInitializationEvent event){}
-        default void init(FMLInitializationEvent event){}
-        default void postInit(FMLPostInitializationEvent event){}
+    public interface IProxy {
+        default void preInit(FMLPreInitializationEvent event) {
+        }
+
+        default void init(FMLInitializationEvent event) {
+        }
+
+        default void postInit(FMLPostInitializationEvent event) {
+        }
 
         EntityPlayer getPlayerEntFromCtx(MessageContext ctx);
     }

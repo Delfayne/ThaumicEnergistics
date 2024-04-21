@@ -34,7 +34,7 @@ public class GuiArcaneAssembler extends GuiBase {
     private boolean hasEnoughVis = true;
     private HashMap<String, Boolean> aspectExists = new HashMap<>();
 
-    public GuiArcaneAssembler(ContainerArcaneAssembler container){
+    public GuiArcaneAssembler(ContainerArcaneAssembler container) {
         super(container);
         this.container = container;
         this.inv = container.getInventory("cores");
@@ -66,10 +66,10 @@ public class GuiArcaneAssembler extends GuiBase {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
         this.fontRenderer.drawString(ThEApi.instance().lang().tileArcaneAssembler().getLocalizedKey(), 8, 3, 4210752);
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.getYSize() - 92, 4210752);
-        if(!this.inv.getStackInSlot(0).isEmpty()){
-            if(this.aspectExists.containsValue(false))
+        if (!this.inv.getStackInSlot(0).isEmpty()) {
+            if (this.aspectExists.containsValue(false))
                 this.fontRenderer.drawString(ThEApi.instance().lang().guiOutOfAspect().getLocalizedKey(), 100, this.getYSize() - 92, Color.RED.getRGB());
-            if(!this.hasEnoughVis)
+            if (!this.hasEnoughVis)
                 this.fontRenderer.drawString(ThEApi.instance().lang().guiOutOfVis().getLocalizedKey(), 115, 3, Color.RED.getRGB());
         }
     }
@@ -82,11 +82,11 @@ public class GuiArcaneAssembler extends GuiBase {
             if (this.enAlpha < 1.0F) this.enAlpha += 0.05F * partialTicks;
         }
 
-        if(this.enAlpha < 1.0F){
+        if (this.enAlpha < 1.0F) {
             this.mc.getTextureManager().bindTexture(BACKGROUND_INACTIVE);
             drawModalRectWithCustomSizedTexture(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize, this.xSize, this.ySize);
         }
-        if(this.enAlpha > 0.0F){
+        if (this.enAlpha > 0.0F) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, this.enAlpha);
             this.mc.getTextureManager().bindTexture(BACKGROUND_ACTIVE);
             drawModalRectWithCustomSizedTexture(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize, this.xSize, this.ySize);
@@ -94,18 +94,18 @@ public class GuiArcaneAssembler extends GuiBase {
         }
 
         this.mc.getTextureManager().bindTexture(ASPECTS);
-        for(int i = 0; i < 6; i++){
+        for (int i = 0; i < 6; i++) {
             Boolean haveAspect = aspectExists.get(aspects[i]);
             int x = aspectGUILoc[i][0];
             int y = aspectGUILoc[i][1];
-            if(haveAspect != null && !this.inv.getStackInSlot(0).isEmpty()){   // recipe needs this aspect & we have a KCore
-                if(!haveAspect){       // we don't have enough of this aspect
+            if (haveAspect != null && !this.inv.getStackInSlot(0).isEmpty()) {   // recipe needs this aspect & we have a KCore
+                if (!haveAspect) {       // we don't have enough of this aspect
                     float alpha = (float) ((MathHelper.sin((Minecraft.getSystemTime() / 200.0) % (2 * MathHelper.pi)) + 1.0) / 2.0);
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha * this.enAlpha);
-                }else{
+                } else {
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.2F + this.enAlpha * 0.8F);
                 }
-            }else{
+            } else {
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.2F + this.enAlpha * 0.5F);
             }
             drawModalRectWithCustomSizedTexture(this.guiLeft + x, this.guiTop + y, x, y, 40, 40, this.xSize, this.ySize);
@@ -119,7 +119,7 @@ public class GuiArcaneAssembler extends GuiBase {
         PacketHandler.sendToServer(new PacketSubscribe<>(container.getTE(), false)); // unsubscribe from aspect availability updates
     }
 
-    public void updateGUI(HashMap<String, Boolean> aspectExists, boolean hasEnoughVis){
+    public void updateGUI(HashMap<String, Boolean> aspectExists, boolean hasEnoughVis) {
         this.aspectExists = aspectExists;
         this.hasEnoughVis = hasEnoughVis;
     }

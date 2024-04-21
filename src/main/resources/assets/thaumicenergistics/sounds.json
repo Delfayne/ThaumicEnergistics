@@ -1,14 +1,20 @@
 {
   "knowledge_core_write": {
     "category": "block",
-    "sounds": ["thaumicenergistics:item/knowledge_core_write"]
+    "sounds": [
+      "thaumicenergistics:item/knowledge_core_write"
+    ]
   },
   "knowledge_core_power_up": {
     "category": "block",
-    "sounds": ["thaumicenergistics:item/knowledge_core_power_up"]
+    "sounds": [
+      "thaumicenergistics:item/knowledge_core_power_up"
+    ]
   },
   "knowledge_core_power_down": {
     "category": "block",
-    "sounds": ["thaumicenergistics:item/knowledge_core_power_down"]
+    "sounds": [
+      "thaumicenergistics:item/knowledge_core_power_down"
+    ]
   }
 }

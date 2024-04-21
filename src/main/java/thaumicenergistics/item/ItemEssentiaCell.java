@@ -34,9 +34,9 @@ import java.util.Optional;
  */
 public class ItemEssentiaCell extends ItemBase implements IStorageCell<IAEEssentiaStack>, IThEModel {
 
-    private String size;
-    private int bytes;
-    private int types;
+    private final String size;
+    private final int bytes;
+    private final int types;
 
     public ItemEssentiaCell(String size, int bytes, int types) {
         super("essentia_cell_" + size);

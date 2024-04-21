@@ -17,10 +17,10 @@ import java.util.HashMap;
 @Mod.EventBusSubscriber
 public class ThESounds implements IThESounds {
 
-    private static HashMap<String, ResourceLocation> SOUNDS = new HashMap<>();
+    private static final HashMap<String, ResourceLocation> SOUNDS = new HashMap<>();
 
     @SubscribeEvent
-    public static void registerSoundEvents(RegistryEvent.Register<SoundEvent> event){
+    public static void registerSoundEvents(RegistryEvent.Register<SoundEvent> event) {
         IForgeRegistry<SoundEvent> registry = event.getRegistry();
         SOUNDS.forEach((name, loc) -> {
             SoundEvent soundEvent = new SoundEvent(loc);
@@ -29,7 +29,7 @@ public class ThESounds implements IThESounds {
         });
     }
 
-    private static ResourceLocation addSound(String sound){
+    private static ResourceLocation addSound(String sound) {
         ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, sound);
         SoundEvent soundEvent = new SoundEvent(resourceLocation);
         soundEvent.setRegistryName(sound);
@@ -41,24 +41,24 @@ public class ThESounds implements IThESounds {
     private final ResourceLocation soundKnowledgeCorePowerUp;
     private final ResourceLocation soundKnowledgeCorePowerDown;
 
-    public ThESounds(){
+    public ThESounds() {
         this.soundKnowledgeCoreWrite = ThESounds.addSound("knowledge_core_write");
         this.soundKnowledgeCorePowerUp = ThESounds.addSound("knowledge_core_power_up");
         this.soundKnowledgeCorePowerDown = ThESounds.addSound("knowledge_core_power_down");
     }
 
     @Override
-    public ResourceLocation knowledgeCoreWrite(){
+    public ResourceLocation knowledgeCoreWrite() {
         return this.soundKnowledgeCoreWrite;
     }
 
     @Override
-    public ResourceLocation knowledgeCorePowerUp(){
+    public ResourceLocation knowledgeCorePowerUp() {
         return this.soundKnowledgeCorePowerUp;
     }
 
     @Override
-    public ResourceLocation knowledgeCorePowerDown(){
+    public ResourceLocation knowledgeCorePowerDown() {
         return this.soundKnowledgeCorePowerDown;
     }
 }

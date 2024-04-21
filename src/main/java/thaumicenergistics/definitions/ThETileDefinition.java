@@ -1,12 +1,11 @@
 package thaumicenergistics.definitions;
 
-import java.util.Optional;
-
+import appeng.api.definitions.ITileDefinition;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 
-import appeng.api.definitions.ITileDefinition;
+import java.util.Optional;
 
 /**
  * @author BrockWS

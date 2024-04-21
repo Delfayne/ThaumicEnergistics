@@ -1,14 +1,12 @@
 package thaumicenergistics.integration.appeng.cell;
 
-import net.minecraft.item.ItemStack;
-
 import appeng.api.AEApi;
 import appeng.api.storage.ICellHandler;
 import appeng.api.storage.ICellInventoryHandler;
 import appeng.api.storage.ISaveProvider;
 import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.data.IAEStack;
-
+import net.minecraft.item.ItemStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.item.ItemCreativeEssentiaCell;
 

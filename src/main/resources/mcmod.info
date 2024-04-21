@@ -1,21 +1,21 @@
 [
-    {
-        "modid": "thaumicenergistics",
-        "name": "Thaumic Energistics",
-        "description": "The digital age could use some magic",
-        "version": "${modversion}",
-        "mcversion": "${mcversion}",
-        "url": "https://www.curseforge.com/minecraft/mc-mods/thaumic-energistics-extended-life",
-        "updateUrl": "",
-        "authorList":[
-            "Delfayne"
-        ],
-        "credits": "Nividica, BrockWS for this original, 811Alex for many patches, Azanor & AlgorithmX2 for their respective mods. And M3gaFr3ak for giving me somewhere to start. 1.7.10 Localization: Mrkwtkr, alvin137, puyo061, Wuestengecko, TheVizzy, Adaptivity, Joccob, & Keridos. Textures: CyanideX. Special thanks to MKoanga.",
-        "logoFile": "assets/thaumicenergistics/meta/logo.png",
-        "screenshots": [],
-        "dependencies": [
-            "appliedenergistics2",
-            "thaumcraft"
-        ]
-    }
+  {
+    "modid": "thaumicenergistics",
+    "name": "Thaumic Energistics",
+    "description": "The digital age could use some magic",
+    "version": "${modversion}",
+    "mcversion": "${mcversion}",
+    "url": "https://www.curseforge.com/minecraft/mc-mods/thaumic-energistics-extended-life",
+    "updateUrl": "",
+    "authorList": [
+      "Delfayne"
+    ],
+    "credits": "Nividica, BrockWS for this original, 811Alex for many patches, Azanor & AlgorithmX2 for their respective mods. And M3gaFr3ak for giving me somewhere to start. 1.7.10 Localization: Mrkwtkr, alvin137, puyo061, Wuestengecko, TheVizzy, Adaptivity, Joccob, & Keridos. Textures: CyanideX. Special thanks to MKoanga.",
+    "logoFile": "assets/thaumicenergistics/meta/logo.png",
+    "screenshots": [],
+    "dependencies": [
+      "appliedenergistics2",
+      "thaumcraft"
+    ]
+  }
 ]

@@ -2,7 +2,10 @@ package thaumicenergistics;
 
 import thaumicenergistics.api.*;
 import thaumicenergistics.config.ThEConfig;
-import thaumicenergistics.init.*;
+import thaumicenergistics.init.ThEBlocks;
+import thaumicenergistics.init.ThEItems;
+import thaumicenergistics.init.ThESounds;
+import thaumicenergistics.init.ThETextures;
 import thaumicenergistics.lang.ThELang;
 import thaumicenergistics.upgrade.ThEUpgrades;
 

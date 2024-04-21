@@ -19,8 +19,8 @@ import java.io.IOException;
  */
 public class GuiPriorityBridge extends GuiPriority {
 
-    private EntityPlayer player;
-    private PartEssentiaStorageBus part;
+    private final EntityPlayer player;
+    private final PartEssentiaStorageBus part;
     private GuiNumberBox priority;
 
     public GuiPriorityBridge(EntityPlayer player, PartEssentiaStorageBus part) {

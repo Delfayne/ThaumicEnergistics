@@ -1,7 +1,6 @@
 package thaumicenergistics.container;
 
 import appeng.api.config.Settings;
-import appeng.api.util.IConfigManager;
 import appeng.api.util.IConfigurableObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,7 +25,7 @@ public abstract class ContainerBaseConfigurable extends ContainerBase implements
         super(player);
         this.clientConfigManager = new ThEConfigManager();
         this.clientConfigManager.registerSettings(this.getAESettingSubject());
-        if(ForgeUtil.isServer())
+        if (ForgeUtil.isServer())
             this.serverConfigManager = serverConfigManager;
     }
 
@@ -35,7 +34,7 @@ public abstract class ContainerBaseConfigurable extends ContainerBase implements
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if(ForgeUtil.isServer()){
+        if (ForgeUtil.isServer()) {
             for (Settings setting : this.serverConfigManager.getSettings()) {
                 Enum server = this.serverConfigManager.getSetting(setting);
                 Enum client = this.clientConfigManager.getSetting(setting);

@@ -58,9 +58,9 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
             new ResourceLocation(Reference.MOD_ID, "part/essentia_storage_bus/has_channel")
     };
 
-    private static IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1]);
-    private static IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2]);
-    private static IPartModel MODEL_HAS_CHANNEL = new ThEPartModel(MODELS[0], MODELS[3]);
+    private static final IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1]);
+    private static final IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2]);
+    private static final IPartModel MODEL_HAS_CHANNEL = new ThEPartModel(MODELS[0], MODELS[3]);
 
     private EssentiaContainerAdapter handler;
     private boolean wasActive = false;
@@ -81,9 +81,9 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
         super.settingChanged(setting);
         EssentiaContainerAdapter handler = this.handler;
         if (handler != null) {
-            if(setting == Settings.ACCESS)
+            if (setting == Settings.ACCESS)
                 handler.setBaseAccess((AccessRestriction) this.getConfigManager().getSetting(Settings.ACCESS));
-            else if(setting == Settings.STORAGE_FILTER)
+            else if (setting == Settings.STORAGE_FILTER)
                 handler.setReportInaccessible((StorageFilter) this.getConfigManager().getSetting(Settings.STORAGE_FILTER));
             else
                 return;
@@ -91,9 +91,9 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
         }
     }
 
-    protected void upgradesChanged(){
+    protected void upgradesChanged() {
         EssentiaContainerAdapter handler = this.getHandler();
-        if(handler != null)
+        if (handler != null)
             handler.setWhitelist(!this.hasInverterCard());
         this.triggerUpdate();
     }
@@ -157,7 +157,7 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
             }
         }
         IAspectContainer connectedContainer = this.getConnectedContainer();
-        if (this.lastConnectedContainer != connectedContainer){
+        if (this.lastConnectedContainer != connectedContainer) {
             this.lastConnectedContainer = connectedContainer;
             this.handler = null;   // wipe cached handler, so it gets reconstructed
         }
@@ -197,7 +197,7 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
     @Override
     public void setPriority(int i) {
         this.priority = i;
-        if(this.handler != null)
+        if (this.handler != null)
             this.handler.setPriority(i);
         this.host.markForSave();
     }
@@ -230,9 +230,9 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
 
     @Nullable
     private EssentiaContainerAdapter getHandler() {
-        if(this.handler == null){
+        if (this.handler == null) {
             IAspectContainer connectedContainer = this.getConnectedContainer();
-            if(connectedContainer != null)
+            if (connectedContainer != null)
                 return this.handler = new EssentiaContainerAdapter(connectedContainer, this.config,
                         !this.hasInverterCard(),
                         (AccessRestriction) this.getConfigManager().getSetting(Settings.ACCESS),
@@ -274,7 +274,7 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
         this.triggerBootUpdate();
     }
 
-    public void triggerBootUpdate(){
+    public void triggerBootUpdate() {
         final boolean currentActive = this.getGridNode().isActive();
         if (this.wasActive != currentActive) {
             this.wasActive = currentActive;
@@ -282,7 +282,7 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
         }
     }
 
-    public void triggerUpdate(){
+    public void triggerUpdate() {
         this.gridNode.getGrid().postEvent(new MENetworkCellArrayUpdate());
         this.host.markForUpdate();
     }

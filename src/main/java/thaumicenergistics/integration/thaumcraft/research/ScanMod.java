@@ -1,12 +1,9 @@
 package thaumicenergistics.integration.thaumcraft.research;
 
-import net.minecraft.entity.player.EntityPlayer;
-
-import thaumcraft.api.research.IScanThing;
-
-import thaumicenergistics.util.AEUtil;
-
 import com.google.common.base.Preconditions;
+import net.minecraft.entity.player.EntityPlayer;
+import thaumcraft.api.research.IScanThing;
+import thaumicenergistics.util.AEUtil;
 
 /**
  * @author BrockWS

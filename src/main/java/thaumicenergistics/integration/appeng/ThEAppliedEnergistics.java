@@ -1,17 +1,12 @@
 package thaumicenergistics.integration.appeng;
 
-import io.netty.buffer.ByteBuf;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import appeng.api.AEApi;
 import appeng.api.config.Upgrades;
 import appeng.api.storage.data.IItemList;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import thaumcraft.api.aspects.Aspect;
 import thaumicenergistics.api.EssentiaStack;
 import thaumicenergistics.api.ThEApi;
@@ -20,6 +15,9 @@ import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.integration.IThEIntegration;
 import thaumicenergistics.integration.appeng.cell.CreativeEssentiaCellHandler;
 import thaumicenergistics.item.ItemDummyAspect;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author BrockWS

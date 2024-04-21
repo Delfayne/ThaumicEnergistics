@@ -31,7 +31,7 @@ public class PacketAssemblerGUIUpdateRequest implements IMessage {
         BlockPos pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
         World world = DimensionManager.getWorld(buf.readInt());
         TileEntity tile = world.getTileEntity(pos);
-        if(tile instanceof TileArcaneAssembler)
+        if (tile instanceof TileArcaneAssembler)
             this.TE = (TileArcaneAssembler) tile;
     }
 
@@ -49,7 +49,7 @@ public class PacketAssemblerGUIUpdateRequest implements IMessage {
         @Override
         public IMessage onMessage(PacketAssemblerGUIUpdateRequest message, MessageContext ctx) {
             FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> {
-                if(message.TE != null)
+                if (message.TE != null)
                     PacketHandler.sendToPlayer(ctx.getServerHandler().player, new PacketAssemblerGUIUpdate(message.TE));
             });
             return null;

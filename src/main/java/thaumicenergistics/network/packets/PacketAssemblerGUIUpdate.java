@@ -52,7 +52,7 @@ public class PacketAssemblerGUIUpdate implements IMessage {
         public IMessage onMessage(PacketAssemblerGUIUpdate message, MessageContext ctx) {
             Minecraft.getMinecraft().addScheduledTask(() -> {
                 GuiScreen gui = Minecraft.getMinecraft().currentScreen;
-                if(gui instanceof GuiArcaneAssembler)
+                if (gui instanceof GuiArcaneAssembler)
                     ((GuiArcaneAssembler) gui).updateGUI(message.aspectExists, message.hasEnoughVis);
             });
             return null;

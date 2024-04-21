@@ -3,7 +3,6 @@ package thaumicenergistics.client.gui.helpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-
 import thaumicenergistics.client.gui.GuiBase;
 
 /**
@@ -11,9 +10,9 @@ import thaumicenergistics.client.gui.GuiBase;
  */
 public class GuiScrollBar {
 
-    private int x;
-    private int y;
-    private int height;
+    private final int x;
+    private final int y;
+    private final int height;
     private int rows = 6;
 
     private int minScroll = 0;

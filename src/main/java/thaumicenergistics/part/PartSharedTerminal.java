@@ -1,14 +1,12 @@
 package thaumicenergistics.part;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import appeng.api.parts.IPartCollisionHelper;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.ITerminalHost;
 import appeng.api.storage.data.IAEStack;
 import appeng.me.GridAccessException;
-
+import net.minecraft.nbt.NBTTagCompound;
 import thaumicenergistics.init.ModGUIs;
 import thaumicenergistics.integration.appeng.grid.GridUtil;
 import thaumicenergistics.item.ItemPartBase;
@@ -25,7 +23,7 @@ public abstract class PartSharedTerminal extends PartBase implements ITerminalHo
         this.gui = gui;
     }
 
-    public ModGUIs getGui(){
+    public ModGUIs getGui() {
         return this.gui;
     }
 

@@ -1,7 +1,6 @@
 package thaumicenergistics.container;
 
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.items.IItemHandler;
 
 /**

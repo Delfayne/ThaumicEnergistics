@@ -39,18 +39,19 @@ public abstract class GuiConfigurable extends GuiBase {
             Enum currentValue = btn.getCurrentValue();
             Enum next = ThEUtil.rotateEnum(currentValue, btn.getSetting().getPossibleValues(), Mouse.isButtonDown(1));
             btn.set(next);
-            if(!imgBtnActionOverride(btn, next))
+            if (!imgBtnActionOverride(btn, next))
                 PacketHandler.sendToServer(new PacketSettingChange(btn.getSetting(), next));
         }
     }
 
     /**
      * Override to handle actions on a {@link GuiImgButton} differently.
-     * @param btn the button to potentially override its action
+     *
+     * @param btn  the button to potentially override its action
      * @param next the new value of the button
      * @return true if you handled the action, to skip sending {@link PacketSettingChange} to the server
      */
-    protected boolean imgBtnActionOverride(GuiImgButton btn, Enum next){
+    protected boolean imgBtnActionOverride(GuiImgButton btn, Enum next) {
         return false;
     }
 

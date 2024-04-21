@@ -1,10 +1,10 @@
 package thaumicenergistics.api;
 
-import java.util.List;
-import java.util.Optional;
-
 import appeng.api.definitions.IItemDefinition;
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author BrockWS

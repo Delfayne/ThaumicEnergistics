@@ -1,14 +1,13 @@
 package thaumicenergistics.container.slot;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.items.IItemHandler;
+
+import javax.annotation.Nullable;
 
 /**
  * @author BrockWS

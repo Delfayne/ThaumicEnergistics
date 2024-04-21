@@ -12,12 +12,12 @@ import thaumicenergistics.part.PartBase;
  * @author Alex811
  */
 public class TOPPartAccessor {
-    public static PartBase getPart(TileEntity te, IProbeHitData data){
-        if(te instanceof IPartHost){
+    public static PartBase getPart(TileEntity te, IProbeHitData data) {
+        if (te instanceof IPartHost) {
             BlockPos pos = data.getPos();
             Vec3d partPos = data.getHitVec().add(-pos.getX(), -pos.getY(), -pos.getZ());
             IPart part = ((IPartHost) te).selectPart(partPos).part;
-            if(part instanceof PartBase)
+            if (part instanceof PartBase)
                 return (PartBase) part;
         }
         return null;

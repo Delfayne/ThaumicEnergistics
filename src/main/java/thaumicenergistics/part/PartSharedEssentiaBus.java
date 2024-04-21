@@ -1,25 +1,22 @@
 package thaumicenergistics.part;
 
+import appeng.api.AEApi;
 import appeng.api.config.RedstoneMode;
 import appeng.api.config.Settings;
+import appeng.api.config.Upgrades;
+import appeng.api.implementations.IUpgradeableHost;
 import appeng.api.networking.IGridNode;
+import appeng.api.networking.ticking.IGridTickable;
 import appeng.api.networking.ticking.TickRateModulation;
+import appeng.api.parts.PartItemStack;
+import appeng.api.util.AECableType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-
-import appeng.api.AEApi;
-import appeng.api.config.Upgrades;
-import appeng.api.implementations.IUpgradeableHost;
-import appeng.api.networking.ticking.IGridTickable;
-import appeng.api.parts.PartItemStack;
-import appeng.api.util.AECableType;
-
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.item.ItemPartBase;
 import thaumicenergistics.util.EssentiaFilter;
@@ -165,17 +162,17 @@ public abstract class PartSharedEssentiaBus extends PartBase implements IGridTic
 
     protected abstract TickRateModulation doWork();
 
-    protected RedstoneMode getRSMode(){
+    protected RedstoneMode getRSMode() {
         if (!hasRedstoneCard())
             return RedstoneMode.IGNORE;
         return (RedstoneMode) this.getConfigManager().getSetting(Settings.REDSTONE_CONTROLLED);
     }
 
-    protected boolean hasRedstone(){
+    protected boolean hasRedstone() {
         return this.host.hasRedstone(this.side);
     }
 
-    protected boolean workAllowedByRedstone(){
+    protected boolean workAllowedByRedstone() {
         boolean hasRedstone = this.hasRedstone();
         RedstoneMode mode = this.getRSMode();
         return !hasRedstoneCard() ||
@@ -187,9 +184,9 @@ public abstract class PartSharedEssentiaBus extends PartBase implements IGridTic
     @Override
     public void onNeighborChanged(IBlockAccess iBlockAccess, BlockPos blockPos, BlockPos blockPos1) {
         super.onNeighborChanged(iBlockAccess, blockPos, blockPos1);
-        if(this.lastRedstone != this.hasRedstone()){
+        if (this.lastRedstone != this.hasRedstone()) {
             this.lastRedstone = !this.lastRedstone;
-            if(this.lastRedstone && this.canWork() && this.getRSMode() == RedstoneMode.SIGNAL_PULSE)
+            if (this.lastRedstone && this.canWork() && this.getRSMode() == RedstoneMode.SIGNAL_PULSE)
                 this.doWork();
         }
     }

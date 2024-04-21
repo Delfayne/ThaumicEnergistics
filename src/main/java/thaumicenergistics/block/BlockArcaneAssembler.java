@@ -26,7 +26,7 @@ import java.util.Objects;
 /**
  * @author Alex811
  */
-public class BlockArcaneAssembler extends BlockNetwork implements IThEModel{
+public class BlockArcaneAssembler extends BlockNetwork implements IThEModel {
 
     public BlockArcaneAssembler(String id) {
         super(id);

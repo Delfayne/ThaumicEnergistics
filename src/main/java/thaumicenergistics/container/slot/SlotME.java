@@ -1,11 +1,9 @@
 package thaumicenergistics.container.slot;
 
+import appeng.api.storage.data.IAEStack;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
-
-import appeng.api.storage.data.IAEStack;
-
 import thaumicenergistics.client.gui.helpers.MERepo;
 
 /**

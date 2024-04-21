@@ -9,7 +9,6 @@ import appeng.client.gui.widgets.GuiTabButton;
 import appeng.core.localization.GuiText;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
-
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.container.part.ContainerEssentiaStorageBus;
 import thaumicenergistics.init.ModGUIs;
@@ -73,7 +72,7 @@ public class GuiEssentiaStorageBus extends GuiSharedEssentiaBus {
     protected void actionPerformed(GuiButton button) {
         if (button == this.priorityButton)
             PacketHandler.sendToServer(new PacketOpenGUI(ModGUIs.AE2_PRIORITY, this.container.getPart().getLocation().getPos(), this.container.getPart().side));
-        else if(button == this.clearButton)
+        else if (button == this.clearButton)
             PacketHandler.sendToServer(new PacketEssentiaFilterAction(this.container.getPart(), PacketEssentiaFilterAction.ACTION.CLEAR));
         else if (button == this.partitionButton)
             PacketHandler.sendToServer(new PacketEssentiaFilterAction(this.container.getPart(), PacketEssentiaFilterAction.ACTION.PARTITION));

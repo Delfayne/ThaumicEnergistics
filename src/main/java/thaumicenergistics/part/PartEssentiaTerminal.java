@@ -31,11 +31,11 @@ public class PartEssentiaTerminal extends PartSharedTerminal {
             new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_off") // 5
     };
 
-    private static IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1], MODELS[4]);
-    private static IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2], MODELS[5]);
-    private static IPartModel MODEL_HAS_CHANNEL = new ThEPartModel(MODELS[0], MODELS[1], MODELS[3]);
+    private static final IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1], MODELS[4]);
+    private static final IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2], MODELS[5]);
+    private static final IPartModel MODEL_HAS_CHANNEL = new ThEPartModel(MODELS[0], MODELS[1], MODELS[3]);
 
-    public PartEssentiaTerminal(ItemEssentiaTerminal itemEssentiaTerminal){
+    public PartEssentiaTerminal(ItemEssentiaTerminal itemEssentiaTerminal) {
         this(itemEssentiaTerminal, ModGUIs.ESSENTIA_TERMINAL);
     }
 

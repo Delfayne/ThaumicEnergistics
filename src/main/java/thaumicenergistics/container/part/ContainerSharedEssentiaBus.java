@@ -1,21 +1,18 @@
 package thaumicenergistics.container.part;
 
+import appeng.api.config.Upgrades;
+import appeng.api.implementations.items.IUpgradeModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.items.IItemHandler;
-
-import appeng.api.config.Upgrades;
-import appeng.api.implementations.items.IUpgradeModule;
-
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
-import thaumicenergistics.container.IPartContainer;
 import thaumicenergistics.container.ContainerBaseConfigurable;
+import thaumicenergistics.container.IPartContainer;
 import thaumicenergistics.container.slot.SlotGhost;
 import thaumicenergistics.container.slot.SlotGhostEssentia;
 import thaumicenergistics.container.slot.SlotUpgrade;
@@ -101,12 +98,12 @@ public abstract class ContainerSharedEssentiaBus extends ContainerBaseConfigurab
     @Override
     protected void handleQuickMove(Slot slot, ItemStack itemStack) {
         Item item = itemStack.getItem();
-        if(item instanceof ItemMaterial || item instanceof appeng.items.materials.ItemMaterial)
+        if (item instanceof ItemMaterial || item instanceof appeng.items.materials.ItemMaterial)
             ItemHandlerUtil.quickMoveSlot(this.part.getInventoryByName("upgrades"), slot);
-        else if(item instanceof IEssentiaContainerItem){
+        else if (item instanceof IEssentiaContainerItem) {
             EssentiaFilter config = this.part.getConfig();
             Aspect aspect = ((IEssentiaContainerItem) item).getAspects(itemStack).getAspects()[0];
-            if(!config.isInFilter(aspect)){
+            if (!config.isInFilter(aspect)) {
                 this.inventorySlots.stream()
                         .filter(invSlot -> invSlot instanceof SlotGhostEssentia)
                         .filter(Slot::isEnabled)

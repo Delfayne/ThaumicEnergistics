@@ -3,7 +3,6 @@ package thaumicenergistics.client.gui.part;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.data.IAEStack;
-
 import net.minecraft.inventory.Slot;
 import thaumicenergistics.client.gui.GuiConfigurable;
 import thaumicenergistics.client.gui.helpers.MERepo;
@@ -41,7 +40,7 @@ public abstract class GuiAbstractTerminal<T extends IAEStack<T>, C extends IStor
     @Override
     public void drawSlot(Slot slot) {
         super.drawSlot(slot);
-        if(slot instanceof SlotME && !this.isActive())
+        if (slot instanceof SlotME && !this.isActive())
             drawRect(slot.xPos, slot.yPos, slot.xPos + 16, slot.yPos + 16, 0x66111111);
     }
 }

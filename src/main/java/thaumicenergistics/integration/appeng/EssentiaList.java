@@ -1,16 +1,11 @@
 package thaumicenergistics.integration.appeng;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import appeng.api.config.FuzzyMode;
 import appeng.api.storage.data.IItemList;
-
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.util.MeaningfulEssentiaIterator;
+
+import java.util.*;
 
 /**
  * @author BrockWS

@@ -1,25 +1,22 @@
 package thaumicenergistics.util.inventory;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
 import net.minecraftforge.items.ItemStackHandler;
-
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
-
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.item.ItemDummyAspect;
 import thaumicenergistics.util.ThEUtil;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author BrockWS
  */
 public class EssentiaCellConfig extends ItemStackHandler {
 
-    private ItemStack cell;
+    private final ItemStack cell;
 
     public EssentiaCellConfig(ItemStack stack) {
         super(63);

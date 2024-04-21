@@ -1,23 +1,20 @@
 package thaumicenergistics.integration.thaumcraft;
 
-import java.util.Objects;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-
 import net.minecraftforge.items.IItemHandler;
-
 import thaumcraft.api.capabilities.ThaumcraftCapabilities;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.IArcaneWorkbench;
 import thaumcraft.api.items.IVisDiscountGear;
 import thaumcraft.api.potions.PotionVisExhaust;
 import thaumcraft.common.lib.potions.PotionInfectiousVisExhaust;
-
 import thaumicenergistics.container.DummyContainer;
+
+import java.util.Objects;
 
 /**
  * @author BrockWS

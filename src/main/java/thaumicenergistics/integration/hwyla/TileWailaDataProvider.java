@@ -20,9 +20,9 @@ public class TileWailaDataProvider implements IWailaDataProvider {
     @Override
     public List<String> getWailaBody(ItemStack itemStack, List<String> tooltip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
         TileEntity te = accessor.getTileEntity();
-        if(te instanceof TileNetwork){
+        if (te instanceof TileNetwork) {
             ((TileNetwork) te).withPowerStateText(tooltip::add, IThELangKey::getLocalizedKey);
-            if(te instanceof TileArcaneAssembler)
+            if (te instanceof TileArcaneAssembler)
                 ((TileArcaneAssembler) te).withInfoText(tooltip::add, IThELangKey::getLocalizedKey);
         }
         return tooltip;
