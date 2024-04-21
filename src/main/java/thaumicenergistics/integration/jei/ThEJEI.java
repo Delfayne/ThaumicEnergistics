@@ -13,6 +13,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import thaumicenergistics.api.IThEItems;
 import thaumicenergistics.api.ThEApi;
+import thaumicenergistics.client.gui.part.GuiArcaneInscriber;
 import thaumicenergistics.client.gui.part.GuiSharedEssentiaBus;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -49,7 +50,14 @@ public class ThEJEI implements IModPlugin {
         items.arcaneTerminal().maybeStack(1).ifPresent(stack -> registerWorkbenchCatalyst(registry, new ACTRecipeTransferHandler<>(rthh), stack));
         items.arcaneInscriber().maybeStack(1).ifPresent(stack -> registerWorkbenchCatalyst(registry, new ACIRecipeTransferHandler<>(rthh), stack));
 
-        items.essentiaExportBus().maybeStack(1).ifPresent(stack -> registry.addGhostIngredientHandler(GuiSharedEssentiaBus.class, new GhostEssentiaHandler()));
+        items.essentiaExportBus().maybeStack(1)
+                .ifPresent(stack -> registry.addGhostIngredientHandler(
+                        GuiSharedEssentiaBus.class,
+                        new GhostEssentiaHandler()));
+        items.arcaneInscriber().maybeStack(1)
+                .ifPresent(stack -> registry.addGhostIngredientHandler(
+                        GuiArcaneInscriber.class,
+                        new GhostInscriberHandler()));
 
         items.dummyAspect().maybeStack(1).ifPresent(blacklist::addIngredientToBlacklist);
     }

@@ -4,9 +4,10 @@ import appeng.api.AEApi;
 import appeng.api.storage.data.IAEStack;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IThreadListener;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -37,46 +38,61 @@ public class PacketUIAction implements IMessage {
         this.requestedStack = stack;
     }
 
+    public PacketUIAction(ActionType action, IAEStack stack, int index) {
+        this(action);
+        this.requestedStack = stack;
+        this.index = index;
+    }
+
     public PacketUIAction(ActionType action, int index) {
         this(action);
         this.index = index;
     }
 
     @Override
-    public void fromBytes(ByteBuf buf) {
-        this.action = ActionType.values()[buf.readByte()];
-        if (buf.readableBytes() > 0) {
-            String data = ByteBufUtils.readUTF8String(buf);
-            if (data.matches("^\\d+")) {
-                this.index = Integer.parseInt(data);
-            } else {
-                AEApi.instance().storage().storageChannels().forEach(channel -> {
-                    if (channel.getClass().getSimpleName().equalsIgnoreCase(data)) {
-                        try {
-                            this.requestedStack = channel.readFromPacket(buf);
-                        } catch (Throwable ignored) {
-                            ThELog.error("Failed to read stack from packet, {}", channel.getClass().getSimpleName());
-                        }
+    public void fromBytes(ByteBuf in) {
+
+        PacketBuffer packetBuffer = new PacketBuffer(in);
+        NBTTagCompound nbt;
+        try {
+            nbt = packetBuffer.readCompoundTag();
+        } catch (IOException e) {
+            ThELog.error("Failed to read from packet, {}", e);
+            return;
+        }
+
+        this.action = ActionType.values()[nbt.getInteger("action")];
+        if (nbt.hasKey("index")) {
+            this.index = nbt.getInteger("index");
+        }
+        if (nbt.hasKey("Cnt")) {
+            AEApi.instance().storage().storageChannels().forEach(channel -> {
+                if (requestedStack == null) {
+                    try {
+                        this.requestedStack = channel.createFromNBT(nbt);
+                    } catch (Throwable ignored) {
+                        ThELog.error("Failed to read stack from packet, {}", channel.getClass().getSimpleName());
                     }
-                });
-            }
+                }
+            });
         }
     }
 
     @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeByte(this.action.ordinal());
-        try {
-            if (this.requestedStack != null) {
-                ByteBufUtils.writeUTF8String(buf, this.requestedStack.getChannel().getClass().getSimpleName());
-                this.requestedStack.writeToPacket(buf);
-            }
-            if (this.index > -1) {
-                ByteBufUtils.writeUTF8String(buf, String.valueOf(this.index));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void toBytes(ByteBuf outline) {
+
+        PacketBuffer packetBuffer = new PacketBuffer(outline);
+
+        NBTTagCompound nbt = new NBTTagCompound();
+        if (requestedStack != null) {
+            requestedStack.writeToNBT(nbt);
         }
+        if (this.index > -1) {
+            nbt.setInteger("index", index);
+        }
+        nbt.setInteger("action", action.ordinal());
+
+        packetBuffer.writeCompoundTag(nbt);
     }
 
     public static class Handler implements IMessageHandler<PacketUIAction, IMessage> {
