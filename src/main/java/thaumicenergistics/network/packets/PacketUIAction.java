@@ -1,24 +1,20 @@
 package thaumicenergistics.network.packets;
 
+import appeng.api.AEApi;
+import appeng.api.storage.data.IAEStack;
 import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
-
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.IThreadListener;
-
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import appeng.api.AEApi;
-import appeng.api.storage.data.IAEStack;
-
 import thaumicenergistics.container.ActionType;
 import thaumicenergistics.container.ContainerBase;
 import thaumicenergistics.util.ThELog;
+
+import java.io.IOException;
 
 /**
  * @author BrockWS
@@ -41,7 +37,7 @@ public class PacketUIAction implements IMessage {
         this.requestedStack = stack;
     }
 
-    public PacketUIAction(ActionType action, int index){
+    public PacketUIAction(ActionType action, int index) {
         this(action);
         this.index = index;
     }
@@ -51,9 +47,9 @@ public class PacketUIAction implements IMessage {
         this.action = ActionType.values()[buf.readByte()];
         if (buf.readableBytes() > 0) {
             String data = ByteBufUtils.readUTF8String(buf);
-            if(data.matches("^\\d+")) {
+            if (data.matches("^\\d+")) {
                 this.index = Integer.parseInt(data);
-            }else {
+            } else {
                 AEApi.instance().storage().storageChannels().forEach(channel -> {
                     if (channel.getClass().getSimpleName().equalsIgnoreCase(data)) {
                         try {
@@ -75,7 +71,7 @@ public class PacketUIAction implements IMessage {
                 ByteBufUtils.writeUTF8String(buf, this.requestedStack.getChannel().getClass().getSimpleName());
                 this.requestedStack.writeToPacket(buf);
             }
-            if (this.index > -1){
+            if (this.index > -1) {
                 ByteBufUtils.writeUTF8String(buf, String.valueOf(this.index));
             }
         } catch (IOException e) {

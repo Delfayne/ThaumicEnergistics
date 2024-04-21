@@ -45,33 +45,33 @@ public class ContainerArcaneInscriber extends ContainerArcaneTerminal implements
     @Override
     public void onAction(EntityPlayerMP player, PacketUIAction packet) {
         super.onAction(player, packet);
-        if(ForgeUtil.isServer()){
+        if (ForgeUtil.isServer()) {
             ItemStack knowledgeCore = this.getInventory("upgrades").getStackInSlot(0);
-            if(knowledgeCore.isEmpty()) return;
+            if (knowledgeCore.isEmpty()) return;
             boolean currentIsBlank = ((ItemKnowledgeCore) knowledgeCore.getItem()).isBlank();
             ItemStack result = this.getInventory("result").getStackInSlot(0);
-            if(packet.action == ActionType.KNOWLEDGE_CORE_ADD && !result.isEmpty() && this.recipeIsArcane) {
-               if(currentIsBlank)
+            if (packet.action == ActionType.KNOWLEDGE_CORE_ADD && !result.isEmpty() && this.recipeIsArcane) {
+                if (currentIsBlank)
                     ThEApi.instance().items().knowledgeCore().maybeStack(1).ifPresent(newCore -> {
                         ((InvWrapper) this.getInventory("upgrades")).getInv().setInventorySlotContents(0, newCore);
                     });
-               else if(KnowledgeCoreUtil.hasRecipe(knowledgeCore, result.getItem())) return;
-               GuiHandler.openGUI(ModGUIs.KNOWLEDGE_CORE_ADD, player, this.part.getLocation().getPos(), this.part.side);
-            }else if(packet.action == ActionType.KNOWLEDGE_CORE_DEL && !currentIsBlank)
+                else if (KnowledgeCoreUtil.hasRecipe(knowledgeCore, result.getItem())) return;
+                GuiHandler.openGUI(ModGUIs.KNOWLEDGE_CORE_ADD, player, this.part.getLocation().getPos(), this.part.side);
+            } else if (packet.action == ActionType.KNOWLEDGE_CORE_DEL && !currentIsBlank)
                 GuiHandler.openGUI(ModGUIs.KNOWLEDGE_CORE_DEL, player, this.part.getLocation().getPos(), this.part.side);
-            else if(packet.action == ActionType.KNOWLEDGE_CORE_VIEW && !currentIsBlank)
+            else if (packet.action == ActionType.KNOWLEDGE_CORE_VIEW && !currentIsBlank)
                 GuiHandler.openGUI(ModGUIs.KNOWLEDGE_CORE_VIEW, player, this.part.getLocation().getPos(), this.part.side);
         }
     }
 
-    public void refreshIsArcane(){
+    public void refreshIsArcane() {
         if (ForgeUtil.isClient()) return;
         boolean recipeIsArcane;
         InvWrapper crafting = (InvWrapper) this.getInventory("crafting");
-        if(this.recipe != null && !crafting.getInv().isEmpty())
+        if (this.recipe != null && !crafting.getInv().isEmpty())
             recipeIsArcane = (TCCraftingManager.findArcaneRecipe(crafting, this.player) != null);
         else recipeIsArcane = false;
-        if(this.recipeIsArcane != recipeIsArcane) {
+        if (this.recipeIsArcane != recipeIsArcane) {
             this.recipeIsArcane = recipeIsArcane;
             PacketHandler.sendToPlayer((EntityPlayerMP) this.player, new PacketIsArcaneUpdate(recipeIsArcane));
         }
@@ -111,7 +111,7 @@ public class ContainerArcaneInscriber extends ContainerArcaneTerminal implements
         this.onMatrixChanged();
     }
 
-    private void handleJEITag(int startAtSlot, NBTBase ingredientGroup, boolean mustBeSingle){
+    private void handleJEITag(int startAtSlot, NBTBase ingredientGroup, boolean mustBeSingle) {
         IItemHandler crafting = this.getInventory("crafting");
         IItemHandler playerInv = this.getInventory("player");
 
@@ -135,7 +135,7 @@ public class ContainerArcaneInscriber extends ContainerArcaneTerminal implements
             IAEItemStack aeExtract = AEUtil.inventoryExtract(aeStack, this.monitor, this.part.source, null, Actionable.SIMULATE);
             if (aeExtract != null && aeExtract.getStackSize() > 0) {
                 ItemStack AEExtractStack = aeExtract.createItemStack();
-                if(mustBeSingle) AEExtractStack.setCount(1);
+                if (mustBeSingle) AEExtractStack.setCount(1);
                 crafting.insertItem(slot, AEExtractStack, false);
             }
 
@@ -147,7 +147,7 @@ public class ContainerArcaneInscriber extends ContainerArcaneTerminal implements
 
             ItemStack invExtract = ItemHandlerUtil.extract(playerInv, stack, true);
             if (!invExtract.isEmpty()) {
-                if(mustBeSingle) invExtract.setCount(1);
+                if (mustBeSingle) invExtract.setCount(1);
                 crafting.insertItem(slot, invExtract, false);
             }
         }
@@ -185,12 +185,12 @@ public class ContainerArcaneInscriber extends ContainerArcaneTerminal implements
     }
 
     @Override
-    protected float getWorldVis(){
+    protected float getWorldVis() {
         return Float.MAX_VALUE;
     }
 
     @Override
-    protected float getDiscount(EntityPlayer player){
+    protected float getDiscount(EntityPlayer player) {
         return 0;
     }
 }

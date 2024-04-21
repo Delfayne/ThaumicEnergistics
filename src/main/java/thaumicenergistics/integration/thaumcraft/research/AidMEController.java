@@ -1,7 +1,6 @@
 package thaumicenergistics.integration.thaumcraft.research;
 
 import appeng.api.AEApi;
-
 import thaumcraft.api.research.theorycraft.ITheorycraftAid;
 import thaumcraft.api.research.theorycraft.TheorycraftCard;
 

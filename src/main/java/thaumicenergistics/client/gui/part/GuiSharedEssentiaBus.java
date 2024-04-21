@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
-
 import thaumicenergistics.client.gui.GuiConfigurable;
 import thaumicenergistics.container.part.ContainerSharedEssentiaBus;
 import thaumicenergistics.container.slot.ISlotOptional;
@@ -37,7 +36,8 @@ public abstract class GuiSharedEssentiaBus extends GuiConfigurable {
         this.upgradesChanged();
     }
 
-    protected void upgradesChanged() {}
+    protected void upgradesChanged() {
+    }
 
     @Override
     public void updateScreen() {

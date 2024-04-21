@@ -1,15 +1,13 @@
 package thaumicenergistics.util;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.INBTSerializable;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.IAspectContainer;
+
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Iterator;
-
-import net.minecraft.nbt.NBTTagCompound;
-
-import net.minecraftforge.common.util.INBTSerializable;
-
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectContainer;
 
 /**
  * @author BrockWS
@@ -72,12 +70,12 @@ public class EssentiaFilter implements INBTSerializable<NBTTagCompound>, Iterabl
         this.onContentsChanged();
     }
 
-    public void clear(){
+    public void clear() {
         Arrays.fill(this.aspects, null);
         this.onContentsChanged();
     }
 
-    public void partition(IAspectContainer aspectContainer){
+    public void partition(IAspectContainer aspectContainer) {
         Aspect[] aspects = aspectContainer.getAspects().getAspects();
         Arrays.fill(this.aspects, null);
         System.arraycopy(aspects, 0, this.aspects, 0, aspects.length);

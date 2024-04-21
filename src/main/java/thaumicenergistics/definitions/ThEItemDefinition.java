@@ -1,13 +1,12 @@
 package thaumicenergistics.definitions;
 
-import javax.annotation.Nonnull;
-import java.util.Objects;
-import java.util.Optional;
-
+import appeng.api.definitions.IItemDefinition;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import appeng.api.definitions.IItemDefinition;
+import javax.annotation.Nonnull;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author BrockWS

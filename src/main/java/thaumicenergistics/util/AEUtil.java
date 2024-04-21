@@ -1,18 +1,5 @@
 package thaumicenergistics.util;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.items.IItemHandler;
-
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -26,15 +13,23 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
-
+import com.google.common.base.Preconditions;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.items.IItemHandler;
 import thaumcraft.api.aspects.Aspect;
-
 import thaumicenergistics.api.EssentiaStack;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.integration.appeng.AEEssentiaStack;
-
-import com.google.common.base.Preconditions;
 
 /**
  * @author BrockWS

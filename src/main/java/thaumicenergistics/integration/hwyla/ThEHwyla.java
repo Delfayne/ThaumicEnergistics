@@ -14,7 +14,7 @@ public class ThEHwyla implements IThEIntegration {
         FMLInterModComms.sendMessage(this.getModID(), "register", this.getClass().getName() + ".register");
     }
 
-    public static void register(IWailaRegistrar registrar){
+    public static void register(IWailaRegistrar registrar) {
         registrar.registerBodyProvider(new TileWailaDataProvider(), TileBase.class);
     }
 }

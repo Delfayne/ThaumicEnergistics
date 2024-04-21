@@ -1,9 +1,5 @@
 package thaumicenergistics.integration.appeng.cell;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.item.ItemStack;
-
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.config.IncludeExclude;
@@ -13,13 +9,14 @@ import appeng.api.storage.ICellInventoryHandler;
 import appeng.api.storage.ISaveProvider;
 import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.data.IItemList;
-
+import net.minecraft.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
-
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.integration.appeng.EssentiaList;
 import thaumicenergistics.util.AEUtil;
+
+import javax.annotation.Nullable;
 
 /**
  * @author BrockWS

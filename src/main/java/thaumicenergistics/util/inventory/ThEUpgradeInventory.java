@@ -1,20 +1,18 @@
 package thaumicenergistics.util.inventory;
 
+import appeng.api.config.Upgrades;
+import appeng.api.implementations.items.IUpgradeModule;
+import net.minecraft.item.ItemStack;
+import thaumicenergistics.api.IThEUpgrade;
+import thaumicenergistics.api.ThEApi;
+import thaumicenergistics.item.ItemKnowledgeCore;
+import thaumicenergistics.util.ForgeUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
-
-import net.minecraft.item.ItemStack;
-
-import appeng.api.config.Upgrades;
-import appeng.api.implementations.items.IUpgradeModule;
-
-import thaumicenergistics.api.IThEUpgrade;
-import thaumicenergistics.api.ThEApi;
-import thaumicenergistics.item.ItemKnowledgeCore;
-import thaumicenergistics.util.ForgeUtil;
 
 /**
  * @author BrockWS
@@ -22,7 +20,7 @@ import thaumicenergistics.util.ForgeUtil;
 public class ThEUpgradeInventory extends ThEInternalInventory {
 
     private boolean cached = false;
-    private Map<Object, Integer> cachedUpgrades;
+    private final Map<Object, Integer> cachedUpgrades;
     private ItemStack upgradable;
 
     public ThEUpgradeInventory(String customName, int size, int stackLimit, ItemStack upgradable) {
@@ -35,13 +33,13 @@ public class ThEUpgradeInventory extends ThEInternalInventory {
         this.cachedUpgrades = new HashMap<>();
     }
 
-    public boolean isKnowledgeCoreSlot(){
+    public boolean isKnowledgeCoreSlot() {
         return false;
     }
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
-        if(stack.getItem() instanceof ItemKnowledgeCore && !isKnowledgeCoreSlot())
+        if (stack.getItem() instanceof ItemKnowledgeCore && !isKnowledgeCoreSlot())
             return false;
         if (!(stack.getItem() instanceof IUpgradeModule) && !ThEApi.instance().upgrades().getUpgrade(stack).isPresent())
             return false;

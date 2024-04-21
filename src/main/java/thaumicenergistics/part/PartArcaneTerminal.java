@@ -41,14 +41,14 @@ public class PartArcaneTerminal extends PartSharedTerminal {
             new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_off") // 5
     };
 
-    private static IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1], MODELS[4]);
-    private static IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2], MODELS[5]);
-    private static IPartModel MODEL_HAS_CHANNEL = new ThEPartModel(MODELS[0], MODELS[1], MODELS[3]);
+    private static final IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1], MODELS[4]);
+    private static final IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2], MODELS[5]);
+    private static final IPartModel MODEL_HAS_CHANNEL = new ThEPartModel(MODELS[0], MODELS[1], MODELS[3]);
 
     protected ThEInternalInventory craftingInventory;
     protected ThEInternalInventory upgradeInventory;
 
-    public PartArcaneTerminal(ItemArcaneTerminal item){
+    public PartArcaneTerminal(ItemArcaneTerminal item) {
         this(item, ModGUIs.ARCANE_TERMINAL);
     }
 

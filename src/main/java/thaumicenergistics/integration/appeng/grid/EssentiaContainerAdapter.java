@@ -9,10 +9,8 @@ import appeng.api.networking.security.IActionSource;
 import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.data.IItemList;
-
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectContainer;
-
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.util.AEUtil;
@@ -37,7 +35,7 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
     private boolean reportInaccessible;
     private int priority;
 
-    public EssentiaContainerAdapter(IAspectContainer container, EssentiaFilter config, boolean whitelist, AccessRestriction access, StorageFilter filter, int priority){
+    public EssentiaContainerAdapter(IAspectContainer container, EssentiaFilter config, boolean whitelist, AccessRestriction access, StorageFilter filter, int priority) {
         this.container = container;
         this.config = config;
         this.setWhitelist(whitelist);
@@ -125,7 +123,7 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
             return false;
         boolean inFilter = this.config.isInFilter(input.getAspect());
         boolean containerCanAccept = this.container.doesContainerAccept(input.getAspect());
-        if (this.whitelistMode == IncludeExclude.BLACKLIST){
+        if (this.whitelistMode == IncludeExclude.BLACKLIST) {
             if (inFilter)
                 return false;
             return containerCanAccept;

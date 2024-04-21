@@ -28,14 +28,14 @@ public class ThEIntegrationLoader {
     }
 
     private static void registerIntegration(String modId, Class<? extends IThEIntegration> integration) {
-        if(Loader.isModLoaded(modId) || apiManager.hasAPI(modId)) {
+        if (Loader.isModLoaded(modId) || apiManager.hasAPI(modId)) {
             try {
                 INTEGRATIONS.put(integration.newInstance(), modId);
                 ThELog.info("Integrations: Registered [" + modId + "]");
             } catch (InstantiationException | IllegalAccessException ex) {
                 ThELog.error("Failed to instantiate an integration class", ex);
             }
-        }else
+        } else
             ThELog.debug("Integrations: Not found [" + modId + "]");
     }
 

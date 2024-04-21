@@ -1,17 +1,14 @@
 package thaumicenergistics.tile;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import appeng.api.config.Actionable;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IItemList;
 import appeng.me.GridAccessException;
-
+import net.minecraft.nbt.NBTTagCompound;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectSource;
-
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.integration.appeng.grid.GridUtil;

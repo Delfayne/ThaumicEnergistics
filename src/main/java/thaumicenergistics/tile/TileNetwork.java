@@ -1,8 +1,5 @@
 package thaumicenergistics.tile;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import appeng.api.AEApi;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.IGridNode;
@@ -13,7 +10,6 @@ import appeng.api.networking.security.IActionHost;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEPartLocation;
 import appeng.api.util.DimensionalCoord;
-
 import appeng.me.GridAccessException;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,6 +27,8 @@ import thaumicenergistics.util.ForgeUtil;
 import thaumicenergistics.util.IThEGridNodeBlock;
 import thaumicenergistics.util.IThEOwnable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -135,7 +133,7 @@ public abstract class TileNetwork extends TileBase implements IThEGridHost, IAct
 
     @Override
     public boolean isActive() {
-        if(ForgeUtil.isServer())
+        if (ForgeUtil.isServer())
             return this.gridNode != null && this.gridNode.isActive();
         else
             return this.isActive;
@@ -191,13 +189,13 @@ public abstract class TileNetwork extends TileBase implements IThEGridHost, IAct
         handleUpdateTag(packet.getNbtCompound());
     }
 
-    public void withPowerStateText(Consumer<String> consumer, Function<IThELangKey, String> localizationMapper){
-        if(this.isPowered()){
-            if(this.isActive())
+    public void withPowerStateText(Consumer<String> consumer, Function<IThELangKey, String> localizationMapper) {
+        if (this.isPowered()) {
+            if (this.isActive())
                 consumer.accept(localizationMapper.apply(ThEApi.instance().lang().deviceOnline()));
             else
                 consumer.accept(localizationMapper.apply(ThEApi.instance().lang().deviceMissingChannel()));
-        }else
+        } else
             consumer.accept(localizationMapper.apply(ThEApi.instance().lang().deviceOffline()));
     }
 }

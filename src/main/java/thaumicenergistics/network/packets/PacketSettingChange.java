@@ -1,24 +1,20 @@
 package thaumicenergistics.network.packets;
 
+import appeng.api.config.Settings;
+import appeng.api.util.IConfigManager;
+import appeng.api.util.IConfigurableObject;
 import io.netty.buffer.ByteBuf;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.IThreadListener;
-
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import appeng.api.config.Settings;
-import appeng.api.util.IConfigManager;
-import appeng.api.util.IConfigurableObject;
-
-import thaumicenergistics.container.IPartContainer;
 import thaumicenergistics.client.gui.GuiBase;
+import thaumicenergistics.container.IPartContainer;
 
 /**
  * @author BrockWS
@@ -76,7 +72,7 @@ public class PacketSettingChange implements IMessage {
                     IConfigManager cm = ((IConfigurableObject) player.openContainer).getConfigManager();
                     if (cm != null) {
                         cm.putSetting(message.getSetting(), message.getValue());
-                        if(player.openContainer instanceof IPartContainer)
+                        if (player.openContainer instanceof IPartContainer)
                             ((IPartContainer) player.openContainer).getPart().settingChanged(message.getSetting());
                     }
                 }

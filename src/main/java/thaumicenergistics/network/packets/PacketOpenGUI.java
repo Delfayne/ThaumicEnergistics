@@ -1,20 +1,16 @@
 package thaumicenergistics.network.packets;
 
+import appeng.api.util.AEPartLocation;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
-
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import appeng.api.util.AEPartLocation;
-
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.init.ModGUIs;
-
-import io.netty.buffer.ByteBuf;
 
 /**
  * @author BrockWS

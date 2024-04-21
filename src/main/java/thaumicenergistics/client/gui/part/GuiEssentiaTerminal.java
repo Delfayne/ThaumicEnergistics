@@ -1,13 +1,5 @@
 package thaumicenergistics.client.gui.part;
 
-import java.io.IOException;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Slot;
-import net.minecraft.util.ResourceLocation;
-
 import appeng.api.config.Settings;
 import appeng.api.config.SortDir;
 import appeng.api.config.SortOrder;
@@ -16,7 +8,12 @@ import appeng.api.storage.data.IItemList;
 import appeng.api.util.IConfigManager;
 import appeng.api.util.IConfigurableObject;
 import appeng.client.gui.widgets.GuiImgButton;
-
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.Slot;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Mouse;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
@@ -33,7 +30,7 @@ import thaumicenergistics.network.packets.PacketSettingChange;
 import thaumicenergistics.network.packets.PacketUIAction;
 import thaumicenergistics.util.ThEUtil;
 
-import org.lwjgl.input.Mouse;
+import java.io.IOException;
 
 /**
  * @author BrockWS

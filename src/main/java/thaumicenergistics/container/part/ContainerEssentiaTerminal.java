@@ -1,28 +1,22 @@
 package thaumicenergistics.container.part;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
-import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
-
 import appeng.api.AEApi;
-import appeng.api.config.*;
+import appeng.api.config.Actionable;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IBaseMonitor;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.IConfigurableObject;
-
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
-
 import thaumcraft.common.items.consumables.ItemPhial;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
@@ -38,6 +32,8 @@ import thaumicenergistics.part.PartBase;
 import thaumicenergistics.part.PartEssentiaTerminal;
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ForgeUtil;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author BrockWS

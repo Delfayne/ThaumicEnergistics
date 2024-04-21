@@ -1,25 +1,22 @@
 package thaumicenergistics.client.gui.crafting;
 
-import java.io.IOException;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
-
 import appeng.client.gui.implementations.GuiCraftingStatus;
 import appeng.client.gui.widgets.GuiTabButton;
-
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.network.packets.PacketOpenGUI;
 import thaumicenergistics.part.PartSharedTerminal;
+
+import java.io.IOException;
 
 /**
  * @author BrockWS
  */
 public class GuiCraftingStatusBridge extends GuiCraftingStatus {
 
-    private PartSharedTerminal part;
+    private final PartSharedTerminal part;
     private GuiTabButton backButton;
 
     public GuiCraftingStatusBridge(InventoryPlayer inventoryPlayer, PartSharedTerminal part) {

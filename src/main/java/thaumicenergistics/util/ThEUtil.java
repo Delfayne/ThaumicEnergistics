@@ -1,17 +1,14 @@
 package thaumicenergistics.util;
 
-import java.util.EnumSet;
-import java.util.stream.IntStream;
-
-import net.minecraft.item.ItemStack;
-
 import appeng.api.config.TerminalStyle;
-
+import net.minecraft.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
-
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.item.ItemDummyAspect;
+
+import java.util.EnumSet;
+import java.util.stream.IntStream;
 
 /**
  * @author BrockWS
@@ -64,6 +61,7 @@ public class ThEUtil {
 
     /**
      * Like {@link ForgeUtil#areItemStacksEqual(ItemStack, ItemStack)}, but safely compares items that were cheated in, that normally would have NBT.
+     *
      * @param a 1st stack
      * @param b 2nd stack
      * @return true if they're equal

@@ -31,26 +31,26 @@ public class ContainerKnowledgeCore extends ContainerBase {
     public ContainerKnowledgeCore(EntityPlayer player, ModGUIs GUIAction, Container inscriber) {
         super(player);
         this.GUIAction = GUIAction;
-        try{
+        try {
             this.inscriber = (ContainerArcaneInscriber) inscriber;
             this.knowledgeCoreStack = this.inscriber.getInventory("upgrades").getStackInSlot(0);
             initInv();
             addSlots(8, 15);
-        }catch(ClassCastException ex){
+        } catch (ClassCastException ex) {
             ex.printStackTrace();
         }
     }
 
-    private void initInv(){
+    private void initInv() {
         inventory = new ThEInternalInventory("KCore", 9, 1);
     }
 
-    private void addSlots(int offsetX, int offsetY){
+    private void addSlots(int offsetX, int offsetY) {
         for (int i = 0; i < SLOT_NUM; i++) {
             SlotGhost slotGhost = new SlotGhost(inventory, i, offsetX + (i * 18), offsetY);
-            if(KnowledgeCoreUtil.hasRecipe(knowledgeCoreStack, i)){
+            if (KnowledgeCoreUtil.hasRecipe(knowledgeCoreStack, i)) {
                 KnowledgeCoreUtil.Recipe recipe = KnowledgeCoreUtil.getRecipe(knowledgeCoreStack, i);
-                if(recipe != null) slotGhost.putStack(recipe.getResult());
+                if (recipe != null) slotGhost.putStack(recipe.getResult());
             }
             this.addSlotToContainer(slotGhost);
         }
@@ -58,8 +58,8 @@ public class ContainerKnowledgeCore extends ContainerBase {
 
     @Override
     public void onAction(EntityPlayerMP player, PacketUIAction packet) {
-        if(ForgeUtil.isServer()) {
-            if(packet.index > -1)
+        if (ForgeUtil.isServer()) {
+            if (packet.index > -1)
                 switch (packet.action) {
                     case KNOWLEDGE_CORE_ADD:
                         playWriteSound(player);
@@ -72,13 +72,13 @@ public class ContainerKnowledgeCore extends ContainerBase {
                         KnowledgeCoreUtil.setRecipe(knowledgeCoreStack, packet.index, null);
                         break;
                 }
-            if(KnowledgeCoreUtil.isEmpty(knowledgeCoreStack))
+            if (KnowledgeCoreUtil.isEmpty(knowledgeCoreStack))
                 ThEApi.instance().items().blankKnowledgeCore().maybeStack(1).ifPresent(blank -> ((InvWrapper) inscriber.getInventory("upgrades")).getInv().setInventorySlotContents(0, blank));
             GuiHandler.openGUI(ModGUIs.ARCANE_INSCRIBER, player, inscriber.getPartPos(), inscriber.getPartSide());
         }
     }
 
-    public void playWriteSound(EntityPlayer player){
+    public void playWriteSound(EntityPlayer player) {
         player.world.playSound(player, inscriber.getPartPos(), new SoundEvent(ThEApi.instance().sounds().knowledgeCoreWrite()), SoundCategory.BLOCKS, 1, 1);
     }
 

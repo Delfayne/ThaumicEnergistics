@@ -35,7 +35,7 @@ public class ItemMaterial extends ItemBase implements IThEModel {
         Optional<IThEUpgrade> optional = ThEApi.instance().upgrades().getUpgrade(stack);
         optional.ifPresent(upgrade -> {
             String supported = upgrade.getSupported().keySet().stream().map(ItemStack::getDisplayName).collect(Collectors.joining(", "));
-            if(!supported.isEmpty()) tooltip.add("Used in: " + supported);
+            if (!supported.isEmpty()) tooltip.add("Used in: " + supported);
         });
 
         super.addInformation(stack, worldIn, tooltip, flagIn);

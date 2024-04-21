@@ -31,7 +31,7 @@ public class PacketMEItemUpdate implements IMessage {
     private static final int OPERATION_BYTE_LIMIT = 2 * 1024;
     private static final int TEMP_BUFFER_SIZE = 1024;
 
-    private List<IAEItemStack> list;
+    private final List<IAEItemStack> list;
 
     private final ByteBuf data;
 

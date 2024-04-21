@@ -26,7 +26,7 @@ public class PacketPlaySound implements IMessage {
     public PacketPlaySound() {
     }
 
-    public PacketPlaySound(BlockPos pos, ResourceLocation sound, SoundCategory category, float vol, float pitch){
+    public PacketPlaySound(BlockPos pos, ResourceLocation sound, SoundCategory category, float vol, float pitch) {
         this.sound = sound;
         this.pos = pos;
         this.category = category;

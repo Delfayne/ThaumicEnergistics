@@ -1,21 +1,19 @@
 package thaumicenergistics.integration.appeng.grid;
 
-import javax.annotation.Nonnull;
-import java.util.EnumSet;
-
+import appeng.api.networking.*;
+import appeng.api.parts.PartItemStack;
+import appeng.api.util.AEColor;
+import appeng.api.util.DimensionalCoord;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import appeng.api.networking.*;
-import appeng.api.parts.PartItemStack;
-import appeng.api.util.AEColor;
-import appeng.api.util.DimensionalCoord;
-
 import thaumicenergistics.part.PartBase;
+
+import javax.annotation.Nonnull;
+import java.util.EnumSet;
 
 /**
  * @author BrockWS

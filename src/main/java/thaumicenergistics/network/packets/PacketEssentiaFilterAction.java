@@ -54,9 +54,9 @@ public class PacketEssentiaFilterAction implements IMessage {
         BlockPos pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
         World world = DimensionManager.getWorld(buf.readInt());
         TileEntity tile = world.getTileEntity(pos);
-        if(tile instanceof IPartHost){
+        if (tile instanceof IPartHost) {
             IPart part = ((IPartHost) tile).getPart(AEPartLocation.values()[buf.readInt()]);
-            if(part instanceof PartBase)
+            if (part instanceof PartBase)
                 this.part = (PartBase) part;
         }
         this.action = ACTION.values()[buf.readInt()];
@@ -67,13 +67,13 @@ public class PacketEssentiaFilterAction implements IMessage {
         @Override
         public IMessage onMessage(PacketEssentiaFilterAction message, MessageContext ctx) {
             FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> {
-                if(message.part instanceof PartSharedEssentiaBus){
+                if (message.part instanceof PartSharedEssentiaBus) {
                     PartSharedEssentiaBus part = (PartSharedEssentiaBus) message.part;
-                    if(message.action == ACTION.CLEAR)
+                    if (message.action == ACTION.CLEAR)
                         part.getConfig().clear();
-                    else if(message.action == ACTION.PARTITION){
+                    else if (message.action == ACTION.PARTITION) {
                         TileEntity connectedTE = part.getConnectedTE();
-                        if(connectedTE instanceof IAspectContainer)
+                        if (connectedTE instanceof IAspectContainer)
                             part.getConfig().partition((IAspectContainer) connectedTE);
                     }
                 }

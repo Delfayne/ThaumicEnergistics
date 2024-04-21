@@ -1,22 +1,30 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "thaumicenergistics:infusion_provider"
-    },
-    "variants": {
-        "normal": [
-            {}
-        ],
-        "inventory": [
-            {}
-        ],
-        "active=false,powered=false": [{}],
-        "active=true,powered=false": [{}],
-        "active=false,powered=true": [{
-            "model": "thaumicenergistics:infusion_provider_inactive"
-        }],
-        "active=true,powered=true": [{
-            "model": "thaumicenergistics:infusion_provider_active"
-        }]
-    }
+  "forge_marker": 1,
+  "defaults": {
+    "model": "thaumicenergistics:infusion_provider"
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {}
+    ],
+    "active=false,powered=false": [
+      {}
+    ],
+    "active=true,powered=false": [
+      {}
+    ],
+    "active=false,powered=true": [
+      {
+        "model": "thaumicenergistics:infusion_provider_inactive"
+      }
+    ],
+    "active=true,powered=true": [
+      {
+        "model": "thaumicenergistics:infusion_provider_active"
+      }
+    ]
+  }
 }

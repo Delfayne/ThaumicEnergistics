@@ -39,12 +39,12 @@ public abstract class BlockBase extends Block {
     public void registerTileEntity() {
     }
 
-    private static double randCoordOffset(int coord){
+    private static double randCoordOffset(int coord) {
         return (rand.nextInt() % 32 - 16) / 82.0 + 0.5 + coord;
     }
 
-    public static void spawnDrops(World world, BlockPos pos, List<ItemStack> drops){
-        if(ForgeUtil.isClient()) return;
+    public static void spawnDrops(World world, BlockPos pos, List<ItemStack> drops) {
+        if (ForgeUtil.isClient()) return;
         drops.parallelStream()
                 .filter(is -> !is.isEmpty())
                 .forEach(is -> world.spawnEntity(new EntityItem(world, randCoordOffset(pos.getX()), randCoordOffset(pos.getY()), randCoordOffset(pos.getZ()), is)));
@@ -53,7 +53,7 @@ public abstract class BlockBase extends Block {
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity te = worldIn.getTileEntity(pos);
-        if(!(te instanceof TileBase)) return;
+        if (!(te instanceof TileBase)) return;
         TileBase tb = (TileBase) te;
         ArrayList<ItemStack> drops = new ArrayList<>();
         tb.getDrops(worldIn, pos, drops);

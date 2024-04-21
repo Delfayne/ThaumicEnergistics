@@ -1,7 +1,5 @@
 package thaumicenergistics.integration.appeng.grid;
 
-import javax.annotation.Nonnull;
-
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridCache;
 import appeng.api.networking.IGridHost;
@@ -11,6 +9,8 @@ import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.util.AEPartLocation;
 import appeng.me.GridAccessException;
+
+import javax.annotation.Nonnull;
 
 /**
  * Grid helper class

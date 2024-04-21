@@ -1,12 +1,11 @@
 package thaumicenergistics.integration.appeng.util;
 
-import javax.annotation.Nonnull;
-import java.util.Optional;
-
-import net.minecraft.entity.player.EntityPlayer;
-
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
+import net.minecraft.entity.player.EntityPlayer;
+
+import javax.annotation.Nonnull;
+import java.util.Optional;
 
 /**
  * @author BrockWS

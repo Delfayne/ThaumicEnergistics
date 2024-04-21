@@ -15,6 +15,7 @@ import thaumicenergistics.util.IThESubscribable;
 /**
  * Packet to subscribe/unsubscribe to changes that happen to a TileEntity
  * The TileEntity should implement {@link IThESubscribable}
+ *
  * @author Alex811
  */
 public class PacketSubscribe<T extends TileEntity & IThESubscribable> implements IMessage {
@@ -27,7 +28,7 @@ public class PacketSubscribe<T extends TileEntity & IThESubscribable> implements
 
     /**
      * @param subscribable the TileEntity to subscribe/unsubscribe to
-     * @param sub true to subscribe, false to unsubscribe
+     * @param sub          true to subscribe, false to unsubscribe
      */
     public PacketSubscribe(T subscribable, boolean sub) {
         TE = subscribable;
@@ -59,9 +60,9 @@ public class PacketSubscribe<T extends TileEntity & IThESubscribable> implements
             EntityPlayer player = ctx.getServerHandler().player;
             World world = player.world;
             ((IThreadListener) world).addScheduledTask(() -> {
-                if(message.TE instanceof IThESubscribable){
+                if (message.TE instanceof IThESubscribable) {
                     IThESubscribable subscribable = ((IThESubscribable) message.TE);
-                    if(message.sub) subscribable.subscribe(player);
+                    if (message.sub) subscribable.subscribe(player);
                     else subscribable.unsubscribe(player);
                 }
             });

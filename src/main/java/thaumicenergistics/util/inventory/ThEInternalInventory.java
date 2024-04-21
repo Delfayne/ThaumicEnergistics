@@ -1,8 +1,5 @@
 package thaumicenergistics.util.inventory;
 
-import java.util.Collections;
-import java.util.Iterator;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -11,8 +8,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-
 import net.minecraftforge.common.util.INBTSerializable;
+
+import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * Manages an internal inventory
@@ -154,7 +153,7 @@ public class ThEInternalInventory implements IInventory, INBTSerializable<NBTTag
     public NBTTagList serializeNBT(boolean noAir) {
         NBTTagList nbt = new NBTTagList();
         this.slots.forEach(slot -> {
-            if(noAir && slot.isEmpty())
+            if (noAir && slot.isEmpty())
                 nbt.appendTag(new NBTTagCompound());
             else
                 nbt.appendTag(slot.serializeNBT());
@@ -163,7 +162,7 @@ public class ThEInternalInventory implements IInventory, INBTSerializable<NBTTag
     }
 
     @Override
-    public NBTTagList serializeNBT(){
+    public NBTTagList serializeNBT() {
         return this.serializeNBT(false);
     }
 

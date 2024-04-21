@@ -1,8 +1,7 @@
 package thaumicenergistics.container.crafting;
 
-import net.minecraft.entity.player.InventoryPlayer;
-
 import appeng.container.implementations.ContainerCraftingStatus;
+import net.minecraft.entity.player.InventoryPlayer;
 import thaumicenergistics.part.PartSharedTerminal;
 
 /**

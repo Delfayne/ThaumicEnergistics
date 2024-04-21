@@ -56,21 +56,21 @@ public class GuiArcaneInscriber extends GuiArcaneTerminal {
         ItemStack result = this.container.getInventory("result").getStackInSlot(0);
         boolean hasRecipe = !result.isEmpty();
         boolean recipeExists = KnowledgeCoreUtil.hasRecipe(knowledgeCore, result.getItem());
-        if(button == coreAddButton && !knowledgeCore.isEmpty() && hasRecipe && ((ContainerArcaneInscriber)this.container).recipeIsArcane && !recipeExists){
+        if (button == coreAddButton && !knowledgeCore.isEmpty() && hasRecipe && ((ContainerArcaneInscriber) this.container).recipeIsArcane && !recipeExists) {
             PacketHandler.sendToServer(new PacketUIAction(ActionType.KNOWLEDGE_CORE_ADD));
-        }else if(button == coreDelButton && !knowledgeCore.isEmpty() && !currentIsBlank){
+        } else if (button == coreDelButton && !knowledgeCore.isEmpty() && !currentIsBlank) {
             PacketHandler.sendToServer(new PacketUIAction(ActionType.KNOWLEDGE_CORE_DEL));
-        }else if(button == coreViewButton && !knowledgeCore.isEmpty() && !currentIsBlank){
+        } else if (button == coreViewButton && !knowledgeCore.isEmpty() && !currentIsBlank) {
             PacketHandler.sendToServer(new PacketUIAction(ActionType.KNOWLEDGE_CORE_VIEW));
         }
     }
 
-    public void setIsArcane(boolean isArcane){
+    public void setIsArcane(boolean isArcane) {
         ((ContainerArcaneInscriber) this.container).recipeIsArcane = isArcane;
     }
 
     @Override
-    protected void recalcSlotY(Slot slot){
+    protected void recalcSlotY(Slot slot) {
         super.recalcSlotY(slot);
         if (slot instanceof ThEGhostSlot)
             ((ThEGhostSlot) slot).recalculateY(this.rows);
@@ -93,46 +93,48 @@ public class GuiArcaneInscriber extends GuiArcaneTerminal {
         boolean hasRecipe = !result.isEmpty();
         boolean recipeExists = KnowledgeCoreUtil.hasRecipe(knowledgeCore, result.getItem());
         boolean currentIsBlank = knowledgeCore.getItem().getClass() != ItemKnowledgeCore.class;
-        if(!knowledgeCore.isEmpty()){
+        if (!knowledgeCore.isEmpty()) {
             renderButton(coreAddButton, hasRecipe && hasArcaneRecipe && !recipeExists);
-            if(currentIsBlank) {
+            if (currentIsBlank) {
                 renderButton(coreViewButton, false);
                 renderButton(coreDelButton, false);
-                if((coreViewButton.isHovered() || coreDelButton.isHovered()))
+                if ((coreViewButton.isHovered() || coreDelButton.isHovered()))
                     renderText(ThEApi.instance().lang().guiKnowledgeCoreBlank().getLocalizedKey(), mouseX, mouseY);
-            }else{
+            } else {
                 renderButton(coreViewButton, true);
                 renderButton(coreDelButton, true);
             }
-            if(coreAddButton.isHovered()){
-                if(hasRecipe){
-                    if(!hasArcaneRecipe) renderText(ThEApi.instance().lang().guiRecipeNotArcane().getLocalizedKey(), mouseX, mouseY);
-                    else if(recipeExists) renderText(ThEApi.instance().lang().guiRecipeAlreadyStored().getLocalizedKey(), mouseX, mouseY);
-                }else renderText(ThEApi.instance().lang().guiNoRecipe().getLocalizedKey(), mouseX, mouseY);
+            if (coreAddButton.isHovered()) {
+                if (hasRecipe) {
+                    if (!hasArcaneRecipe)
+                        renderText(ThEApi.instance().lang().guiRecipeNotArcane().getLocalizedKey(), mouseX, mouseY);
+                    else if (recipeExists)
+                        renderText(ThEApi.instance().lang().guiRecipeAlreadyStored().getLocalizedKey(), mouseX, mouseY);
+                } else renderText(ThEApi.instance().lang().guiNoRecipe().getLocalizedKey(), mouseX, mouseY);
             }
-        }else{
+        } else {
             renderButton(coreAddButton, false);
             renderButton(coreViewButton, false);
             renderButton(coreDelButton, false);
-            if((coreViewButton.isHovered() || coreDelButton.isHovered() || coreAddButton.isHovered()))
+            if ((coreViewButton.isHovered() || coreDelButton.isHovered() || coreAddButton.isHovered()))
                 renderText(ThEApi.instance().lang().guiInsertKnowledgeCore().getLocalizedKey(), mouseX, mouseY);
         }
     }
 
-    protected void renderButton(GuiImageButton button, boolean enabled){
+    protected void renderButton(GuiImageButton button, boolean enabled) {
         button.enabled = enabled;
-        if(enabled){
+        if (enabled) {
             button.setButtonAlpha(1.0F, 1.0F);
-            if(button == coreDelButton) coreDelButton.setImageAlpha(1.0F, 1.0F);
+            if (button == coreDelButton) coreDelButton.setImageAlpha(1.0F, 1.0F);
             else button.setAllImages(images, (button == coreViewButton) ? button.width : 0, button.height * 11);
-        }else{
+        } else {
             coreDelButton.setImageAlpha(0.5F, 0.5F);
-            if(button == coreDelButton) coreDelButton.setImageAlpha(0.5F, 0.5F);
+            if (button == coreDelButton) coreDelButton.setImageAlpha(0.5F, 0.5F);
             else button.setAllImages(images, (button == coreViewButton) ? button.width : 0, button.height * 12);
         }
     }
 
-    protected void renderText(String text, int x, int y){
+    protected void renderText(String text, int x, int y) {
         this.drawCenteredString(mc.fontRenderer, text, x - this.getGuiLeft(), y - this.getGuiTop() - 5, 0x00e6ac);
     }
 }

@@ -1,14 +1,11 @@
 package thaumicenergistics.network.packets;
 
 import io.netty.buffer.ByteBuf;
-
 import net.minecraft.client.Minecraft;
-
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
 import thaumicenergistics.client.gui.part.GuiArcaneInscriber;
 import thaumicenergistics.client.gui.part.GuiArcaneTerminal;
 

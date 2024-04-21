@@ -1,29 +1,25 @@
 package thaumicenergistics.network.packets;
 
+import appeng.api.storage.data.IItemList;
 import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
-
 import net.minecraft.client.Minecraft;
-
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import appeng.api.storage.data.IItemList;
-
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.client.gui.part.GuiEssentiaTerminal;
 import thaumicenergistics.integration.appeng.AEEssentiaStack;
 import thaumicenergistics.integration.appeng.EssentiaList;
+
+import java.io.IOException;
 
 /**
  * @author BrockWS
  */
 public class PacketMEEssentiaUpdate implements IMessage {
 
-    private IItemList<IAEEssentiaStack> list;
+    private final IItemList<IAEEssentiaStack> list;
 
     public PacketMEEssentiaUpdate() {
         this.list = new EssentiaList();

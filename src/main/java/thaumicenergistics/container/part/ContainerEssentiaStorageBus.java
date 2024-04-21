@@ -2,9 +2,7 @@ package thaumicenergistics.container.part;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
-
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
-
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.part.PartEssentiaStorageBus;
 

@@ -1,9 +1,9 @@
 package thaumicenergistics.api.util;
 
+import appeng.api.storage.data.IAEStack;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import appeng.api.storage.data.IAEStack;
 
 /**
  * Based completely on MeaningfulFluidIterator and MeaningfulItemIterator from Applied Energistics 2
@@ -12,7 +12,7 @@ import appeng.api.storage.data.IAEStack;
  */
 public class MeaningfulEssentiaIterator<T extends IAEStack> implements Iterator<T> {
 
-    private Iterator<T> parent;
+    private final Iterator<T> parent;
     private T next;
 
     public MeaningfulEssentiaIterator(Iterator<T> iterator) {

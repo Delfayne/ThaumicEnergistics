@@ -6,7 +6,7 @@ import thaumicenergistics.item.ItemKnowledgeCore;
 /**
  * @author Alex811
  */
-public class ThEKnowledgeCoreInventory extends ThEUpgradeInventory{
+public class ThEKnowledgeCoreInventory extends ThEUpgradeInventory {
 
     public ThEKnowledgeCoreInventory(String customName, int size, int stackLimit, ItemStack upgradable) {
         super(customName, size, stackLimit, upgradable);

@@ -1,25 +1,22 @@
 package thaumicenergistics.init;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import appeng.api.definitions.IItemDefinition;
 import net.minecraft.item.Item;
-
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import appeng.api.definitions.IItemDefinition;
-
 import thaumicenergistics.api.IThEItems;
 import thaumicenergistics.client.render.IThEModel;
 import thaumicenergistics.definitions.ThEItemDefinition;
 import thaumicenergistics.item.*;
 import thaumicenergistics.item.part.*;
 import thaumicenergistics.util.ThELog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author BrockWS

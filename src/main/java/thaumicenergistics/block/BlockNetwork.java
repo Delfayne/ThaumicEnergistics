@@ -12,7 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
 import thaumicenergistics.tile.TileNetwork;
 
 /**
@@ -58,7 +57,7 @@ public abstract class BlockNetwork extends BlockBase implements ITileEntityProvi
         boolean powered = false;
         boolean active = false;
         TileEntity te = worldIn.getTileEntity(pos);
-        if(te instanceof TileNetwork){
+        if (te instanceof TileNetwork) {
             TileNetwork tn = (TileNetwork) te;
             powered = tn.isPowered();
             active = tn.isActive();

@@ -7,13 +7,10 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
 import net.minecraftforge.items.IItemHandler;
-
 import net.minecraftforge.items.wrapper.InvWrapper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
-
 import thaumicenergistics.container.slot.*;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.network.packets.PacketInvHeldUpdate;
@@ -83,12 +80,13 @@ public abstract class ContainerBase extends Container {
                 if (canCraftNum > 0) {
                     ItemStack toCraft = slot.getStack().copy();
                     toCraft.setCount(canCraftNum);
-                    if(clickType == ClickType.QUICK_MOVE) {
+                    if (clickType == ClickType.QUICK_MOVE) {
                         int canFitInInvNum = canCraftNum - ForgeUtil.addStackToPlayerInventory(player, toCraft, true).getCount(); // check how much fits in the player's inventory
-                        if(canFitInInvNum < canCraftNum) toCraft.setCount(canFitInInvNum); // if it doesn't fit, craft as much as we can fit
+                        if (canFitInInvNum < canCraftNum)
+                            toCraft.setCount(canFitInInvNum); // if it doesn't fit, craft as much as we can fit
                         ItemStack newToStore = craftingContainer.onCraft(toCraft);
                         ForgeUtil.addStackToPlayerInventory(player, newToStore, false);
-                    }else{
+                    } else {
                         ItemStack newHeld = craftingContainer.onCraft(toCraft);
                         newHeld.grow(held.getCount());
                         player.inventory.setItemStack(newHeld);
@@ -99,7 +97,7 @@ public abstract class ContainerBase extends Container {
             return ItemStack.EMPTY;
         }
         if (!(this instanceof ContainerBaseTerminal) && clickType == ClickType.QUICK_MOVE) {
-            if(slot instanceof SlotUpgrade || slot instanceof SlotKnowledgeCore)
+            if (slot instanceof SlotUpgrade || slot instanceof SlotKnowledgeCore)
                 ItemHandlerUtil.quickMoveSlot(new InvWrapper(this.player.inventory), slot, false, true);
             else
                 handleQuickMove(slot, slot.getStack());
@@ -108,7 +106,7 @@ public abstract class ContainerBase extends Container {
         return super.slotClick(slotID, dragType, clickType, player);
     }
 
-    protected void handleQuickMove(Slot slot, ItemStack itemStack){
+    protected void handleQuickMove(Slot slot, ItemStack itemStack) {
 
     }
 
@@ -158,7 +156,7 @@ public abstract class ContainerBase extends Container {
 
     @Override
     public boolean canMergeSlot(ItemStack stack, Slot slotIn) { // prevent stack merging (double-click) here
-        if(slotIn instanceof SlotME || slotIn instanceof SlotArcaneResult)
+        if (slotIn instanceof SlotME || slotIn instanceof SlotArcaneResult)
             return false;
         return super.canMergeSlot(stack, slotIn);
     }

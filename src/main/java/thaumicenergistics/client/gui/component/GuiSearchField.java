@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import thaumicenergistics.api.ThEApi;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * @author Alex811
@@ -103,16 +103,16 @@ public class GuiSearchField extends GuiTextField {
     @Override
     public void setSelectionPos(int position) { // Just keeps our lineScrollOffset updated, to avoid using reflection instead
         super.setSelectionPos(position);
-        if(fontRenderer == null) return;
+        if (fontRenderer == null) return;
         int len = this.getText().length();
         position = MathHelper.clamp(position, 0, len);
         this.lineScrollOffset = Math.min(this.lineScrollOffset, len);
         int trimmedStrLen = this.fontRenderer.trimStringToWidth(this.getText().substring(this.lineScrollOffset), this.width).length() + this.lineScrollOffset;
-        if(position == this.lineScrollOffset)
+        if (position == this.lineScrollOffset)
             this.lineScrollOffset -= this.fontRenderer.trimStringToWidth(this.getText(), this.width, true).length();
-        if(position > trimmedStrLen)
+        if (position > trimmedStrLen)
             this.lineScrollOffset += position - trimmedStrLen;
-        else if(position <= this.lineScrollOffset)
+        else if (position <= this.lineScrollOffset)
             this.lineScrollOffset -= this.lineScrollOffset - position;
         this.lineScrollOffset = MathHelper.clamp(this.lineScrollOffset, 0, len);
     }
@@ -120,7 +120,7 @@ public class GuiSearchField extends GuiTextField {
     @Override
     public void setFocused(boolean isFocusedIn) {
         super.setFocused(isFocusedIn);
-        if(isFocusedIn && !this.isFocused())
+        if (isFocusedIn && !this.isFocused())
             this.cursorCounter = 0;
     }
 
@@ -132,9 +132,9 @@ public class GuiSearchField extends GuiTextField {
 
     @Override
     public void drawTextBox() {
-        if(this.getVisible()){
-            if(doBGDrawing) {
-                if(this.isFocused())
+        if (this.getVisible()) {
+            if (doBGDrawing) {
+                if (this.isFocused())
                     drawRect(this.x - 1, this.y - 1, this.x + this.width, this.y + this.height - 1, focusedBGColor);
                 else
                     drawRect(this.x - 1, this.y - 1, this.x + this.width, this.y + this.height - 1, normalBGColor);
@@ -142,31 +142,31 @@ public class GuiSearchField extends GuiTextField {
 
             String visibleText = this.fontRenderer.trimStringToWidth(this.getText().substring(this.lineScrollOffset), this.width);
             drawText(visibleText);
-            if(this.isFocused()) {
+            if (this.isFocused()) {
                 this.drawSelectionBox(visibleText);
                 this.drawCursor(visibleText);
             }
         }
     }
 
-    protected int getTextColor(){
-        if(!this.isEnabled) return this.disabledTextColor;
-        if(this.getText().startsWith(ASPECT_SEARCH_PREFIX)) return this.aspectSearchTextColor;
-        if(this.getText().startsWith(MOD_SEARCH_PREFIX)) return this.modSearchTextColor;
+    protected int getTextColor() {
+        if (!this.isEnabled) return this.disabledTextColor;
+        if (this.getText().startsWith(ASPECT_SEARCH_PREFIX)) return this.aspectSearchTextColor;
+        if (this.getText().startsWith(MOD_SEARCH_PREFIX)) return this.modSearchTextColor;
         return this.enabledTextColor;
     }
 
-    protected void drawText(String visibleText){
+    protected void drawText(String visibleText) {
         if (!visibleText.isEmpty())
             this.fontRenderer.drawStringWithShadow(visibleText, (float) this.x, (float) this.y, getTextColor());
     }
 
-    protected void drawCursor(String visibleText){
+    protected void drawCursor(String visibleText) {
         int curPos = this.getCursorPosition() - this.lineScrollOffset;
         boolean curInVisBounds = curPos >= 0 && curPos <= visibleText.length();
         boolean drawCursor = this.cursorCounter / 6 % 2 == 0 && curInVisBounds;
         boolean isAtEnd = this.getCursorPosition() >= this.getText().length() && this.getText().length() < this.getMaxStringLength();
-        if (drawCursor){
+        if (drawCursor) {
             int curX = this.x + this.fontRenderer.getStringWidth(visibleText.substring(0, curPos));
             if (isAtEnd)
                 this.fontRenderer.drawStringWithShadow("_", (float) curX, (float) this.y, cursorColor);
@@ -175,14 +175,14 @@ public class GuiSearchField extends GuiTextField {
         }
     }
 
-    protected void drawSelectionBox(String visibleText){
-        if(this.getCursorPosition() == this.getSelectionEnd()) return;
+    protected void drawSelectionBox(String visibleText) {
+        if (this.getCursorPosition() == this.getSelectionEnd()) return;
         int selStartIndex = Math.min(this.getCursorPosition(), this.getSelectionEnd()) - this.lineScrollOffset;
         int selEndIndex = Math.max(this.getCursorPosition(), this.getSelectionEnd()) - this.lineScrollOffset;
 
-        if(selStartIndex < 0)
+        if (selStartIndex < 0)
             selStartIndex = 0;
-        if(selEndIndex > visibleText.length())
+        if (selEndIndex > visibleText.length())
             selEndIndex = visibleText.length();  // note: used for substring, so exclusive
 
         String unselectedStart = visibleText.substring(0, selStartIndex);
@@ -197,7 +197,7 @@ public class GuiSearchField extends GuiTextField {
     }
 
     protected void drawSelectionBox(int startX, int startY, int endX, int endY) {
-        if(startX == endX || startY == endY) return;
+        if (startX == endX || startY == endY) return;
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         GlStateManager.color(selectionColor.getRed() / 255.0F, selectionColor.getGreen() / 255.0F, selectionColor.getBlue() / 255.0F, selectionColor.getAlpha() / 255.0F);

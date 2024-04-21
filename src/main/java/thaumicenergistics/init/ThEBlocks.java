@@ -1,22 +1,15 @@
 package thaumicenergistics.init;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
+import appeng.api.definitions.IBlockDefinition;
+import appeng.api.definitions.ITileDefinition;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
-
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import appeng.api.definitions.IBlockDefinition;
-import appeng.api.definitions.ITileDefinition;
-
 import thaumicenergistics.api.IThEBlocks;
 import thaumicenergistics.block.BlockArcaneAssembler;
 import thaumicenergistics.block.BlockBase;
@@ -26,6 +19,10 @@ import thaumicenergistics.definitions.ThEBlockDefinition;
 import thaumicenergistics.definitions.ThETileDefinition;
 import thaumicenergistics.tile.TileArcaneAssembler;
 import thaumicenergistics.tile.TileInfusionProvider;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static thaumicenergistics.ThaumicEnergistics.LOGGER;
 
@@ -37,8 +34,8 @@ public class ThEBlocks implements IThEBlocks {
 
     public static List<BlockBase> BLOCKS = new ArrayList<>();
 
-    private ITileDefinition infusionProvider;
-    private ITileDefinition arcaneAssembler;
+    private final ITileDefinition infusionProvider;
+    private final ITileDefinition arcaneAssembler;
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {

@@ -1,9 +1,5 @@
 package thaumicenergistics.client.render;
 
-import org.lwjgl.opengl.GL11;
-
-import java.awt.Color;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -11,13 +7,13 @@ import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
+import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
-
 import thaumicenergistics.item.ItemDummyAspect;
+
+import java.awt.*;
 
 import static net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 

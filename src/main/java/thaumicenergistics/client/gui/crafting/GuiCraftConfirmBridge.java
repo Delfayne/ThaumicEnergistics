@@ -1,24 +1,22 @@
 package thaumicenergistics.client.gui.crafting;
 
-import java.io.IOException;
-import java.util.Objects;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-
 import appeng.client.gui.implementations.GuiCraftConfirm;
 import appeng.core.localization.GuiText;
-
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.network.packets.PacketOpenGUI;
 import thaumicenergistics.part.PartSharedTerminal;
+
+import java.io.IOException;
+import java.util.Objects;
 
 /**
  * @author BrockWS
  */
 public class GuiCraftConfirmBridge extends GuiCraftConfirm {
 
-    private PartSharedTerminal part;
+    private final PartSharedTerminal part;
 
     public GuiCraftConfirmBridge(InventoryPlayer inventoryPlayer, PartSharedTerminal part) {
         super(inventoryPlayer, part);

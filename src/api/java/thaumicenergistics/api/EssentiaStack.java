@@ -1,7 +1,6 @@
 package thaumicenergistics.api;
 
 import net.minecraft.nbt.NBTTagCompound;
-
 import thaumcraft.api.aspects.Aspect;
 
 /**

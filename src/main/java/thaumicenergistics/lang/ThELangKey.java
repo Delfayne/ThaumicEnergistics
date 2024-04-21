@@ -2,7 +2,6 @@ package thaumicenergistics.lang;
 
 
 import net.minecraft.client.resources.I18n;
-
 import thaumicenergistics.api.IThELangKey;
 
 /**
@@ -10,7 +9,7 @@ import thaumicenergistics.api.IThELangKey;
  */
 public class ThELangKey implements IThELangKey {
 
-    private String key;
+    private final String key;
 
     protected ThELangKey(String key) {
         this.key = key;

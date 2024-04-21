@@ -1,27 +1,26 @@
 package thaumicenergistics.upgrade;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import appeng.api.AEApi;
 import appeng.api.definitions.IItemDefinition;
 import net.minecraft.item.ItemStack;
-
 import thaumicenergistics.api.IThEItems;
 import thaumicenergistics.api.IThEUpgrade;
 import thaumicenergistics.api.IThEUpgrades;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author BrockWS
  */
 public class ThEUpgrades implements IThEUpgrades {
 
-    private IThEUpgrade arcaneCharger;
-    private IThEUpgrade knowledgeCore;
-    private IThEUpgrade blankKnowledgeCore;
-    private IThEUpgrade cardSpeed;
-    private List<IThEUpgrade> upgrades;
+    private final IThEUpgrade arcaneCharger;
+    private final IThEUpgrade knowledgeCore;
+    private final IThEUpgrade blankKnowledgeCore;
+    private final IThEUpgrade cardSpeed;
+    private final List<IThEUpgrade> upgrades;
 
     public ThEUpgrades(IThEItems items) {
         this.upgrades = new ArrayList<>();

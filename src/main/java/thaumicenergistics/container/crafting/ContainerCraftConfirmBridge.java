@@ -1,9 +1,7 @@
 package thaumicenergistics.container.crafting;
 
-import net.minecraft.entity.player.InventoryPlayer;
-
 import appeng.container.implementations.ContainerCraftConfirm;
-
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.IThreadListener;
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.init.ModGUIs;

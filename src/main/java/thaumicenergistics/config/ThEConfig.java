@@ -134,12 +134,12 @@ public class ThEConfig implements IThEConfig {
     }
 
     @Override
-    public int tickTimeArcaneAssemblerMin(){
+    public int tickTimeArcaneAssemblerMin() {
         return tickRates.tickTimeArcaneAssemblerMin;
     }
 
     @Override
-    public int tickTimeArcaneAssemblerMax(){
+    public int tickTimeArcaneAssemblerMax() {
         return tickRates.tickTimeArcaneAssemblerMax;
     }
 

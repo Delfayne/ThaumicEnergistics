@@ -17,9 +17,9 @@ public class TileTOPDataProvider extends TOPDataProvider {
     @Override
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
         TileEntity te = world.getTileEntity(data.getPos());
-        if(te instanceof TileNetwork){   // Add power-state info to our TileEntities
+        if (te instanceof TileNetwork) {   // Add power-state info to our TileEntities
             ((TileNetwork) te).withPowerStateText(probeInfo::text, this::getLocalizedKey);
-            if(te instanceof TileArcaneAssembler)
+            if (te instanceof TileArcaneAssembler)
                 ((TileArcaneAssembler) te).withInfoText(probeInfo::text, this::getLocalizedKey);
         }
     }

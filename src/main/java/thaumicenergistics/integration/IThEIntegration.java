@@ -7,13 +7,16 @@ package thaumicenergistics.integration;
  */
 public interface IThEIntegration {
 
-    default void preInit(){}
+    default void preInit() {
+    }
 
-    default void init(){}
+    default void init() {
+    }
 
-    default void postInit(){}
+    default void postInit() {
+    }
 
-    default String getModID(){
+    default String getModID() {
         return ThEIntegrationLoader.getModId(this);
     }
 }

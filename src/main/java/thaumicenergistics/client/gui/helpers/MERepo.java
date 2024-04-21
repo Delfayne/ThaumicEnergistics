@@ -1,12 +1,5 @@
 package thaumicenergistics.client.gui.helpers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
 import appeng.api.config.SearchBoxMode;
 import appeng.api.config.SortDir;
 import appeng.api.config.SortOrder;
@@ -17,17 +10,22 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.Platform;
-
 import invtweaks.api.InvTweaksAPI;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.config.PrefixSetting;
 import thaumicenergistics.integration.invtweaks.ThEInvTweaks;
 import thaumicenergistics.integration.jei.ThEJEI;
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.TCUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Based on ItemRepo and FluidRepo
@@ -37,11 +35,11 @@ import thaumicenergistics.util.TCUtil;
  */
 public class MERepo<T extends IAEStack<T>> {
 
-    private IItemList<T> list;
+    private final IItemList<T> list;
     /**
      * Contains all stacks currently in the view
      */
-    private ArrayList<T> view = new ArrayList<>();
+    private final ArrayList<T> view = new ArrayList<>();
     private String searchString = "";
     private ViewItems viewMode;
     private SortDir sortDir;
@@ -70,7 +68,7 @@ public class MERepo<T extends IAEStack<T>> {
         PrefixSetting modSearchSetting = ThEApi.instance().config().modSearchSetting();
         PrefixSetting aspectSearchSetting = ThEApi.instance().config().aspectSearchSetting();
 
-        if(Stream.of(SearchBoxMode.JEI_AUTOSEARCH, SearchBoxMode.JEI_MANUAL_SEARCH, SearchBoxMode.JEI_AUTOSEARCH_KEEP, SearchBoxMode.JEI_MANUAL_SEARCH_KEEP).anyMatch(m -> m == this.searchBoxMode))
+        if (Stream.of(SearchBoxMode.JEI_AUTOSEARCH, SearchBoxMode.JEI_MANUAL_SEARCH, SearchBoxMode.JEI_AUTOSEARCH_KEEP, SearchBoxMode.JEI_MANUAL_SEARCH_KEEP).anyMatch(m -> m == this.searchBoxMode))
             ThEJEI.setSearchText(search);
 
         // DISABLED = Don't search and ignore what it starts with
@@ -310,9 +308,9 @@ public class MERepo<T extends IAEStack<T>> {
         this.view.sort((o1, o2) -> this.checkSortDir(Long.compare(AEUtil.getStackSize(o2), AEUtil.getStackSize(o1))));
     }
 
-    private void sortByInvTweaks(){
+    private void sortByInvTweaks() {
         InvTweaksAPI api = ThEInvTweaks.getApi();
-        if(api == null)
+        if (api == null)
             sortByName();
         else
             this.view.sort((o1, o2) -> this.checkSortDir(api.compareItems(o1.asItemStackRepresentation(), o2.asItemStackRepresentation())));

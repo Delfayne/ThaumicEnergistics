@@ -40,9 +40,9 @@ public class PartEssentiaExportBus extends PartSharedEssentiaBus {
             new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/has_channel")
     };
 
-    private static IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1]);
-    private static IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2]);
-    private static IPartModel MODEL_HAS_CHANNEL = new ThEPartModel(MODELS[0], MODELS[3]);
+    private static final IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1]);
+    private static final IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2]);
+    private static final IPartModel MODEL_HAS_CHANNEL = new ThEPartModel(MODELS[0], MODELS[3]);
 
     // FIXME: Remove after issue fixed in TC.
     // https://github.com/Nividica/ThaumicEnergistics/issues/361

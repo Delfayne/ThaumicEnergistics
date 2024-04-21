@@ -2,7 +2,6 @@ package thaumicenergistics.container.slot;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-
 import thaumicenergistics.container.ICraftingContainer;
 
 /**

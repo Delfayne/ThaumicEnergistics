@@ -14,7 +14,7 @@ public class PartTOPDisplayOverride implements IBlockDisplayOverride {
     @Override
     public boolean overrideStandardInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
         PartBase part = TOPPartAccessor.getPart(world.getTileEntity(data.getPos()), data);
-        if(part != null){
+        if (part != null) {
             probeInfo.horizontal()
                     .item(part.getRepr())
                     .vertical()

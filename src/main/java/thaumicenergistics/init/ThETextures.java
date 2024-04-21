@@ -17,14 +17,14 @@ import java.util.List;
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ThETextures implements IThETextures {
 
-    private static List<ResourceLocation> TEXTURES = new ArrayList<>();
+    private static final List<ResourceLocation> TEXTURES = new ArrayList<>();
 
     @SubscribeEvent
-    public static void textureStitch(TextureStitchEvent.Pre event){
+    public static void textureStitch(TextureStitchEvent.Pre event) {
         TEXTURES.forEach(event.getMap()::registerSprite);
     }
 
-    private static ResourceLocation addTexture(String texture){
+    private static ResourceLocation addTexture(String texture) {
         ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, texture);
         TEXTURES.add(resourceLocation);
         return resourceLocation;
@@ -32,12 +32,12 @@ public class ThETextures implements IThETextures {
 
     private final ResourceLocation textureKnowledgeCoreSlot;
 
-    public ThETextures(){
+    public ThETextures() {
         this.textureKnowledgeCoreSlot = ThETextures.addTexture("gui/slot/knowledge_core");
     }
 
     @Override
-    public ResourceLocation knowledgeCoreSlot(){
+    public ResourceLocation knowledgeCoreSlot() {
         return this.textureKnowledgeCoreSlot;
     }
 }

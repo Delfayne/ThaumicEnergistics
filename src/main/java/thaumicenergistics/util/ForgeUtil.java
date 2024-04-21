@@ -1,20 +1,19 @@
 package thaumicenergistics.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
-
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains both Minecraft and Forge utility functions
