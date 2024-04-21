@@ -41,7 +41,7 @@ import thaumicenergistics.util.ForgeUtil;
  *
  * @author Nividica
  */
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = ModGlobals.MOD_VERSION, dependencies = ModGlobals.MOD_DEPENDENCIES)
+@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, dependencies = ModGlobals.MOD_DEPENDENCIES)
 @Mod.EventBusSubscriber
 public class ThaumicEnergistics {
 
