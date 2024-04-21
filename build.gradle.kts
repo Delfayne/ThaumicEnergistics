@@ -13,6 +13,7 @@ plugins {
     id("com.matthewprenger.cursegradle") version "1.4.0"
 }
 
+val minecraftVersion: String by project
 val modVersion: String by project
 val mavenGroup: String by project
 val modName: String by project
@@ -46,7 +47,7 @@ configurations {
 }
 
 configure<BasePluginExtension> {
-    archivesName.set(modArchiveName)
+    archivesName.set("$modArchiveName-$minecraftVersion")
 }
 
 minecraft {
