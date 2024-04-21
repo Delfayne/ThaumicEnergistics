@@ -1,14 +1,11 @@
 package thaumicenergistics.part;
 
-import javax.annotation.Nonnull;
-
+import appeng.api.parts.IPartModel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
-
-import appeng.api.parts.IPartModel;
-
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.init.ModGUIs;
@@ -18,15 +15,17 @@ import thaumicenergistics.item.part.ItemEssentiaTerminal;
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ForgeUtil;
 
+import javax.annotation.Nonnull;
+
 /**
  * @author BrockWS
  */
 public class PartEssentiaTerminal extends PartSharedTerminal {
 
     public static ResourceLocation[] MODELS = new ResourceLocation[]{
-            new ResourceLocation(ModGlobals.MOD_ID, "part/essentia_terminal/base"), // 0
-            new ResourceLocation(ModGlobals.MOD_ID, "part/essentia_terminal/on"), // 1
-            new ResourceLocation(ModGlobals.MOD_ID, "part/essentia_terminal/off"), // 2
+            new ResourceLocation(Reference.MOD_ID, "part/essentia_terminal/base"), // 0
+            new ResourceLocation(Reference.MOD_ID, "part/essentia_terminal/on"), // 1
+            new ResourceLocation(Reference.MOD_ID, "part/essentia_terminal/off"), // 2
             new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_has_channel"), // 3
             new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_on"), // 4
             new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_off") // 5

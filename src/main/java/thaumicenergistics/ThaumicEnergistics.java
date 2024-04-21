@@ -16,8 +16,9 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import org.apache.logging.log4j.Logger;
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.api.IThEBlocks;
 import thaumicenergistics.api.IThEItems;
 import thaumicenergistics.api.IThEUpgrades;
@@ -33,8 +34,6 @@ import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.tile.TileArcaneAssembler;
 import thaumicenergistics.util.ForgeUtil;
 
-import org.apache.logging.log4j.Logger;
-
 /**
  * <strong>Thaumic Energistics</strong>
  * <hr>
@@ -42,14 +41,14 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Nividica
  */
-@Mod(modid = ModGlobals.MOD_ID, name = ModGlobals.MOD_NAME, version = ModGlobals.MOD_VERSION, dependencies = ModGlobals.MOD_DEPENDENCIES)
+@Mod(modid = Reference.MOD_ID, name = ModGlobals.MOD_NAME, version = ModGlobals.MOD_VERSION, dependencies = ModGlobals.MOD_DEPENDENCIES)
 @Mod.EventBusSubscriber
 public class ThaumicEnergistics {
 
     /**
      * Singleton instance
      */
-    @Mod.Instance(value = ModGlobals.MOD_ID)
+    @Mod.Instance(value = Reference.MOD_ID)
     public static ThaumicEnergistics INSTANCE;
 
     /**
@@ -141,8 +140,8 @@ public class ThaumicEnergistics {
 
     @SubscribeEvent
     public void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.getModID().equals(ModGlobals.MOD_ID))
-            ConfigManager.sync(ModGlobals.MOD_ID, Config.Type.INSTANCE);
+        if (event.getModID().equals(Reference.MOD_ID))
+            ConfigManager.sync(Reference.MOD_ID, Config.Type.INSTANCE);
     }
 
     public static class ClientProxy implements IProxy{

@@ -8,11 +8,11 @@ import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.parts.IPartCollisionHelper;
 import appeng.api.parts.IPartModel;
 import appeng.api.storage.IMEMonitor;
-import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumicenergistics.api.ThEApi;
@@ -20,7 +20,6 @@ import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.init.ModGUIs;
-import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.integration.appeng.ThEPartModel;
 import thaumicenergistics.item.part.ItemEssentiaExportBus;
 import thaumicenergistics.util.AEUtil;
@@ -35,10 +34,10 @@ import javax.annotation.Nonnull;
 public class PartEssentiaExportBus extends PartSharedEssentiaBus {
 
     public static ResourceLocation[] MODELS = new ResourceLocation[]{
-            new ResourceLocation(ModGlobals.MOD_ID, "part/essentia_export_bus/base"),
-            new ResourceLocation(ModGlobals.MOD_ID, "part/essentia_export_bus/on"),
-            new ResourceLocation(ModGlobals.MOD_ID, "part/essentia_export_bus/off"),
-            new ResourceLocation(ModGlobals.MOD_ID, "part/essentia_export_bus/has_channel")
+            new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/base"),
+            new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/on"),
+            new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/off"),
+            new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/has_channel")
     };
 
     private static IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1]);

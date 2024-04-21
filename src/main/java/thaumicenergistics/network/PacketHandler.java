@@ -1,18 +1,15 @@
 package thaumicenergistics.network;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayerMP;
-
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-
-import thaumicenergistics.init.ModGlobals;
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.network.packets.*;
 import thaumicenergistics.util.ThELog;
-
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 
 /**
  * @author BrockWS
@@ -29,7 +26,7 @@ public class PacketHandler {
     public static void register() {
         if (PacketHandler.INSTANCE != null)
             return;
-        PacketHandler.INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(ModGlobals.MOD_ID);
+        PacketHandler.INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
 
         PacketHandler.INSTANCE.registerMessage(PacketEssentiaFilter.Handler.class, PacketEssentiaFilter.class, PacketHandler.nextID(), Side.CLIENT);
         PacketHandler.INSTANCE.registerMessage(PacketMEEssentiaUpdate.Handler.class, PacketMEEssentiaUpdate.class, PacketHandler.nextID(), Side.CLIENT);

@@ -1,17 +1,15 @@
 package thaumicenergistics.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import appeng.api.config.SearchBoxMode;
+import appeng.api.config.TerminalStyle;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
-
-import appeng.api.config.TerminalStyle;
-
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.api.IThEConfig;
 import thaumicenergistics.api.config.PrefixSetting;
-import thaumicenergistics.init.ModGlobals;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static net.minecraftforge.common.config.Config.Comment;
 import static net.minecraftforge.common.config.Config.Name;
@@ -23,7 +21,7 @@ import static net.minecraftforge.common.config.Config.Name;
  * @author Alex811
  */
 @SuppressWarnings("ALL")
-@Config(modid = ModGlobals.MOD_ID)
+@Config(modid = Reference.MOD_ID)
 public class ThEConfig implements IThEConfig {
 
     @Name("Essentia Container Capacity")
@@ -181,6 +179,6 @@ public class ThEConfig implements IThEConfig {
     }
 
     public static void save() {
-        ConfigManager.sync(ModGlobals.MOD_ID, Config.Type.INSTANCE);
+        ConfigManager.sync(Reference.MOD_ID, Config.Type.INSTANCE);
     }
 }

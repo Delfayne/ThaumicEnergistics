@@ -1,21 +1,16 @@
 package thaumicenergistics.part;
 
-import java.util.List;
-import javax.annotation.Nonnull;
-
+import appeng.api.parts.IPartModel;
+import appeng.api.parts.PartItemStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
-
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-
-import appeng.api.parts.IPartModel;
-import appeng.api.parts.PartItemStack;
-
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.init.ModGUIs;
@@ -28,6 +23,9 @@ import thaumicenergistics.util.ItemHandlerUtil;
 import thaumicenergistics.util.inventory.ThEInternalInventory;
 import thaumicenergistics.util.inventory.ThEUpgradeInventory;
 
+import javax.annotation.Nonnull;
+import java.util.List;
+
 /**
  * @author BrockWS
  * @author Alex811
@@ -35,9 +33,9 @@ import thaumicenergistics.util.inventory.ThEUpgradeInventory;
 public class PartArcaneTerminal extends PartSharedTerminal {
 
     public static ResourceLocation[] MODELS = new ResourceLocation[]{
-            new ResourceLocation(ModGlobals.MOD_ID, "part/arcane_terminal/base"), // 0
-            new ResourceLocation(ModGlobals.MOD_ID, "part/arcane_terminal/on"), // 1
-            new ResourceLocation(ModGlobals.MOD_ID, "part/arcane_terminal/off"), // 2
+            new ResourceLocation(Reference.MOD_ID, "part/arcane_terminal/base"), // 0
+            new ResourceLocation(Reference.MOD_ID, "part/arcane_terminal/on"), // 1
+            new ResourceLocation(Reference.MOD_ID, "part/arcane_terminal/off"), // 2
             new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_has_channel"), // 3
             new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_on"), // 4
             new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_off") // 5

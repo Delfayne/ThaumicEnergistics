@@ -1,23 +1,20 @@
 package thaumicenergistics.item;
 
 import com.google.common.base.Preconditions;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
+import thaumicenergistics.api.IThEUpgrade;
+import thaumicenergistics.api.ThEApi;
+import thaumicenergistics.client.render.IThEModel;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-
-import net.minecraftforge.client.model.ModelLoader;
-
-import thaumicenergistics.api.IThEUpgrade;
-import thaumicenergistics.api.ThEApi;
-import thaumicenergistics.client.render.IThEModel;
-import thaumicenergistics.init.ModGlobals;
 
 /**
  * @author BrockWS
@@ -49,6 +46,6 @@ public class ItemMaterial extends ItemBase implements IThEModel {
         Preconditions.checkNotNull(this.getRegistryName());
         Preconditions.checkNotNull(this.getRegistryName().getPath());
 
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(ModGlobals.MOD_ID + ":material/" + this.getRegistryName().getPath(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(Reference.MOD_ID + ":material/" + this.getRegistryName().getPath(), "inventory"));
     }
 }

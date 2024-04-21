@@ -4,17 +4,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandler;
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.codechicken.lib.math.MathHelper;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.client.gui.GuiBase;
 import thaumicenergistics.container.block.ContainerArcaneAssembler;
-import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.network.packets.PacketAssemblerGUIUpdateRequest;
 import thaumicenergistics.network.packets.PacketSubscribe;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.HashMap;
 
 /**
@@ -23,9 +23,9 @@ import java.util.HashMap;
 public class GuiArcaneAssembler extends GuiBase {
     private static final String[] aspects = {"aer", "terra", "ignis", "aqua", "ordo", "perditio"};
     private static final int[][] aspectGUILoc = {{69, 2}, {21, 82}, {21, 25}, {117, 25}, {117, 82}, {69, 106}};
-    private static final ResourceLocation BACKGROUND_INACTIVE = new ResourceLocation(ModGlobals.MOD_ID, "textures/gui/arcane_assembler/inactive.png");
-    private static final ResourceLocation BACKGROUND_ACTIVE = new ResourceLocation(ModGlobals.MOD_ID, "textures/gui/arcane_assembler/active.png");
-    private static final ResourceLocation ASPECTS = new ResourceLocation(ModGlobals.MOD_ID, "textures/gui/arcane_assembler/aspects.png");
+    private static final ResourceLocation BACKGROUND_INACTIVE = new ResourceLocation(Reference.MOD_ID, "textures/gui/arcane_assembler/inactive.png");
+    private static final ResourceLocation BACKGROUND_ACTIVE = new ResourceLocation(Reference.MOD_ID, "textures/gui/arcane_assembler/active.png");
+    private static final ResourceLocation ASPECTS = new ResourceLocation(Reference.MOD_ID, "textures/gui/arcane_assembler/aspects.png");
     private static final int WIDTH = 210;
     private static final int HEIGHT = 231;
     private final ContainerArcaneAssembler container;

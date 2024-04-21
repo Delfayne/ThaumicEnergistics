@@ -5,6 +5,7 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.api.IThETextures;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class ThETextures implements IThETextures {
     }
 
     private static ResourceLocation addTexture(String texture){
-        ResourceLocation resourceLocation = new ResourceLocation(ModGlobals.MOD_ID, texture);
+        ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, texture);
         TEXTURES.add(resourceLocation);
         return resourceLocation;
     }

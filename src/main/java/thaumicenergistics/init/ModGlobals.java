@@ -2,7 +2,7 @@ package thaumicenergistics.init;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.api.ThEApi;
 
 /**
@@ -12,7 +12,6 @@ import thaumicenergistics.api.ThEApi;
  */
 public class ModGlobals {
 
-    public static final String MOD_ID = "thaumicenergistics";
     public static final String MOD_NAME = "Thaumic Energistics";
     public static final String MOD_VERSION = "2.2.6";
     public static final String MOD_DEPENDENCIES = "required-after:appliedenergistics2@[rv6-stable-6,);" +
@@ -36,7 +35,7 @@ public class ModGlobals {
         }
     };
 
-    public static final String RESEARCH_CATEGORY = ModGlobals.MOD_ID.toUpperCase();
+    public static final String RESEARCH_CATEGORY = Reference.MOD_ID.toUpperCase();
 
     public static final String MOD_ID_AE2 = "appliedenergistics2";
 
