@@ -134,9 +134,9 @@ public class ContainerArcaneInscriber extends ContainerArcaneTerminal implements
             }
             IAEItemStack aeExtract = AEUtil.inventoryExtract(aeStack, this.monitor, this.part.source, null, Actionable.SIMULATE);
             if (aeExtract != null && aeExtract.getStackSize() > 0) {
-                ItemStack AEExtractStack = aeExtract.createItemStack();
-                if (mustBeSingle) AEExtractStack.setCount(1);
-                crafting.insertItem(slot, AEExtractStack, false);
+                ItemStack aeExtractStack = aeExtract.createItemStack();
+                if (mustBeSingle) aeExtractStack.setCount(1);
+                crafting.insertItem(slot, aeExtractStack, false);
             }
 
             if (!crafting.getStackInSlot(slot).isEmpty()) // We managed to pull everything from the system
@@ -151,7 +151,6 @@ public class ContainerArcaneInscriber extends ContainerArcaneTerminal implements
                 crafting.insertItem(slot, invExtract, false);
             }
         }
-        ThELog.debug("Failed to find valid item");
     }
 
     @Override
