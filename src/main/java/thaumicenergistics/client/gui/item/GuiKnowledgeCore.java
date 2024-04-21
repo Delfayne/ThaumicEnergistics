@@ -4,6 +4,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.container.ActionType;
 import thaumicenergistics.container.item.ContainerKnowledgeCore;
@@ -18,7 +19,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 public class GuiKnowledgeCore extends GuiContainer {
     private static final ResourceLocation STATES = new ResourceLocation(ModGlobals.MOD_ID_AE2, "textures/guis/states.png");
-    private static final ResourceLocation TEXTURE = new ResourceLocation(ModGlobals.MOD_ID, "textures/gui/knowledge_core.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Reference.MOD_ID, "textures/gui/knowledge_core.png");
     private static final int WIDTH = 176;
     private static final int HEIGHT = 40;
     private final ContainerKnowledgeCore container;

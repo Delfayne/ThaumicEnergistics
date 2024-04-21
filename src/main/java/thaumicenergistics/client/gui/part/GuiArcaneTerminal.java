@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import thaumicenergistics.api.ThEApi;
@@ -27,7 +28,6 @@ import thaumicenergistics.container.part.ContainerArcaneTerminal;
 import thaumicenergistics.container.slot.SlotME;
 import thaumicenergistics.container.slot.ThESlot;
 import thaumicenergistics.init.ModGUIs;
-import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.integration.jei.ThEJEI;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.network.packets.PacketOpenGUI;
@@ -315,7 +315,7 @@ public class GuiArcaneTerminal extends GuiAbstractTerminal<IAEItemStack, IItemSt
 
     @Override
     protected ResourceLocation getGuiBackground() {
-        return new ResourceLocation(ModGlobals.MOD_ID, "textures/gui/arcane_crafting_no_side.png");
+        return new ResourceLocation(Reference.MOD_ID, "textures/gui/arcane_crafting_no_side.png");
     }
 
     @Override

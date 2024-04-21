@@ -15,11 +15,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import org.lwjgl.opengl.GL11;
-import thaumicenergistics.init.ModGlobals;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * Makes custom particles!
@@ -78,7 +78,7 @@ public class ThEParticle extends Particle {
     }
 
     protected void init(String textureName){
-        this.resourceLocation = new ResourceLocation(ModGlobals.MOD_ID, "textures/particle/" + textureName + ".png");
+        this.resourceLocation = new ResourceLocation(Reference.MOD_ID, "textures/particle/" + textureName + ".png");
     }
 
     @Override

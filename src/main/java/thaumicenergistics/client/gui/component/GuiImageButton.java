@@ -3,8 +3,8 @@ package thaumicenergistics.client.gui.component;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButtonImage;
 import net.minecraft.util.ResourceLocation;
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import org.lwjgl.opengl.GL11;
-import thaumicenergistics.init.ModGlobals;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,7 +45,7 @@ public class GuiImageButton extends GuiButtonImage {
     }
 
     public GuiImageButton(int x, int y, int w, int h, int offsetX, int offsetY, String resource){
-        this(x, y, w, h, offsetX, offsetY, new ResourceLocation(ModGlobals.MOD_ID, resource));
+        this(x, y, w, h, offsetX, offsetY, new ResourceLocation(Reference.MOD_ID, resource));
     }
 
     public GuiImageButton(int x, int y, ResourceLocation resource){
@@ -139,7 +139,7 @@ public class GuiImageButton extends GuiButtonImage {
     }
 
     public GuiImageButton setButtonTexture(String buttonTexture){
-        return setButtonTexture(new ResourceLocation(ModGlobals.MOD_ID, buttonTexture));
+        return setButtonTexture(new ResourceLocation(Reference.MOD_ID, buttonTexture));
     }
 
     public GuiImageButton setAllImages(ResourceLocation resource, int offsetX, int offsetY){
@@ -156,7 +156,7 @@ public class GuiImageButton extends GuiButtonImage {
     }
 
     public GuiImageButton setImage(String resource, int offsetX, int offsetY){
-        return setImage(new ResourceLocation(ModGlobals.MOD_ID, resource), offsetX, offsetY);
+        return setImage(new ResourceLocation(Reference.MOD_ID, resource), offsetX, offsetY);
     }
 
     public GuiImageButton setImage(String resource){
@@ -175,7 +175,7 @@ public class GuiImageButton extends GuiButtonImage {
     }
 
     public GuiImageButton setHoverImage(String resource, int offsetX, int offsetY){
-        return setHoverImage(new ResourceLocation(ModGlobals.MOD_ID, resource), offsetX, offsetY);
+        return setHoverImage(new ResourceLocation(Reference.MOD_ID, resource), offsetX, offsetY);
     }
 
     public GuiImageButton setHoverImage(String resource){

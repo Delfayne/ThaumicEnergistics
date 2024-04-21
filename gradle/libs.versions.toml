@@ -1,0 +1,19 @@
+[versions]
+
+[libraries]
+mixinBooter = { module = "zone.rong:mixinbooter", version = "8.2" }
+
+# General
+curse-hei = { module = "curse.maven:had-enough-items-557549", version = "5229422" }
+curse-hwyla = { module = "curse.maven:hwyla-253449", version = "2568753" }
+curse-spark = { module = "curse.maven:spark-361579", version = "3542217" }
+curse-top = { module = "curse.maven:the-one-probe-245211", version = "2667280" }
+
+# Dependencies
+curse-baubles = { module = "curse.maven:baubles-227083", version = "2518667" }
+curse-thaumcraft = { module = "curse.maven:thaumcraft-223628", version = "2629023" }
+curse-thaumicJei = { module = "curse.maven:thaumic-jei-285492", version = "2705304" }
+curse-ae2 = { module = "curse.maven:ae2-extended-life-570458", version = "4505114" }
+
+# Misc
+curse-inventoryTweaks = { module = "curse.maven:inventory-tweaks-223094", version = "2482482" }

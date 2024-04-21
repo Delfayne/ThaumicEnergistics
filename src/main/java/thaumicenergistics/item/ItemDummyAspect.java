@@ -5,16 +5,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
-
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumcraft.api.aspects.Aspect;
-
 import thaumicenergistics.client.render.DummyAspectRenderer;
 import thaumicenergistics.client.render.IThEModel;
-import thaumicenergistics.init.ModGlobals;
 
 /**
  * A dummy item that uses the aspect icon for its icon
@@ -67,7 +64,7 @@ public class ItemDummyAspect extends ItemBase implements IThEModel {
     public void initModel() {
         this.setTileEntityItemStackRenderer(DummyAspectRenderer.INSTANCE);
         //ThEModelLoader.MODEL_LOADER.addModel("models/item/dummy_aspect", new DummyAspectItemModel());
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(ModGlobals.MOD_ID + ":dummy_aspect", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(Reference.MOD_ID + ":dummy_aspect", "inventory"));
         //ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(this.getRegistryName(), "inventory"));
     }
 }

@@ -1,11 +1,11 @@
 package thaumicenergistics.item;
 
+import appeng.api.AEApi;
+import appeng.api.config.FuzzyMode;
+import appeng.api.implementations.items.IStorageCell;
+import appeng.api.storage.ICellInventoryHandler;
+import appeng.items.contents.CellUpgrades;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
-
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,22 +15,19 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.items.IItemHandler;
-
-import appeng.api.AEApi;
-import appeng.api.config.FuzzyMode;
-import appeng.api.implementations.items.IStorageCell;
-import appeng.api.storage.ICellInventoryHandler;
-import appeng.items.contents.CellUpgrades;
-
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.client.render.IThEModel;
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.util.inventory.EssentiaCellConfig;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author BrockWS
@@ -180,6 +177,6 @@ public class ItemEssentiaCell extends ItemBase implements IStorageCell<IAEEssent
 
     @Override
     public void initModel() {
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(ModGlobals.MOD_ID + ":cell/essentia_cell_" + this.size, "inventory"));
+        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(Reference.MOD_ID + ":cell/essentia_cell_" + this.size, "inventory"));
     }
 }

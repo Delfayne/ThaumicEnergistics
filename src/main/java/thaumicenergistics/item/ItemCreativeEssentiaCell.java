@@ -1,23 +1,20 @@
 package thaumicenergistics.item;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
+import appeng.api.config.FuzzyMode;
+import appeng.api.storage.ICellWorkbenchItem;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
-
-import appeng.api.config.FuzzyMode;
-import appeng.api.storage.ICellWorkbenchItem;
-
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.client.render.IThEModel;
-import thaumicenergistics.init.ModGlobals;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * @author BrockWS
@@ -61,6 +58,6 @@ public class ItemCreativeEssentiaCell extends ItemBase implements ICellWorkbench
     @Override
     @SideOnly(Side.CLIENT)
     public void initModel() {
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(ModGlobals.MOD_ID + ":cell/essentia_cell_creative", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(Reference.MOD_ID + ":cell/essentia_cell_creative", "inventory"));
     }
 }

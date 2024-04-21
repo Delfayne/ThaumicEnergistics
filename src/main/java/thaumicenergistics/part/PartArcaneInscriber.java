@@ -4,6 +4,7 @@ import appeng.api.parts.IPartModel;
 import appeng.api.parts.PartItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.init.ModGUIs;
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.integration.appeng.ThEPartModel;
@@ -20,9 +21,9 @@ import java.util.List;
 public class PartArcaneInscriber extends PartArcaneTerminal {
 
     public static ResourceLocation[] MODELS = new ResourceLocation[]{
-            new ResourceLocation(ModGlobals.MOD_ID, "part/arcane_inscriber/base"), // 0
-            new ResourceLocation(ModGlobals.MOD_ID, "part/arcane_inscriber/on"), // 1
-            new ResourceLocation(ModGlobals.MOD_ID, "part/arcane_inscriber/off"), // 2
+            new ResourceLocation(Reference.MOD_ID, "part/arcane_inscriber/base"), // 0
+            new ResourceLocation(Reference.MOD_ID, "part/arcane_inscriber/on"), // 1
+            new ResourceLocation(Reference.MOD_ID, "part/arcane_inscriber/off"), // 2
             new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_has_channel"), // 3
             new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_on"), // 4
             new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_off") // 5

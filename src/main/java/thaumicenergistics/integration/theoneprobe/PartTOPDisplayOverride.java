@@ -4,7 +4,7 @@ import mcjty.theoneprobe.api.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import thaumicenergistics.init.ModGlobals;
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.part.PartBase;
 
 /**
@@ -19,7 +19,7 @@ public class PartTOPDisplayOverride implements IBlockDisplayOverride {
                     .item(part.getRepr())
                     .vertical()
                     .itemLabel(part.getRepr())
-                    .text(TextStyleClass.MODNAME + ModGlobals.MOD_NAME);
+                    .text(TextStyleClass.MODNAME + Reference.NAME);
             return true;
         }
         return false;

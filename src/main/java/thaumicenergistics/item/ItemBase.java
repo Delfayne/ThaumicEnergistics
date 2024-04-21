@@ -1,7 +1,7 @@
 package thaumicenergistics.item;
 
 import net.minecraft.item.Item;
-
+import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumicenergistics.init.ModGlobals;
 
 /**
@@ -15,7 +15,7 @@ public abstract class ItemBase extends Item {
 
     public ItemBase(String id, boolean setCreativeTab) {
         this.setRegistryName(id);
-        this.setTranslationKey(ModGlobals.MOD_ID + "." + id);
+        this.setTranslationKey(Reference.MOD_ID + "." + id);
         if (setCreativeTab)
             this.setCreativeTab(ModGlobals.CREATIVE_TAB);
     }
