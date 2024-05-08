@@ -74,6 +74,11 @@ minecraft {
         args += "-Dmixin.checks.interfaces=true"
         args += "-Dmixin.debug.export=true"
     }
+    if (projectProperty("useMixins")) {
+        args += "-Dmixin.hotSwap=true"
+        args += "-Dmixin.checks.interfaces=true"
+        args += "-Dmixin.debug.export=true"
+    }
     extraRunJvmArguments.addAll(args)
 
     // Include and use dependencies Access Transformer files
@@ -144,8 +149,8 @@ dependencies {
         // Change your mixin refmap name here:
         val mixin: String =
             modUtils.enableMixins(
-                "zone.rong:mixinbooter:8.9",
-                "mixins.${modArchiveName}.refmap.json"
+                libs.mixinBooter.get().toString(),
+                "mixins.${archiveBase}.refmap.json"
             ).toString()
         api(mixin) {
             isTransitive = false
