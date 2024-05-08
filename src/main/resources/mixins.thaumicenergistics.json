@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "thaumicenergistics.mixin",
+  "refmap": "mixins.thaumicenergistics.refmap.json",
+  "plugin": "thaumicenergistics.mixin.core.MixinConfigPlugin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
