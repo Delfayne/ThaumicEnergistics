@@ -125,7 +125,9 @@ dependencies {
     compileOnly(libs.curse.inventoryTweaks)
     api(rfg.deobf(libs.curse.baubles.get().toString()))
     api(rfg.deobf(libs.curse.thaumcraft.get().toString()))
-    api(libs.curse.thaumicJei.get().toString())
+    api(rfg.deobf(libs.curse.thaumicAug.get().toString()))
+    api(rfg.deobf(libs.curse.aaf.get().toString()))
+    api(libs.curse.thaumicJei)
     api(rfg.deobf(libs.curse.ae2.get().toString()))
 
     // Testing mods
