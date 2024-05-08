@@ -1,13 +1,12 @@
 package thaumicenergistics.client.gui.crafting;
 
 import appeng.client.gui.implementations.GuiCraftAmount;
-import appeng.client.gui.widgets.GuiNumberBox;
 import appeng.client.gui.widgets.GuiTabButton;
 import appeng.core.localization.GuiText;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import thaumicenergistics.mixin.ae2.CraftAmountAccessor;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.network.packets.PacketCraftRequest;
 import thaumicenergistics.network.packets.PacketOpenGUI;
@@ -22,7 +21,6 @@ public class GuiCraftAmountBridge extends GuiCraftAmount {
 
     private final EntityPlayer player;
     private final PartSharedTerminal part;
-    private GuiNumberBox craftAmount;
 
     public GuiCraftAmountBridge(EntityPlayer player, PartSharedTerminal part) {
         super(player.inventory, part);
@@ -33,9 +31,7 @@ public class GuiCraftAmountBridge extends GuiCraftAmount {
     @Override
     public void initGui() {
         super.initGui();
-        this.craftAmount = ReflectionHelper.getPrivateValue(GuiCraftAmount.class, this, "amountToCraft");
-        if (this.craftAmount == null)
-            throw new RuntimeException("Failed to get private value amountToCraft");
+
         ItemStack icon = part.getRepr();
         if (!icon.isEmpty())
             this.buttonList.add(new GuiTabButton(this.guiLeft + 154, this.guiTop, icon, icon.getDisplayName(), this.itemRender));
@@ -44,7 +40,7 @@ public class GuiCraftAmountBridge extends GuiCraftAmount {
     @Override
     protected void actionPerformed(GuiButton btn) throws IOException {
         if (btn.displayString.equals(GuiText.Next.getLocal()) || btn.displayString.equals(GuiText.Start.getLocal())) {
-            PacketHandler.sendToServer(new PacketCraftRequest(Integer.parseInt(this.craftAmount.getText()), isShiftKeyDown()));
+            PacketHandler.sendToServer(new PacketCraftRequest(getAmountToCraft(), isShiftKeyDown()));
             return;
         }
 
@@ -55,5 +51,11 @@ public class GuiCraftAmountBridge extends GuiCraftAmount {
         }
 
         super.actionPerformed(btn);
+    }
+
+    private int getAmountToCraft() {
+        return Integer.parseInt(
+                ((CraftAmountAccessor) this).getAmountToCraft().getText()
+        );
     }
 }
