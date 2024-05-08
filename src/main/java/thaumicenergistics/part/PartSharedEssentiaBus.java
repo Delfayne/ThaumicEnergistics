@@ -23,6 +23,7 @@ import thaumicenergistics.util.EssentiaFilter;
 import thaumicenergistics.util.inventory.ThEUpgradeInventory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +96,7 @@ public abstract class PartSharedEssentiaBus extends PartBase implements IGridTic
         return 1;
     }
 
+    @Nullable
     public TileEntity getConnectedTE() {
         TileEntity self = this.host.getTile();
         World w = self.getWorld();
