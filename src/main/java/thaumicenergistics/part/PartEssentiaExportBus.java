@@ -66,7 +66,9 @@ public class PartEssentiaExportBus extends PartSharedEssentiaBus {
 
     @Override
     public boolean canWork() {
-        return this.getConnectedTE() != null && this.config.hasAspects(); // We only want to run if there is something in the filter
+        // We only want to run if there is something in the filter
+        return this.getConnectedTE() instanceof IAspectContainer
+                && this.config.hasAspects();
     }
 
     @Override
