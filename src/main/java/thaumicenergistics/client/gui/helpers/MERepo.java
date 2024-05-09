@@ -211,16 +211,6 @@ public class MERepo<T extends IAEStack<T>> {
             this.sortByCount();
         else if (sortOrder == SortOrder.INVTWEAKS)
             this.sortByInvTweaks();
-
-        // TODO: Check if this is even needed anymore
-        if (this.getScrollBar() != null) {
-            if (this.view.size() <= this.getRowSize() * 6) { // We don't need to have scrolling
-                this.getScrollBar().setRows(6);
-                this.getScrollBar().click(this.scrollBar.getY());
-            } else {
-                this.getScrollBar().setRows((int) Math.ceil(this.view.size() * this.getRowSize()));
-            }
-        }
     }
 
     public void postUpdate(T stack) {
