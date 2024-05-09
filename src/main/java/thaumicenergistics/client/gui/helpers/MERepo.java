@@ -23,9 +23,13 @@ import thaumicenergistics.util.TCUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import static appeng.api.config.ViewItems.CRAFTABLE;
+import static appeng.api.config.ViewItems.STORED;
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
+import static java.util.regex.Pattern.UNICODE_CASE;
 
 /**
  * Based on ItemRepo and FluidRepo
@@ -41,6 +45,7 @@ public class MERepo<T extends IAEStack<T>> {
      */
     private ArrayList<T> view = new ArrayList<>();
     private String searchString = "";
+    private String innerSearch = "";
     private ViewItems viewMode;
     private SortDir sortDir;
     private SortOrder sortOrder;
@@ -92,16 +97,25 @@ public class MERepo<T extends IAEStack<T>> {
             lastSortDir = sortDir;
         }
 
-        String search = searchString;
-        boolean sbm = false;
-        boolean sba = false;
+        if (!changed && !resort) {
+            return;
+        }
+
+        changed = false;
+        resort = false;
+        view = new ArrayList<>();
+
+        innerSearch = searchString.toLowerCase();
+        boolean searchMod = false;
+        boolean searchAspect = false;
         boolean searchSpecific = false;
 
         PrefixSetting modSearchSetting = ThEApi.instance().config().modSearchSetting();
         PrefixSetting aspectSearchSetting = ThEApi.instance().config().aspectSearchSetting();
 
-        if (Stream.of(SearchBoxMode.JEI_AUTOSEARCH, SearchBoxMode.JEI_MANUAL_SEARCH, SearchBoxMode.JEI_AUTOSEARCH_KEEP, SearchBoxMode.JEI_MANUAL_SEARCH_KEEP).anyMatch(m -> m == this.searchBoxMode))
-            ThEJEI.setSearchText(search);
+        if (Stream.of(SearchBoxMode.JEI_AUTOSEARCH, SearchBoxMode.JEI_MANUAL_SEARCH, SearchBoxMode.JEI_AUTOSEARCH_KEEP, SearchBoxMode.JEI_MANUAL_SEARCH_KEEP).anyMatch(m -> m == this.searchBoxMode)) {
+            ThEJEI.setSearchText(searchString);
+        }
 
         // DISABLED = Don't search and ignore what it starts with
         // REQUIRE_PREFIX = If search starts with prefix, drop prefix and search ONLY by that search
@@ -110,104 +124,101 @@ public class MERepo<T extends IAEStack<T>> {
 
         switch (modSearchSetting) {
             case ENABLED:
-                sbm = true;
+                searchMod = true;
             case REQUIRE_PREFIX:
-                if (!search.startsWith(ThEApi.instance().config().modSearchPrefix()))
+                String modSearchPrefix = ThEApi.instance().config().modSearchPrefix();
+                if (!innerSearch.startsWith(modSearchPrefix))
                     break;
-                search = search.substring(ThEApi.instance().config().modSearchPrefix().length());
+                innerSearch = innerSearch.substring(modSearchPrefix.length());
                 searchSpecific = true;
-                sbm = true;
+                searchMod = true;
             default:
         }
 
         if (!searchSpecific) {
             switch (aspectSearchSetting) {
                 case ENABLED:
-                    sba = true;
+                    searchAspect = true;
                 case REQUIRE_PREFIX:
-                    if (!search.startsWith(ThEApi.instance().config().aspectSearchPrefix()))
+                    String aspectSearchPrefix = ThEApi.instance().config().aspectSearchPrefix();
+                    if (!innerSearch.startsWith(aspectSearchPrefix))
                         break;
-                    search = search.substring(ThEApi.instance().config().aspectSearchPrefix().length());
+                    innerSearch = innerSearch.substring(aspectSearchPrefix.length());
                     searchSpecific = true;
-                    sba = true;
+                    searchAspect = true;
 
-                    sbm = false; // Set to false so when MOD is ENABLED but we want to only search aspects
+                    searchMod = false; // Set to false so when MOD is ENABLED but we want to only search aspects
                 default:
             }
         }
 
         Pattern pattern;
         try {
-            pattern = Pattern.compile(search, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
-        } catch (PatternSyntaxException ignored) {
+            pattern = Pattern.compile(innerSearch, CASE_INSENSITIVE | UNICODE_CASE);
+        } catch (Throwable ignored) {
             try {
-                pattern = Pattern.compile(Pattern.quote(search), Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
-            } catch (PatternSyntaxException ignored2) {
+                pattern = Pattern.compile(Pattern.quote(innerSearch), CASE_INSENSITIVE | UNICODE_CASE);
+            } catch (Throwable ignored2) {
                 return;
             }
         }
 
-        if (changed || resort) {
-            changed = false;
-            resort = false;
-            view = new ArrayList<>();
+        // Can't use non-final in lambdas....
+        final Pattern p = pattern;
+        final boolean searchByMod = searchMod;
+        final boolean searchByAspect = searchAspect;
 
-            // Can't use non-final in lambdas....
-            final Pattern p = pattern;
-            final boolean searchByMod = sbm;
-            final boolean searchByAspect = sba;
+        Stream<T> stream = StreamSupport.stream(list.spliterator(), false);
 
-            Stream<T> stream = StreamSupport.stream(this.list.spliterator(), false);
+        stream = stream.filter(t ->
+                !(this.getViewMode() == CRAFTABLE && !t.isCraftable()) ||
+                        !(this.getViewMode() == STORED && t.getStackSize() == 0)
+        );
 
-            stream = stream.filter(t ->
-                    !(this.getViewMode() == ViewItems.CRAFTABLE && !t.isCraftable()) || !(this.getViewMode() == ViewItems.STORED && t.getStackSize() == 0)
-            );
-
-            if (searchSpecific) {
-                if (searchByAspect) {
-                    stream = stream.filter(t -> this.searchAspects(t, p));
-                } else if (searchByMod) {
-                    stream = stream.filter(t -> this.searchMod(t, p));
-                }
-            } else {
-                stream = stream.filter(t -> {
-                    if (searchByAspect && this.searchAspects(t, p))
-                        return true;
-                    if (searchByMod && this.searchMod(t, p))
-                        return true;
-                    return this.searchName(t, p) || this.searchTooltip(t, p);
-                });
+        if (searchSpecific) {
+            if (searchByAspect) {
+                stream = stream.filter(t -> this.searchAspects(t, p));
+            } else if (searchByMod) {
+                stream = stream.filter(t -> this.searchMod(t, p));
             }
-
-            stream.forEach(t -> {
-                T stack = t.copy();
-                if (this.getViewMode().equals(ViewItems.CRAFTABLE)) {
-                    if (!stack.isCraftable())
-                        return;
-                    stack.setStackSize(0);
-                } else if (this.getViewMode().equals(ViewItems.STORED) && stack.getStackSize() < 1) {
-                    return;
-                }
-                this.view.add(stack);
+        } else {
+            stream = stream.filter(t -> {
+                if (searchByAspect && this.searchAspects(t, p))
+                    return true;
+                if (searchByMod && this.searchMod(t, p))
+                    return true;
+                return this.searchName(t, p) || this.searchTooltip(t, p);
             });
+        }
 
-            if (sortOrder == SortOrder.MOD)
-                this.sortByMod();
-            else if (sortOrder == SortOrder.NAME)
-                this.sortByName();
-            else if (sortOrder == SortOrder.AMOUNT)
-                this.sortByCount();
-            else if (sortOrder == SortOrder.INVTWEAKS)
-                this.sortByInvTweaks();
+        stream.forEach(t -> {
+            T stack = t.copy();
+            if (this.getViewMode().equals(CRAFTABLE)) {
+                if (!stack.isCraftable())
+                    return;
+                stack.setStackSize(0);
+            } else if (this.getViewMode().equals(STORED) && stack.getStackSize() < 1) {
+                return;
+            }
+            this.view.add(stack);
+        });
 
-            // TODO: Check if this is even needed anymore
-            if (this.getScrollBar() != null) {
-                if (this.view.size() <= this.getRowSize() * 6) { // We don't need to have scrolling
-                    this.getScrollBar().setRows(6);
-                    this.getScrollBar().click(this.scrollBar.getY());
-                } else {
-                    this.getScrollBar().setRows((int) Math.ceil(this.view.size() * this.getRowSize()));
-                }
+        if (sortOrder == SortOrder.MOD)
+            this.sortByMod();
+        else if (sortOrder == SortOrder.NAME)
+            this.sortByName();
+        else if (sortOrder == SortOrder.AMOUNT)
+            this.sortByCount();
+        else if (sortOrder == SortOrder.INVTWEAKS)
+            this.sortByInvTweaks();
+
+        // TODO: Check if this is even needed anymore
+        if (this.getScrollBar() != null) {
+            if (this.view.size() <= this.getRowSize() * 6) { // We don't need to have scrolling
+                this.getScrollBar().setRows(6);
+                this.getScrollBar().click(this.scrollBar.getY());
+            } else {
+                this.getScrollBar().setRows((int) Math.ceil(this.view.size() * this.getRowSize()));
             }
         }
     }
