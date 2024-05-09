@@ -168,43 +168,27 @@ public class MERepo<T extends IAEStack<T>> {
 
         // Can't use non-final in lambdas....
         final Pattern p = pattern;
+        final boolean finalSearchSpecific = searchSpecific;
         final boolean searchByMod = searchMod;
         final boolean searchByAspect = searchAspect;
 
-        Stream<T> stream = StreamSupport.stream(list.spliterator(), false);
-
-        stream = stream.filter(t ->
-                !(this.getViewMode() == CRAFTABLE && !t.isCraftable()) ||
-                        !(this.getViewMode() == STORED && t.getStackSize() == 0)
-        );
-
-        if (searchSpecific) {
-            if (searchByAspect) {
-                stream = stream.filter(t -> this.searchAspects(t, p));
-            } else if (searchByMod) {
-                stream = stream.filter(t -> this.searchMod(t, p));
-            }
-        } else {
-            stream = stream.filter(t -> {
-                if (searchByAspect && this.searchAspects(t, p))
-                    return true;
-                if (searchByMod && this.searchMod(t, p))
-                    return true;
-                return this.searchName(t, p) || this.searchTooltip(t, p);
-            });
-        }
-
-        stream.forEach(t -> {
-            T stack = t.copy();
-            if (this.getViewMode().equals(CRAFTABLE)) {
-                if (!stack.isCraftable())
-                    return;
-                stack.setStackSize(0);
-            } else if (this.getViewMode().equals(STORED) && stack.getStackSize() < 1) {
-                return;
-            }
-            this.view.add(stack);
-        });
+        StreamSupport.stream(list.spliterator(), false)
+                .filter(t ->
+                        !(this.getViewMode() == CRAFTABLE && !t.isCraftable()) ||
+                                !(this.getViewMode() == STORED && t.getStackSize() == 0)
+                )
+                .filter(t -> searchByQuery(finalSearchSpecific, searchByAspect, searchByMod, t, p))
+                .forEach(t -> {
+                    T stack = t.copy();
+                    if (this.getViewMode().equals(CRAFTABLE)) {
+                        if (!stack.isCraftable())
+                            return;
+                        stack.setStackSize(0);
+                    } else if (this.getViewMode().equals(STORED) && stack.getStackSize() < 1) {
+                        return;
+                    }
+                    this.view.add(stack);
+                });
 
         if (sortOrder == SortOrder.MOD)
             this.sortByMod();
@@ -214,6 +198,28 @@ public class MERepo<T extends IAEStack<T>> {
             this.sortByCount();
         else if (sortOrder == SortOrder.INVTWEAKS)
             this.sortByInvTweaks();
+    }
+
+    public boolean searchByQuery(boolean searchSpecific,
+                                 boolean searchByAspect,
+                                 boolean searchByMod,
+                                 T t,
+                                 Pattern pattern) {
+        if (searchSpecific) {
+            if (searchByAspect) {
+                return searchAspects(t, pattern);
+            } else if (searchByMod) {
+                return searchMod(t, pattern);
+            }
+        } else {
+            if (searchByAspect && searchAspects(t, pattern))
+                return true;
+            if (searchByMod && searchMod(t, pattern))
+                return true;
+            return searchName(t, pattern) || searchTooltip(t, pattern);
+        }
+
+        return true;
     }
 
     public void postUpdate(T stack) {
