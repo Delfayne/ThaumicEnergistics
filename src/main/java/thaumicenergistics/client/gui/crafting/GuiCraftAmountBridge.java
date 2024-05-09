@@ -5,6 +5,7 @@ import appeng.client.gui.widgets.GuiNumberBox;
 import appeng.client.gui.widgets.GuiTabButton;
 import appeng.core.localization.GuiText;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -22,7 +23,7 @@ public class GuiCraftAmountBridge extends GuiCraftAmount {
 
     private final EntityPlayer player;
     private final PartSharedTerminal part;
-    private GuiNumberBox craftAmount;
+    private GuiTextField craftAmount;
 
     public GuiCraftAmountBridge(EntityPlayer player, PartSharedTerminal part) {
         super(player.inventory, part);

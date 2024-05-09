@@ -13,7 +13,7 @@ curse-top = { module = "curse.maven:the-one-probe-245211", version = "2667280" }
 curse-baubles = { module = "curse.maven:baubles-227083", version = "2518667" }
 curse-thaumcraft = { module = "curse.maven:thaumcraft-223628", version = "2629023" }
 curse-thaumicJei = { module = "curse.maven:thaumic-jei-285492", version = "2705304" }
-curse-ae2 = { module = "curse.maven:ae2-extended-life-570458", version = "4505114" }
+curse-ae2 = { module = "curse.maven:ae2-extended-life-570458", version = "5147702" }
 
 # Misc
 curse-inventoryTweaks = { module = "curse.maven:inventory-tweaks-223094", version = "2482482" }
