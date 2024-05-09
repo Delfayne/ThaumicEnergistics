@@ -9,6 +9,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
+import appeng.core.AEConfig;
 import appeng.util.Platform;
 import invtweaks.api.InvTweaksAPI;
 import thaumcraft.api.aspects.Aspect;
@@ -26,8 +27,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static appeng.api.config.Settings.SEARCH_TOOLTIPS;
 import static appeng.api.config.ViewItems.CRAFTABLE;
 import static appeng.api.config.ViewItems.STORED;
+import static appeng.api.config.YesNo.NO;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.UNICODE_CASE;
 
@@ -302,6 +305,15 @@ public class MERepo<T extends IAEStack<T>> {
     }
 
     private boolean searchTooltip(T stack, Pattern p) {
+        boolean terminalSearchToolTips = AEConfig.instance().getConfigManager()
+                .getSetting(SEARCH_TOOLTIPS) != NO;
+
+        // Returning false means we don't display, so if the config for
+        // tooltips is off, return true - i.e. always keep
+        if (!terminalSearchToolTips) {
+            return true;
+        }
+
         List<String> tooltip = Platform.getTooltip(stack);
         for (String line : tooltip) {
             if (p.matcher(line).find()) {
