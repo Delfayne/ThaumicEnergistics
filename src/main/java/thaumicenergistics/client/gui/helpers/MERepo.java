@@ -37,9 +37,9 @@ public class MERepo<T extends IAEStack<T>> {
 
     private final IItemList<T> list;
     /**
-     * Contains all stacks currently in the view
+     * Contains all stacks currently in the view.
      */
-    private final ArrayList<T> view = new ArrayList<>();
+    private ArrayList<T> view = new ArrayList<>();
     private String searchString = "";
     private ViewItems viewMode;
     private SortDir sortDir;
@@ -47,6 +47,15 @@ public class MERepo<T extends IAEStack<T>> {
     private SearchBoxMode searchBoxMode;
     private GuiScrollBar scrollBar;
     private int rowSize = 9;
+
+    private ViewItems lastView;
+    private SearchBoxMode lastSearchMode;
+    private SortOrder lastSortBy;
+    private SortDir lastSortDir;
+    private String lastSearch = "";
+
+    private boolean resort = true;
+    private boolean changed = false;
 
     public MERepo(Class<? extends IStorageChannel<T>> clazz) {
         this.list = AEUtil.getList(clazz);
@@ -57,10 +66,33 @@ public class MERepo<T extends IAEStack<T>> {
     }
 
     public void updateView() {
-        this.view.clear();
-        this.view.ensureCapacity(this.list.size());
 
-        String search = this.searchString;
+        if (lastView != viewMode) {
+            resort = true;
+            lastView = viewMode;
+        }
+
+        if (lastSearchMode != searchBoxMode) {
+            resort = true;
+            lastSearchMode = searchBoxMode;
+        }
+
+        if (!lastSearch.equals(searchString)) {
+            resort = true;
+            lastSearch = searchString;
+        }
+
+        if (lastSortBy != sortOrder) {
+            resort = true;
+            lastSortBy = sortOrder;
+        }
+
+        if (lastSortDir != sortDir) {
+            resort = true;
+            lastSortDir = sortDir;
+        }
+
+        String search = searchString;
         boolean sbm = false;
         boolean sba = false;
         boolean searchSpecific = false;
@@ -115,61 +147,67 @@ public class MERepo<T extends IAEStack<T>> {
             }
         }
 
-        // Can't use non final in lambdas....
-        final Pattern p = pattern;
-        final boolean searchByMod = sbm;
-        final boolean searchByAspect = sba;
+        if (changed || resort) {
+            changed = false;
+            resort = false;
+            view = new ArrayList<>();
 
-        Stream<T> stream = StreamSupport.stream(this.list.spliterator(), false);
+            // Can't use non-final in lambdas....
+            final Pattern p = pattern;
+            final boolean searchByMod = sbm;
+            final boolean searchByAspect = sba;
 
-        stream = stream.filter(t ->
-                !(this.getViewMode() == ViewItems.CRAFTABLE && !t.isCraftable()) || !(this.getViewMode() == ViewItems.STORED && t.getStackSize() == 0)
-        );
+            Stream<T> stream = StreamSupport.stream(this.list.spliterator(), false);
 
-        if (searchSpecific) {
-            if (searchByAspect) {
-                stream = stream.filter(t -> this.searchAspects(t, p));
-            } else if (searchByMod) {
-                stream = stream.filter(t -> this.searchMod(t, p));
-            }
-        } else {
-            stream = stream.filter(t -> {
-                if (searchByAspect && this.searchAspects(t, p))
-                    return true;
-                if (searchByMod && this.searchMod(t, p))
-                    return true;
-                return this.searchName(t, p) || this.searchTooltip(t, p);
-            });
-        }
+            stream = stream.filter(t ->
+                    !(this.getViewMode() == ViewItems.CRAFTABLE && !t.isCraftable()) || !(this.getViewMode() == ViewItems.STORED && t.getStackSize() == 0)
+            );
 
-        stream.forEach(t -> {
-            T stack = t.copy();
-            if (this.getViewMode().equals(ViewItems.CRAFTABLE)) {
-                if (!stack.isCraftable())
-                    return;
-                stack.setStackSize(0);
-            } else if (this.getViewMode().equals(ViewItems.STORED) && stack.getStackSize() < 1) {
-                return;
-            }
-            this.view.add(stack);
-        });
-
-        if (sortOrder == SortOrder.MOD)
-            this.sortByMod();
-        else if (sortOrder == SortOrder.NAME)
-            this.sortByName();
-        else if (sortOrder == SortOrder.AMOUNT)
-            this.sortByCount();
-        else if (sortOrder == SortOrder.INVTWEAKS)
-            this.sortByInvTweaks();
-
-        // TODO: Check if this is even needed anymore
-        if (this.getScrollBar() != null) {
-            if (this.view.size() <= this.getRowSize() * 6) { // We don't need to have scrolling
-                this.getScrollBar().setRows(6);
-                this.getScrollBar().click(this.scrollBar.getY());
+            if (searchSpecific) {
+                if (searchByAspect) {
+                    stream = stream.filter(t -> this.searchAspects(t, p));
+                } else if (searchByMod) {
+                    stream = stream.filter(t -> this.searchMod(t, p));
+                }
             } else {
-                this.getScrollBar().setRows((int) Math.ceil(this.view.size() * this.getRowSize()));
+                stream = stream.filter(t -> {
+                    if (searchByAspect && this.searchAspects(t, p))
+                        return true;
+                    if (searchByMod && this.searchMod(t, p))
+                        return true;
+                    return this.searchName(t, p) || this.searchTooltip(t, p);
+                });
+            }
+
+            stream.forEach(t -> {
+                T stack = t.copy();
+                if (this.getViewMode().equals(ViewItems.CRAFTABLE)) {
+                    if (!stack.isCraftable())
+                        return;
+                    stack.setStackSize(0);
+                } else if (this.getViewMode().equals(ViewItems.STORED) && stack.getStackSize() < 1) {
+                    return;
+                }
+                this.view.add(stack);
+            });
+
+            if (sortOrder == SortOrder.MOD)
+                this.sortByMod();
+            else if (sortOrder == SortOrder.NAME)
+                this.sortByName();
+            else if (sortOrder == SortOrder.AMOUNT)
+                this.sortByCount();
+            else if (sortOrder == SortOrder.INVTWEAKS)
+                this.sortByInvTweaks();
+
+            // TODO: Check if this is even needed anymore
+            if (this.getScrollBar() != null) {
+                if (this.view.size() <= this.getRowSize() * 6) { // We don't need to have scrolling
+                    this.getScrollBar().setRows(6);
+                    this.getScrollBar().click(this.scrollBar.getY());
+                } else {
+                    this.getScrollBar().setRows((int) Math.ceil(this.view.size() * this.getRowSize()));
+                }
             }
         }
     }
@@ -182,6 +220,8 @@ public class MERepo<T extends IAEStack<T>> {
         } else { // Doesn't exist in the list yet
             this.list.add(stack);
         }
+
+        changed = true;
     }
 
     public T getReferenceStack(int i) {
