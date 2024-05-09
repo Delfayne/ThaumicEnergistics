@@ -67,6 +67,9 @@ public class PartEssentiaImportBus extends PartSharedEssentiaBus {
 
     @Override
     protected TickRateModulation doWork() {
+        if (!(this.getConnectedTE() instanceof IAspectContainer)) {
+            return TickRateModulation.IDLE;
+        }
         IAspectContainer container = (IAspectContainer) this.getConnectedTE();
         for (Aspect aspect : container.getAspects().getAspects()) {
             if (this.config.hasAspects() && !this.config.isInFilter(aspect)) // Check filter
