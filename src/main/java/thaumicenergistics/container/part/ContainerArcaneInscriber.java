@@ -50,7 +50,10 @@ public class ContainerArcaneInscriber extends ContainerArcaneTerminal implements
             if (knowledgeCore.isEmpty()) return;
             boolean currentIsBlank = ((ItemKnowledgeCore) knowledgeCore.getItem()).isBlank();
             ItemStack result = this.getInventory("result").getStackInSlot(0);
-            if (packet.action == ActionType.KNOWLEDGE_CORE_ADD && !result.isEmpty() && this.recipeIsArcane) {
+            if (packet.action == ActionType.MOVE_GHOST_ITEM) {
+                this.getInventory("crafting")
+                        .insertItem(packet.index, packet.requestedStack.asItemStackRepresentation(), false);
+            } else if (packet.action == ActionType.KNOWLEDGE_CORE_ADD && !result.isEmpty() && this.recipeIsArcane) {
                 if (currentIsBlank)
                     ThEApi.instance().items().knowledgeCore().maybeStack(1).ifPresent(newCore -> {
                         ((InvWrapper) this.getInventory("upgrades")).getInv().setInventorySlotContents(0, newCore);
@@ -150,6 +153,9 @@ public class ContainerArcaneInscriber extends ContainerArcaneTerminal implements
                 if (mustBeSingle) invExtract.setCount(1);
                 crafting.insertItem(slot, invExtract, false);
             }
+
+            // If we fail to find from ae2 or inv, just make the best guess from JEI
+            crafting.insertItem(slot, stack, false);
         }
     }
 
