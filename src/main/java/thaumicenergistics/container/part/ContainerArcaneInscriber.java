@@ -153,6 +153,9 @@ public class ContainerArcaneInscriber extends ContainerArcaneTerminal implements
                 if (mustBeSingle) invExtract.setCount(1);
                 crafting.insertItem(slot, invExtract, false);
             }
+
+            // If we fail to find from ae2 or inv, just make the best guess from JEI
+            crafting.insertItem(slot, stack, false);
         }
     }
 
