@@ -33,21 +33,20 @@ public abstract class ContainerBaseConfigurable extends ContainerBase implements
 
     @Override
     public void detectAndSendChanges() {
-        super.detectAndSendChanges();
         if (ForgeUtil.isServer()) {
             for (Settings setting : this.serverConfigManager.getSettings()) {
-                Enum server = this.serverConfigManager.getSetting(setting);
-                Enum client = this.clientConfigManager.getSetting(setting);
+                Enum<?> server = this.serverConfigManager.getSetting(setting);
+                Enum<?> client = this.clientConfigManager.getSetting(setting);
                 if (client != server) {
+                    this.clientConfigManager.putSetting(setting, server);
                     for (IContainerListener player : this.listeners)
                         if (player instanceof EntityPlayerMP) {
-                            // Only update the local cache when we actually were able to send it
-                            this.clientConfigManager.putSetting(setting, server);
                             PacketHandler.sendToPlayer((EntityPlayerMP) player, new PacketSettingChange(setting, server));
                         }
                 }
             }
         }
+        super.detectAndSendChanges();
     }
 
     @Override
