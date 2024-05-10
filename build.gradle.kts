@@ -128,6 +128,7 @@ dependencies {
     implementation(libs.curse.top)
 
     compileOnly(libs.curse.inventoryTweaks)
+    compileOnly(libs.curse.mouseTweaks)
     api(rfg.deobf(libs.curse.baubles.get().toString()))
     api(rfg.deobf(libs.curse.thaumcraft.get().toString()))
     api(rfg.deobf(libs.curse.thaumicAug.get().toString()))

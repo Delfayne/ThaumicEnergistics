@@ -19,3 +19,4 @@ curse-ae2 = { module = "curse.maven:ae2-extended-life-570458", version = "514770
 
 # Misc
 curse-inventoryTweaks = { module = "curse.maven:inventory-tweaks-223094", version = "2482482" }
+curse-mouseTweaks = { module = "curse.maven:mouse-tweaks-60089", version = "3359843" }
