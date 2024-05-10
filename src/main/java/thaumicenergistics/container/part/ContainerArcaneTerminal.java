@@ -243,10 +243,10 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal implements IM
 
     @Override
     public void detectAndSendChanges() {
-        if (this.player instanceof IContainerListener)
-            this.sendVisInfo((IContainerListener) this.player);
-
         if (ForgeUtil.isServer()) {
+            if (this.player instanceof IContainerListener)
+                this.sendVisInfo((IContainerListener) this.player);
+
             if (!this.items.isEmpty()) {
                 try {
                     final IItemList<IAEItemStack> monitorCache = this.monitor.getStorageList();
@@ -276,6 +276,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal implements IM
                     AELog.debug(e);
                 }
             }
+
             super.detectAndSendChanges();
         }
     }
