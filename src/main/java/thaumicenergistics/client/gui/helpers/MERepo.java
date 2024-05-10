@@ -11,26 +11,25 @@ import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.core.AEConfig;
 import appeng.util.Platform;
-import invtweaks.api.InvTweaksAPI;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.config.PrefixSetting;
-import thaumicenergistics.integration.invtweaks.ThEInvTweaks;
 import thaumicenergistics.integration.jei.ThEJEI;
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.TCUtil;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import static appeng.api.config.Settings.SEARCH_TOOLTIPS;
 import static appeng.api.config.ViewItems.CRAFTABLE;
 import static appeng.api.config.ViewItems.STORED;
 import static appeng.api.config.YesNo.NO;
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.UNICODE_CASE;
 
@@ -172,7 +171,7 @@ public class MERepo<T extends IAEStack<T>> {
         final boolean searchByMod = searchMod;
         final boolean searchByAspect = searchAspect;
 
-        StreamSupport.stream(list.spliterator(), false)
+        newArrayList(list).stream()
                 .filter(t ->
                         !(this.getViewMode() == CRAFTABLE && !t.isCraftable()) ||
                                 !(this.getViewMode() == STORED && t.getStackSize() == 0)
@@ -190,14 +189,25 @@ public class MERepo<T extends IAEStack<T>> {
                     this.view.add(stack);
                 });
 
-        if (sortOrder == SortOrder.MOD)
-            this.sortByMod();
-        else if (sortOrder == SortOrder.NAME)
-            this.sortByName();
-        else if (sortOrder == SortOrder.AMOUNT)
-            this.sortByCount();
-        else if (sortOrder == SortOrder.INVTWEAKS)
-            this.sortByInvTweaks();
+        ThEItemSorters.setDirection(sortDir);
+        ThEItemSorters.init();
+
+        view.sort(getComparator(sortOrder));
+    }
+
+    private static Comparator<IAEStack<?>> getComparator(SortOrder sortBy) {
+        Comparator<IAEStack<?>> c;
+
+        if (sortBy == SortOrder.MOD) {
+            c = ThEItemSorters.CONFIG_BASED_SORT_BY_MOD;
+        } else if (sortBy == SortOrder.AMOUNT) {
+            c = ThEItemSorters.CONFIG_BASED_SORT_BY_SIZE;
+        } else if (sortBy == SortOrder.INVTWEAKS) {
+            c = ThEItemSorters.CONFIG_BASED_SORT_BY_INV_TWEAKS;
+        } else {
+            c = ThEItemSorters.CONFIG_BASED_SORT_BY_NAME;
+        }
+        return c;
     }
 
     public boolean searchByQuery(boolean searchSpecific,
@@ -344,34 +354,5 @@ public class MERepo<T extends IAEStack<T>> {
         final Pattern pf = p;
         Stream<Aspect> stream = aspects.aspects.keySet().stream();
         return stream.anyMatch(aspect -> pf.matcher(aspect.getName()).find());
-    }
-
-    private int checkSortDir(int i) {
-        return this.getSortDir() == SortDir.ASCENDING ? i : -i;
-    }
-
-    private void sortByName() {
-        this.view.sort((o1, o2) -> this.checkSortDir(AEUtil.getDisplayName(o1).compareToIgnoreCase(AEUtil.getDisplayName(o2))));
-    }
-
-    private void sortByMod() {
-        this.view.sort((o1, o2) -> {
-            int i = AEUtil.getModID(o1).compareToIgnoreCase(AEUtil.getModID(o2));
-            if (i == 0)
-                i = AEUtil.getDisplayName(o1).compareToIgnoreCase(AEUtil.getDisplayName(o2));
-            return this.checkSortDir(i);
-        });
-    }
-
-    private void sortByCount() {
-        this.view.sort((o1, o2) -> this.checkSortDir(Long.compare(AEUtil.getStackSize(o2), AEUtil.getStackSize(o1))));
-    }
-
-    private void sortByInvTweaks() {
-        InvTweaksAPI api = ThEInvTweaks.getApi();
-        if (api == null)
-            sortByName();
-        else
-            this.view.sort((o1, o2) -> this.checkSortDir(api.compareItems(o1.asItemStackRepresentation(), o2.asItemStackRepresentation())));
     }
 }
