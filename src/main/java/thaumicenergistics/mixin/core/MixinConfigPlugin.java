@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 public class MixinConfigPlugin implements IMixinConfigPlugin {
     private static final Logger LOGGER = LogManager.getLogger(Reference.NAME + " Mixin Loader");
 
-    private static final String PACKAGE_PREFIX = "thaumcraft.";
+    private static final String PACKAGE_PREFIX = "thaumicenergistics.";
 
     private static final ImmutableMap<String, Consumer<PotentialMixin>> MIXIN_PROCESSING_MAP = ImmutableMap.<String, Consumer<PotentialMixin>>builder()
             .put("Lorg/spongepowered/asm/mixin/Mixin;", p -> p.valid = true)

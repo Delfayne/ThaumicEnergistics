@@ -1,5 +1,6 @@
 package thaumicenergistics.client.gui.crafting;
 
+import appeng.client.gui.MathExpressionParser;
 import appeng.client.gui.implementations.GuiCraftAmount;
 import appeng.client.gui.widgets.GuiTabButton;
 import appeng.core.localization.GuiText;
@@ -54,8 +55,14 @@ public class GuiCraftAmountBridge extends GuiCraftAmount {
     }
 
     private int getAmountToCraft() {
-        return Integer.parseInt(
-                ((CraftAmountAccessor) this).getAmountToCraft().getText()
-        );
+        String craftQuantityExpression = ((CraftAmountAccessor) this).getAmountToCraft().getText();
+        double resultD = MathExpressionParser.parse(craftQuantityExpression);
+        int result;
+        if (resultD <= 0 || Double.isNaN(resultD)) {
+            result = 1;
+        } else {
+            result = (int) MathExpressionParser.round(resultD, 0);
+        }
+        return result;
     }
 }
