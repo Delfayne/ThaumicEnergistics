@@ -14,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumicenergistics.api.EssentiaStack;
 import thaumicenergistics.api.ThEApi;
@@ -28,6 +29,8 @@ import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ForgeUtil;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Optional;
 
 /**
  * @author BrockWS
@@ -67,11 +70,28 @@ public class PartEssentiaImportBus extends PartSharedEssentiaBus {
 
     @Override
     protected TickRateModulation doWork() {
-        if (!(this.getConnectedTE() instanceof IAspectContainer)) {
+
+        @Nullable
+        IAspectContainer container = Optional.ofNullable(this.getConnectedTE())
+                .filter(IAspectContainer.class::isInstance)
+                .map(IAspectContainer.class::cast)
+                .orElse(null);
+
+        if (container == null) {
             return TickRateModulation.IDLE;
         }
-        IAspectContainer container = (IAspectContainer) this.getConnectedTE();
-        for (Aspect aspect : container.getAspects().getAspects()) {
+
+        @Nullable
+        Aspect[] aspects = Optional.of(container)
+                .map(IAspectContainer::getAspects)
+                .map(AspectList::getAspects)
+                .orElse(null);
+
+        if (aspects == null) {
+            return TickRateModulation.IDLE;
+        }
+
+        for (Aspect aspect : aspects) {
             if (this.config.hasAspects() && !this.config.isInFilter(aspect)) // Check filter
                 continue;
             EssentiaStack inContainer = new EssentiaStack(aspect, Math.min(container.containerContains(aspect), this.calculateAmountToSend()));
