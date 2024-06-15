@@ -65,7 +65,7 @@ public class PacketUIAction implements IMessage {
         if (nbt.hasKey("index")) {
             this.index = nbt.getInteger("index");
         }
-        if (nbt.hasKey("Cnt")) {
+        if (nbt.hasKey("Count")) {
             AEApi.instance().storage().storageChannels().forEach(channel -> {
                 if (requestedStack == null) {
                     try {
