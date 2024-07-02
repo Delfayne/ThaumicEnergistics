@@ -65,11 +65,12 @@ public class PacketUIAction implements IMessage {
         if (nbt.hasKey("index")) {
             this.index = nbt.getInteger("index");
         }
-        if (nbt.hasKey("Cnt")) {
+        // AE2 items etc use Cnt, Essentia uses Count
+        if (nbt.hasKey("Cnt") || nbt.hasKey("Count")) {
             AEApi.instance().storage().storageChannels().forEach(channel -> {
                 if (requestedStack == null) {
                     try {
-                        this.requestedStack = channel.createFromNBT(nbt);
+                        requestedStack = channel.createFromNBT(nbt);
                     } catch (Throwable ignored) {
                         ThELog.error("Failed to read stack from packet, {}", channel.getClass().getSimpleName());
                     }
