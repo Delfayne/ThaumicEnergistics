@@ -5,6 +5,7 @@ import appeng.api.storage.data.IAEStack;
 import appeng.integration.Integrations;
 import appeng.integration.abstraction.IInvTweaks;
 import appeng.util.Platform;
+import thaumicenergistics.util.AEUtil;
 
 import java.util.Comparator;
 
@@ -15,7 +16,7 @@ public class ThEItemSorters {
     private static SortDir Direction = SortDir.ASCENDING;
 
     public static final Comparator<IAEStack<?>> CONFIG_BASED_SORT_BY_NAME = (o1, o2) -> {
-        final int cmp = Platform.getItemDisplayName(o1).compareToIgnoreCase(Platform.getItemDisplayName(o2));
+        final int cmp = AEUtil.getDisplayName(o1).compareToIgnoreCase(AEUtil.getDisplayName(o2));
         return applyDirection(cmp);
     };
 
