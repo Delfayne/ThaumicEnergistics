@@ -11,6 +11,8 @@ curse-top = { module = "curse.maven:the-one-probe-245211", version = "2667280" }
 
 # Dependencies
 curse-baubles = { module = "curse.maven:baubles-227083", version = "2518667" }
+curse-extraCells = { module = "curse.maven:extra-cells2-fork-485225", version = "3329212" }
+curse-mekanism = { module = "curse.maven:mekanism-268560", version = "2835175" }
 curse-thaumcraft = { module = "curse.maven:thaumcraft-223628", version = "2629023" }
 curse-thaumicJei = { module = "curse.maven:thaumic-jei-285492", version = "2705304" }
 curse-thaumicAug = { module = "curse.maven:thaumic-augmentation-319441", version = "5129455" }
