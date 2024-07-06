@@ -1,6 +1,7 @@
 package thaumicenergistics.network.packets;
 
-import appeng.api.AEApi;
+import appeng.api.storage.IStorageChannel;
+import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEStack;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -11,11 +12,16 @@ import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.container.ActionType;
 import thaumicenergistics.container.ContainerBase;
+import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ThELog;
 
 import java.io.IOException;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author BrockWS
@@ -25,6 +31,8 @@ public class PacketUIAction implements IMessage {
     public ActionType action;
     public IAEStack requestedStack;
     public int index = -1;
+    private static final List<IStorageChannel<? extends IAEStack<? extends IAEStack<?>>>> validChannels = newArrayList(AEUtil.getStorageChannel(IItemStorageChannel.class),
+            AEUtil.getStorageChannel(IEssentiaStorageChannel.class));
 
     public PacketUIAction() {
     }
@@ -67,7 +75,8 @@ public class PacketUIAction implements IMessage {
         }
         // AE2 items etc use Cnt, Essentia uses Count
         if (nbt.hasKey("Cnt") || nbt.hasKey("Count")) {
-            AEApi.instance().storage().storageChannels().forEach(channel -> {
+
+            validChannels.forEach(channel -> {
                 if (requestedStack == null) {
                     try {
                         requestedStack = channel.createFromNBT(nbt);
