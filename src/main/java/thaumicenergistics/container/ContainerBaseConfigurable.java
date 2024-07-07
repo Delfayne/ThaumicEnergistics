@@ -34,6 +34,10 @@ public abstract class ContainerBaseConfigurable extends ContainerBase implements
     @Override
     public void detectAndSendChanges() {
         if (ForgeUtil.isServer()) {
+            if (this.listeners.isEmpty()) {
+                // If the Player listener is not attached yet, no sense doing the checks
+                return;
+            }
             for (Settings setting : this.serverConfigManager.getSettings()) {
                 Enum<?> server = this.serverConfigManager.getSetting(setting);
                 Enum<?> client = this.clientConfigManager.getSetting(setting);
