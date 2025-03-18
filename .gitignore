@@ -2,7 +2,7 @@
 .idea/*
 *.iml
 !.idea/codeStyles
-!.idea/compiler.xml
+#!.idea/compiler.xml
 !.idea/encodings.xml
 !.idea/externalDependencies.xml
 !.idea/runConfigurations

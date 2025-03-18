@@ -15,8 +15,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+import thaumcraft.api.aspects.IAspectContainer;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.item.ItemPartBase;
 import thaumicenergistics.util.EssentiaFilter;
@@ -96,15 +98,41 @@ public abstract class PartSharedEssentiaBus extends PartBase implements IGridTic
         return 1;
     }
 
+    /**
+     * Converts the provided tile entity to an AspectContainer, else returns null.
+     * <p>
+     * The instance of check implicitly also filters out nulls.
+     */
+    @Nullable
+    public IAspectContainer toAspectContainer(TileEntity tileEntity) {
+        if (tileEntity instanceof IAspectContainer) {
+            return (IAspectContainer) tileEntity;
+        }
+
+        return null;
+    }
+
     @Nullable
     public TileEntity getConnectedTE() {
         TileEntity self = this.host.getTile();
         World w = self.getWorld();
         BlockPos pos = self.getPos().offset(this.side.getFacing());
-        if (w.getChunkProvider().getLoadedChunk(pos.getX() >> 4, pos.getZ() >> 4) != null) {
+        if (getLoadedChunk(w, pos) != null) {
             return w.getTileEntity(pos);
         }
         return null;
+    }
+
+    /**
+     * Gets the chunk that contains the BlockPos.
+     * <p>
+     * This uses bit-shifting down by 4, effectively divine by 16 to efficiently
+     * get the chunk co-ords from the block co-ords.
+     */
+    @Nullable
+    private static Chunk getLoadedChunk(World world, BlockPos pos) {
+        return world.getChunkProvider()
+                .getLoadedChunk(pos.getX() >> 4, pos.getZ() >> 4);
     }
 
     protected IEssentiaStorageChannel getChannel() {

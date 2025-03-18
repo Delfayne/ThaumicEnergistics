@@ -134,6 +134,7 @@ dependencies {
     api(rfg.deobf(libs.curse.mekanism.get().toString()))
     api(rfg.deobf(libs.curse.thaumcraft.get().toString()))
     api(rfg.deobf(libs.curse.thaumicAug.get().toString()))
+    api(rfg.deobf(libs.curse.thaumicWon.get().toString()))
     api(rfg.deobf(libs.curse.aaf.get().toString()))
     api(libs.curse.thaumicJei)
     api(rfg.deobf(libs.curse.ae2.get().toString()))

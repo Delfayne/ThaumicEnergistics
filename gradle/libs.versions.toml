@@ -16,6 +16,7 @@ curse-mekanism = { module = "curse.maven:mekanism-268560", version = "2835175" }
 curse-thaumcraft = { module = "curse.maven:thaumcraft-223628", version = "2629023" }
 curse-thaumicJei = { module = "curse.maven:thaumic-jei-285492", version = "2705304" }
 curse-thaumicAug = { module = "curse.maven:thaumic-augmentation-319441", version = "5129455" }
+curse-thaumicWon = { module = "curse.maven:thaumic-wonders-316704", version = "5364955" }
 curse-aaf = { module = "curse.maven:advanced-alchemical-furnace-960604", version = "5053524" }
 curse-ae2 = { module = "curse.maven:ae2-extended-life-570458", version = "5147702" }
 
