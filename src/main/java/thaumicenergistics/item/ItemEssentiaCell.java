@@ -5,6 +5,7 @@ import appeng.api.config.FuzzyMode;
 import appeng.api.implementations.items.IStorageCell;
 import appeng.api.storage.ICellInventoryHandler;
 import appeng.items.contents.CellUpgrades;
+import appeng.util.InventoryAdaptor;
 import com.google.common.base.Preconditions;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -64,25 +65,31 @@ public class ItemEssentiaCell extends ItemBase implements IStorageCell<IAEEssent
         if (!handler.getAvailableItems(this.getChannel().createList()).isEmpty()) // Only try to separate cell if empty
             return super.onItemRightClick(world, player, hand);
 
-        Optional<ItemStack> cellComponent = this.getComponentOfCell(held);
-        Optional<ItemStack> emptyCasing = AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1);
-        if (!cellComponent.isPresent() || !emptyCasing.isPresent())
+        Optional<ItemStack> cellComponentOptional = this.getComponentOfCell(held);
+        Optional<ItemStack> emptyCasingOptional = AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1);
+        if (!cellComponentOptional.isPresent() || !emptyCasingOptional.isPresent())
             return super.onItemRightClick(world, player, hand);
 
+        ItemStack emptyCasing = emptyCasingOptional.get();
+        ItemStack cellComponent = cellComponentOptional.get();
         InventoryPlayer inv = player.inventory;
+        InventoryAdaptor invAdaptor = InventoryAdaptor.getAdaptor(player);
 
         if (hand == EnumHand.MAIN_HAND) // Prevent accidental deletion when in off hand
             inv.setInventorySlotContents(inv.currentItem, ItemStack.EMPTY);
-        if (!inv.addItemStackToInventory(cellComponent.get()))
-            player.dropItem(cellComponent.get(), false);
 
-        if (!inv.addItemStackToInventory(emptyCasing.get()))
-            player.dropItem(emptyCasing.get(), false);
+        ItemStack cellRemainder = invAdaptor.addItems(cellComponent);
+        if (!cellRemainder.isEmpty())
+            player.dropItem(cellRemainder, false);
+
+        ItemStack casingRemainder = invAdaptor.addItems(emptyCasing);
+        if (!casingRemainder.isEmpty())
+            player.dropItem(emptyCasing, false);
 
         if (player.inventoryContainer != null)
             player.inventoryContainer.detectAndSendChanges();
 
-        return ActionResult.newResult(EnumActionResult.SUCCESS, ItemStack.EMPTY);
+        return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
     private Optional<ItemStack> getComponentOfCell(ItemStack stack) {
