@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+import thaumcraft.api.aspects.IAspectContainer;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.item.ItemPartBase;
 import thaumicenergistics.util.EssentiaFilter;
@@ -95,6 +96,20 @@ public abstract class PartSharedEssentiaBus extends PartBase implements IGridTic
     @Override
     public double getIdlePowerUsage() {
         return 1;
+    }
+
+    /**
+     * Converts the provided tile entity to an AspectContainer, else returns null.
+     * <p>
+     * The instance of check implicitly also filters out nulls.
+     */
+    @Nullable
+    public IAspectContainer toAspectContainer(TileEntity tileEntity) {
+        if (tileEntity instanceof IAspectContainer) {
+            return (IAspectContainer) tileEntity;
+        }
+
+        return null;
     }
 
     @Nullable

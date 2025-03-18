@@ -9,6 +9,7 @@ import appeng.api.parts.IPartCollisionHelper;
 import appeng.api.parts.IPartModel;
 import appeng.api.storage.IMEMonitor;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
@@ -27,6 +28,7 @@ import thaumicenergistics.util.ForgeUtil;
 import thaumicenergistics.util.ThELog;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author BrockWS
@@ -67,17 +69,21 @@ public class PartEssentiaExportBus extends PartSharedEssentiaBus {
     @Override
     public boolean canWork() {
         // We only want to run if there is something in the filter
-        return this.getConnectedTE() instanceof IAspectContainer
+        return toAspectContainer(getConnectedTE()) != null
                 && this.config.hasAspects();
     }
 
     @Override
     protected TickRateModulation doWork() {
-        if (!(this.getConnectedTE() instanceof IAspectContainer)) {
+
+        @Nullable
+        TileEntity connectedTE = getConnectedTE();
+
+        IAspectContainer container = toAspectContainer(connectedTE);
+
+        if (container == null) {
             return TickRateModulation.IDLE;
         }
-
-        IAspectContainer container = (IAspectContainer) this.getConnectedTE();
 
         IStorageGrid storageGrid = this.getGridNode().getGrid().getCache(IStorageGrid.class);
         IMEMonitor<IAEEssentiaStack> storage = storageGrid.getInventory(this.getChannel());
@@ -85,34 +91,38 @@ public class PartEssentiaExportBus extends PartSharedEssentiaBus {
         for (Aspect aspect : this.config) { // Gather a list of aspects that can be put into the container
             if (aspect == null)
                 continue;
-            if (container.doesContainerAccept(aspect) && AEUtil.doesStorageContain(storage, aspect)) { // Can container hold the aspect + does ae2 hold the aspect
-                // Simulate extract from ae2
-                IAEEssentiaStack extracted = storage.extractItems(AEUtil.getAEStackFromAspect(aspect, this.calculateAmountToSend()), Actionable.SIMULATE, this.source);
-                // Try add to container, since we can't simulate it
-                int notAdded;
-                // FIXME: Remove after issue fixed in TC.
-                // https://github.com/Nividica/ThaumicEnergistics/issues/361
-                // https://github.com/Azanor/thaumcraft-beta/issues/1604
-                try {
-                    notAdded = container.addToContainer(extracted.getAspect(), (int) extracted.getStackSize());
-                } catch (NullPointerException ignored) {
-                    if (!reportedWarning)
-                        ThELog.warn("container.addToContainer threw a NullPointerException. Thaumcraft Bug. Nividica/ThaumicEnergistics#361. Remove EssentiaExportBus from {}", this.hostTile != null ? this.hostTile.getPos() : this.getConnectedTE().getPos());
-                    reportedWarning = true;
-                    return TickRateModulation.IDLE;
-                }
-                reportedWarning = false;
-                // Couldn't contain it all
-                extracted.decStackSize(notAdded);
+            // Can container hold the aspect + does ae2 hold the aspect
+            if (!container.doesContainerAccept(aspect))
+                continue;
+            if (!AEUtil.doesStorageContain(storage, aspect))
+                continue;
 
-                if (extracted.getStackSize() == 0) {
-                    continue;
-                }
-
-                // Only remove from system the amount the container accepted
-                storage.extractItems(extracted, Actionable.MODULATE, this.source);
-                return TickRateModulation.FASTER; // Only do one every tick
+            // Simulate extract from ae2
+            IAEEssentiaStack extracted = storage.extractItems(AEUtil.getAEStackFromAspect(aspect, this.calculateAmountToSend()), Actionable.SIMULATE, this.source);
+            // Try to add to container, since we can't simulate it
+            int notAdded;
+            // FIXME: Remove after issue fixed in TC.
+            // https://github.com/Nividica/ThaumicEnergistics/issues/361
+            // https://github.com/Azanor/thaumcraft-beta/issues/1604
+            try {
+                notAdded = container.addToContainer(extracted.getAspect(), (int) extracted.getStackSize());
+            } catch (NullPointerException ignored) {
+                if (!reportedWarning)
+                    ThELog.warn("container.addToContainer threw a NullPointerException. Thaumcraft Bug. Nividica/ThaumicEnergistics#361. Remove EssentiaExportBus from {}", this.hostTile != null ? this.hostTile.getPos() : connectedTE.getPos());
+                reportedWarning = true;
+                return TickRateModulation.IDLE;
             }
+            reportedWarning = false;
+            // Couldn't contain it all
+            extracted.decStackSize(notAdded);
+
+            if (extracted.getStackSize() == 0) {
+                continue;
+            }
+
+            // Only remove from system the amount the container accepted
+            storage.extractItems(extracted, Actionable.MODULATE, this.source);
+            return TickRateModulation.FASTER; // Only do one every tick
         }
 
         return TickRateModulation.SLOWER;

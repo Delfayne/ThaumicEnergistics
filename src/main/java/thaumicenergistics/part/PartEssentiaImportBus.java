@@ -72,10 +72,7 @@ public class PartEssentiaImportBus extends PartSharedEssentiaBus {
     protected TickRateModulation doWork() {
 
         @Nullable
-        IAspectContainer container = Optional.ofNullable(this.getConnectedTE())
-                .filter(IAspectContainer.class::isInstance)
-                .map(IAspectContainer.class::cast)
-                .orElse(null);
+        IAspectContainer container = toAspectContainer(getConnectedTE());
 
         if (container == null) {
             return TickRateModulation.IDLE;
