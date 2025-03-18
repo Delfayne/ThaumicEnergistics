@@ -89,7 +89,7 @@ public class ItemEssentiaCell extends ItemBase implements IStorageCell<IAEEssent
         if (player.inventoryContainer != null)
             player.inventoryContainer.detectAndSendChanges();
 
-        return ActionResult.newResult(EnumActionResult.SUCCESS, ItemStack.EMPTY);
+        return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
     private Optional<ItemStack> getComponentOfCell(ItemStack stack) {
