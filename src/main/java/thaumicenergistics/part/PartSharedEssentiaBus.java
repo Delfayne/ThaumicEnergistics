@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
@@ -101,10 +102,22 @@ public abstract class PartSharedEssentiaBus extends PartBase implements IGridTic
         TileEntity self = this.host.getTile();
         World w = self.getWorld();
         BlockPos pos = self.getPos().offset(this.side.getFacing());
-        if (w.getChunkProvider().getLoadedChunk(pos.getX() >> 4, pos.getZ() >> 4) != null) {
+        if (getLoadedChunk(w, pos) != null) {
             return w.getTileEntity(pos);
         }
         return null;
+    }
+
+    /**
+     * Gets the chunk that contains the BlockPos.
+     * <p>
+     * This uses bit-shifting down by 4, effectively divine by 16 to efficiently
+     * get the chunk co-ords from the block co-ords.
+     */
+    @Nullable
+    private static Chunk getLoadedChunk(World world, BlockPos pos) {
+        return world.getChunkProvider()
+                .getLoadedChunk(pos.getX() >> 4, pos.getZ() >> 4);
     }
 
     protected IEssentiaStorageChannel getChannel() {
