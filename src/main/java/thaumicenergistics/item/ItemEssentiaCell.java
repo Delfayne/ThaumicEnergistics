@@ -64,17 +64,18 @@ public class ItemEssentiaCell extends ItemBase implements IStorageCell<IAEEssent
         if (!handler.getAvailableItems(this.getChannel().createList()).isEmpty()) // Only try to separate cell if empty
             return super.onItemRightClick(world, player, hand);
 
-        Optional<ItemStack> cellComponent = this.getComponentOfCell(held);
+        Optional<ItemStack> cellComponentOptional = this.getComponentOfCell(held);
         Optional<ItemStack> emptyCasing = AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1);
-        if (!cellComponent.isPresent() || !emptyCasing.isPresent())
+        if (!cellComponentOptional.isPresent() || !emptyCasing.isPresent())
             return super.onItemRightClick(world, player, hand);
 
+        ItemStack cellComponent = cellComponentOptional.get();
         InventoryPlayer inv = player.inventory;
 
         if (hand == EnumHand.MAIN_HAND) // Prevent accidental deletion when in off hand
             inv.setInventorySlotContents(inv.currentItem, ItemStack.EMPTY);
-        if (!inv.addItemStackToInventory(cellComponent.get()))
-            player.dropItem(cellComponent.get(), false);
+        if (!inv.addItemStackToInventory(cellComponent))
+            player.dropItem(cellComponent, false);
 
         if (!inv.addItemStackToInventory(emptyCasing.get()))
             player.dropItem(emptyCasing.get(), false);
