@@ -79,7 +79,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal implements IM
     private final IItemList<IAEItemStack> items = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
     protected IInventory craftingResult;
     protected SlotArcaneResult resultSlot;
-
+    private boolean isValidContainer = true;
 
     public ContainerArcaneTerminal(EntityPlayer player, PartSharedTerminal part) {
         super(player, part);
@@ -244,6 +244,12 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal implements IM
     @Override
     public void detectAndSendChanges() {
         if (ForgeUtil.isServer()) {
+            TileEntity terminal = part.getTile();
+            if (terminal != null
+                    && terminal.getWorld().getTileEntity(terminal.getPos()) != terminal) {
+                this.setValidContainer(false);
+            }
+
             if (this.player instanceof IContainerListener)
                 this.sendVisInfo((IContainerListener) this.player);
 
@@ -637,5 +643,24 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal implements IM
             return false;
         AspectList aspect = ((IEssentiaContainerItem) stack.getItem()).getAspects(stack);
         return ((IArcaneRecipe) recipe).getCrystals().getAmount(aspect.getAspects()[0]) > 0;
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer player) {
+        if (this.isValidContainer()) {
+            if (part.getTile() instanceof IInventory) {
+                return ((IInventory) part.getTile()).isUsableByPlayer(player);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isValidContainer() {
+        return isValidContainer;
+    }
+
+    public void setValidContainer(boolean validContainer) {
+        isValidContainer = validContainer;
     }
 }
