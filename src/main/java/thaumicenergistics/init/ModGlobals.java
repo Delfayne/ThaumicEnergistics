@@ -12,7 +12,8 @@ import thaumicenergistics.api.ThEApi;
  */
 public class ModGlobals {
 
-    public static final String MOD_DEPENDENCIES = "required-after:appliedenergistics2@[v0.56.0,);" +
+    public static final String MOD_DEPENDENCIES =
+            "required-after:appliedenergistics2@[v0.56.5,);" +
             "required-after:thaumcraft@[6.1.BETA26,);" +
             "after:thaumicjei;" +
             "after:inventorytweaks;" +
