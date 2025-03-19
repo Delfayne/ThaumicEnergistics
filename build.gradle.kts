@@ -199,7 +199,7 @@ tasks.withType<ProcessResources> {
     }
 }
 
-tasks.create<Jar>("apiJar") {
+tasks.register<Jar>("apiJar") {
     from(sourceSets.api.get().output)
     from(sourceSets.api.get().java)
     archiveClassifier = "api"
@@ -280,7 +280,7 @@ val javadocTask = tasks.withType<Javadoc> {
     isFailOnError = false
 }
 
-tasks.create<Jar>("javadocJar") {
+tasks.register<Jar>("javadocJar") {
     from("build/docs/javadoc")
     archiveClassifier = "javadoc"
     dependsOn(javadocTask)
