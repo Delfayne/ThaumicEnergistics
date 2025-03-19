@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
-import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
+import org.dv.minecraft.thaumicenergistics.Reference;
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.init.ModGUIs;

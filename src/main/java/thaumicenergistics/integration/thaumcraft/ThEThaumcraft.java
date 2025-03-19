@@ -9,7 +9,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
+import org.dv.minecraft.thaumicenergistics.Reference;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;

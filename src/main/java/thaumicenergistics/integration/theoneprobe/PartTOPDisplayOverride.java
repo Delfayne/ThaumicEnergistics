@@ -4,7 +4,7 @@ import mcjty.theoneprobe.api.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
+import org.dv.minecraft.thaumicenergistics.Reference;
 import thaumicenergistics.part.PartBase;
 
 /**

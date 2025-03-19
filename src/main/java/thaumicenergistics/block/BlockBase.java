@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
+import org.dv.minecraft.thaumicenergistics.Reference;
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.tile.TileBase;
 import thaumicenergistics.util.ForgeUtil;

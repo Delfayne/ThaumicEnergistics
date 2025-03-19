@@ -10,7 +10,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
-import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
+import org.dv.minecraft.thaumicenergistics.Reference;
 import thaumicenergistics.client.render.IThEModel;
 
 import javax.annotation.Nullable;

@@ -95,7 +95,7 @@ minecraft {
 // Generate a group.archives_base_name.Tags class
 tasks.injectTags.configure {
     // Change Tags class' name here:
-    outputClassName.set("${project.group}.${archiveBase}.Reference")
+    outputClassName.set("${project.group}.Reference")
 }
 
 repositories {

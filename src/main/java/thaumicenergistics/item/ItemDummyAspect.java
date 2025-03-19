@@ -8,7 +8,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
+import org.dv.minecraft.thaumicenergistics.Reference;
 import thaumcraft.api.aspects.Aspect;
 import thaumicenergistics.client.render.DummyAspectRenderer;
 import thaumicenergistics.client.render.IThEModel;

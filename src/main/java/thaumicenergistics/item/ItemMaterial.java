@@ -6,7 +6,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
+import org.dv.minecraft.thaumicenergistics.Reference;
 import thaumicenergistics.api.IThEUpgrade;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.client.render.IThEModel;

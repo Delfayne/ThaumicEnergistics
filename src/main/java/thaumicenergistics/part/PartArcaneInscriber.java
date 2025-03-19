@@ -4,7 +4,7 @@ import appeng.api.parts.IPartModel;
 import appeng.api.parts.PartItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
+import org.dv.minecraft.thaumicenergistics.Reference;
 import thaumicenergistics.init.ModGUIs;
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.integration.appeng.ThEPartModel;

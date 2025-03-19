@@ -1,7 +1,7 @@
 package thaumicenergistics.integration.theoneprobe;
 
 import mcjty.theoneprobe.api.IProbeInfoProvider;
-import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
+import org.dv.minecraft.thaumicenergistics.Reference;
 import thaumicenergistics.api.IThELangKey;
 
 import static mcjty.theoneprobe.api.IProbeInfo.ENDLOC;
