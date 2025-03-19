@@ -1,5 +1,7 @@
 package thaumicenergistics.integration.thaumcraft;
 
+import baubles.api.BaublesApi;
+import baubles.api.cap.IBaublesItemHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -55,7 +57,18 @@ public class TCCraftingManager {
             discount += gear.getVisDiscount(stack, player);
         }
 
-        // TODO: Baubles
+        IBaublesItemHandler baublesHandler = BaublesApi.getBaublesHandler(player);
+        for (int index = 0; index < baublesHandler.getSlots(); index++) {
+            ItemStack bauble = baublesHandler.getStackInSlot(index);
+            if (bauble.isEmpty()) {
+                continue;
+            }
+            if (!(bauble.getItem() instanceof IVisDiscountGear)) {
+                continue;
+            }
+            IVisDiscountGear visBauble = (IVisDiscountGear) bauble.getItem();
+            discount += visBauble.getVisDiscount(bauble, player);
+        }
 
         int level1 = 0;
         int level2 = 0;
