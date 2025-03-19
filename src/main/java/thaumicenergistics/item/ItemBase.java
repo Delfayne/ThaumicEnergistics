@@ -1,7 +1,7 @@
 package thaumicenergistics.item;
 
 import net.minecraft.item.Item;
-import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
+import org.dv.minecraft.thaumicenergistics.Reference;
 import thaumicenergistics.init.ModGlobals;
 
 /**

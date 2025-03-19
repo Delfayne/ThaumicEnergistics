@@ -9,7 +9,7 @@ plugins {
     id("maven-publish")
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
     id("eclipse")
-    id("com.gtnewhorizons.retrofuturagradle") version "1.3.26"
+    id("com.gtnewhorizons.retrofuturagradle") version "1.4.5"
     id("com.matthewprenger.cursegradle") version "1.4.0"
 }
 
@@ -95,7 +95,7 @@ minecraft {
 // Generate a group.archives_base_name.Tags class
 tasks.injectTags.configure {
     // Change Tags class' name here:
-    outputClassName.set("${project.group}.${archiveBase}.Reference")
+    outputClassName.set("${project.group}.Reference")
 }
 
 repositories {
@@ -199,7 +199,7 @@ tasks.withType<ProcessResources> {
     }
 }
 
-tasks.create<Jar>("apiJar") {
+tasks.register<Jar>("apiJar") {
     from(sourceSets.api.get().output)
     from(sourceSets.api.get().java)
     archiveClassifier = "api"
@@ -280,7 +280,7 @@ val javadocTask = tasks.withType<Javadoc> {
     isFailOnError = false
 }
 
-tasks.create<Jar>("javadocJar") {
+tasks.register<Jar>("javadocJar") {
     from("build/docs/javadoc")
     archiveClassifier = "javadoc"
     dependsOn(javadocTask)

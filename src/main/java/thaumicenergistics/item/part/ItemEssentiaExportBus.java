@@ -5,7 +5,7 @@ import appeng.api.parts.IPart;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
-import org.dv.minecraft.thaumicenergistics.thaumicenergistics.Reference;
+import org.dv.minecraft.thaumicenergistics.Reference;
 import thaumicenergistics.item.ItemPartBase;
 import thaumicenergistics.part.PartEssentiaExportBus;
 
