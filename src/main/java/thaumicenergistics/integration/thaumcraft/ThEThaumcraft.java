@@ -14,6 +14,7 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.blocks.BlocksTC;
+import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
 import thaumcraft.api.crafting.ShapelessArcaneRecipe;
@@ -21,6 +22,7 @@ import thaumcraft.api.items.ItemsTC;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ScanningManager;
 import thaumcraft.api.research.theorycraft.TheorycraftManager;
+import thaumicenergistics.ThaumicEnergisticsApi;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.integration.IThEIntegration;
@@ -70,6 +72,7 @@ public class ThEThaumcraft implements IThEIntegration {
         else if (AEApi.instance().definitions().blocks().drive().maybeBlock().isPresent())
             TheorycraftManager.registerAid(new AidMEDrive());
         this.registerArcaneRecipes();
+        this.registerCrucibleRecipes();
         this.registerInfusionRecipes();
     }
 
@@ -82,6 +85,31 @@ public class ThEThaumcraft implements IThEIntegration {
 
         List<ItemStack> netherQuartz = new ArrayList<>(Arrays.asList(CraftingHelper.getIngredient("gemQuartz").getMatchingStacks()));
         netherQuartz.add(AEApi.instance().definitions().materials().purifiedNetherQuartzCrystal().maybeStack(1).orElse(ItemStack.EMPTY));
+
+        ThEApi.instance().items().ironGear().maybeStack(1).ifPresent(stack ->
+                ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "iron_gear"), new ShapedArcaneRecipe(
+                        recipeGroup,
+                        "GEARBOX@1",
+                        5,
+                        new AspectList(),
+                        stack,
+                        " I ",
+                        " G ",
+                        "I I",
+                        'I', "ingotIron",
+                        'G', "gearWood"
+                )));
+        ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "iron_gearbox"), new ShapedArcaneRecipe(
+                recipeGroup,
+                "GEARBOX@1",
+                25,
+                new AspectList(),
+                ThaumicEnergisticsApi.instance().blocks().ironGearbox().maybeBlock().get(),
+                "SGS",
+                "GGG",
+                "SGS",
+                'S', "cobblestone",
+                'G', "gearIron"));
 
         ThEApi.instance().items().coalescenceCore().maybeStack(2).ifPresent(stack ->
                 ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "coalescence_core"), new ShapedArcaneRecipe(
@@ -321,6 +349,16 @@ public class ThEThaumcraft implements IThEIntegration {
                         'P',
                         AEApi.instance().definitions().materials().calcProcessor().maybeStack(1).orElse(ItemStack.EMPTY)
                 )));
+    }
+
+    private void registerCrucibleRecipes(){
+        ThEApi.instance().blocks().thaumiumGearbox().maybeStack(1).ifPresent(box ->
+                ThaumcraftApi.addCrucibleRecipe(new ResourceLocation(Reference.MOD_ID, "thaumium_gearbox"), new CrucibleRecipe(
+                        "GEARBOX@2",
+                        box,
+                        ThEApi.instance().blocks().ironGearbox().maybeStack(1).get(),
+                        new AspectList().add(Aspect.METAL, 16).add(Aspect.MAGIC, 16)))
+        );
     }
 
     private void registerInfusionRecipes() {

@@ -67,6 +67,7 @@ public class ThEItems implements IThEItems {
     private final IItemDefinition itemUpgradeArcane;
     private final IItemDefinition itemKnowledgeCore;
     private final IItemDefinition itemBlankKnowledgeCore;
+    public final IItemDefinition ironGear;
     private final IItemDefinition itemDummyAspect;
 
     public ThEItems() {
@@ -90,6 +91,7 @@ public class ThEItems implements IThEItems {
         this.itemUpgradeArcane = ThEItems.createItem(new ItemMaterial("upgrade_arcane"));
         this.itemKnowledgeCore = ThEItems.createItem(new ItemKnowledgeCore("knowledge_core", false));
         this.itemBlankKnowledgeCore = ThEItems.createItem(new ItemKnowledgeCore("blank_knowledge_core", true));
+        this.ironGear = ThEItems.createItem(new ItemMaterial("iron_gear"));
         this.itemDummyAspect = ThEItems.createItem(new ItemDummyAspect());
     }
 
@@ -196,5 +198,10 @@ public class ThEItems implements IThEItems {
     @Override
     public IItemDefinition dummyAspect() {
         return this.itemDummyAspect;
+    }
+
+    @Override
+    public IItemDefinition ironGear() {
+        return this.ironGear;
     }
 }

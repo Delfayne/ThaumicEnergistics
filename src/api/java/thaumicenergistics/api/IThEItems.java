@@ -56,6 +56,7 @@ public interface IThEItems {
     IItemDefinition knowledgeCore();
 
     IItemDefinition blankKnowledgeCore();
+    IItemDefinition ironGear();
 
     // Other
 

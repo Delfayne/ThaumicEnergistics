@@ -527,6 +527,52 @@
           ]
         }
       ]
+    },
+    {
+      "key": "GEARBOX",
+      "name": "research.gearbox.title",
+      "icons": [
+        "thaumicenergistics:iron_gear"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        -2,
+        3
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "BASEENERGISTICS"
+      ],
+      "stages": [
+        {
+          "text": "research.gearbox.stage.1",
+          "required_item": ["appliedenergistics2:material;1;40"],
+          "required_knowledge": [
+            "OBSERVATION;THAUMICENERGISTICS;1"
+          ]
+        },
+        {
+          "text": "research.gearbox.stage.2",
+          "required_knowledge": [
+            "THEORY;THAUMICENERGISTICS;1"
+          ],
+          "required_item": ["thaumcraft:mind;1;1"],
+          "recipes": [
+            "thaumicenergistics:iron_gear",
+            "thaumicenergistics:iron_gearbox"
+          ]
+        },
+        {
+          "text": "research.gearbox.stage.3",
+          "recipes": [
+            "thaumicenergistics:iron_gear",
+            "thaumicenergistics:iron_gearbox",
+            "thaumicenergistics:thaumium_gearbox"
+          ]
+        }
+      ]
     }
   ]
 }

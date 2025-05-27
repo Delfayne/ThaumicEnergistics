@@ -14,4 +14,8 @@ public interface IThEBlocks {
     ITileDefinition infusionProvider();
 
     ITileDefinition arcaneAssembler();
+
+    ITileDefinition thaumiumGearbox();
+
+    ITileDefinition ironGearbox();
 }
