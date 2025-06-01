@@ -21,6 +21,14 @@ public interface IThEItems {
 
     IItemDefinition essentiaCell64k();
 
+    IItemDefinition essentiaCell256k();
+
+    IItemDefinition essentiaCell1024k();
+
+    IItemDefinition essentiaCell4096k();
+
+    IItemDefinition essentiaCell16384k();
+
     IItemDefinition essentiaCellCreative();
 
     // Parts
@@ -51,12 +59,22 @@ public interface IThEItems {
 
     IItemDefinition essentiaComponent64k();
 
+    IItemDefinition essentiaComponent256k();
+
+    IItemDefinition essentiaComponent1024k();
+
+    IItemDefinition essentiaComponent4096k();
+
+    IItemDefinition essentiaComponent16384k();
+
     IItemDefinition upgradeArcane();
 
     IItemDefinition knowledgeCore();
 
     IItemDefinition blankKnowledgeCore();
+
     IItemDefinition ironGear();
+    IItemDefinition advancedEssentiaHousing();
 
     // Other
 

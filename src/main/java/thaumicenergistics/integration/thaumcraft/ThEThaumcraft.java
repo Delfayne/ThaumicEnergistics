@@ -232,6 +232,94 @@ public class ThEThaumcraft implements IThEIntegration {
             this.addFakeCrafting(new ResourceLocation(Reference.MOD_ID, "cells/essentia_cell_64k"));
         });
 
+        ThEApi.instance().items().essentiaComponent256k().maybeStack(1).ifPresent(stack -> {
+            ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "essentia_component_256k"), new ShapedArcaneRecipe(
+                    recipeGroup,
+                    "ESSENTIASTORAGEADVANCED@2",
+                    100,
+                    new AspectList(),
+                    stack,
+                    "SPS",
+                    "CGC",
+                    "SCS",
+                    'S',
+                    ItemsTC.salisMundus,
+                    'C',
+                    ThEApi.instance().items().essentiaComponent64k().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'P',
+                    AEApi.instance().definitions().materials().engProcessor().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'G',
+                    AEApi.instance().definitions().materials().logicProcessor().maybeStack(1).orElse(ItemStack.EMPTY)
+            ));
+            this.addFakeCrafting(new ResourceLocation(Reference.MOD_ID, "cells/essentia_cell_256k"));
+        });
+
+        ThEApi.instance().items().essentiaComponent1024k().maybeStack(1).ifPresent(stack -> {
+            ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "essentia_component_1024k"), new ShapedArcaneRecipe(
+                    recipeGroup,
+                    "ESSENTIASTORAGEADVANCED@2",
+                    100,
+                    new AspectList(),
+                    stack,
+                    "SPS",
+                    "CGC",
+                    "SCS",
+                    'S',
+                    ItemsTC.salisMundus,
+                    'C',
+                    ThEApi.instance().items().essentiaComponent256k().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'P',
+                    AEApi.instance().definitions().materials().engProcessor().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'G',
+                    AEApi.instance().definitions().materials().logicProcessor().maybeStack(1).orElse(ItemStack.EMPTY)
+            ));
+            this.addFakeCrafting(new ResourceLocation(Reference.MOD_ID, "cells/essentia_cell_1024k"));
+        });
+
+        ThEApi.instance().items().essentiaComponent4096k().maybeStack(1).ifPresent(stack -> {
+            ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "essentia_component_4096k"), new ShapedArcaneRecipe(
+                    recipeGroup,
+                    "ESSENTIASTORAGEADVANCED@2",
+                    100,
+                    new AspectList(),
+                    stack,
+                    "SPS",
+                    "CGC",
+                    "SCS",
+                    'S',
+                    ItemsTC.salisMundus,
+                    'C',
+                    ThEApi.instance().items().essentiaComponent1024k().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'P',
+                    AEApi.instance().definitions().materials().engProcessor().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'G',
+                    AEApi.instance().definitions().materials().logicProcessor().maybeStack(1).orElse(ItemStack.EMPTY)
+            ));
+            this.addFakeCrafting(new ResourceLocation(Reference.MOD_ID, "cells/essentia_cell_4096k"));
+        });
+
+        ThEApi.instance().items().essentiaComponent16384k().maybeStack(1).ifPresent(stack -> {
+            ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "essentia_component_16384k"), new ShapedArcaneRecipe(
+                    recipeGroup,
+                    "ESSENTIASTORAGEADVANCED@2",
+                    100,
+                    new AspectList(),
+                    stack,
+                    "SPS",
+                    "CGC",
+                    "SCS",
+                    'S',
+                    ItemsTC.salisMundus,
+                    'C',
+                    ThEApi.instance().items().essentiaComponent4096k().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'P',
+                    AEApi.instance().definitions().materials().engProcessor().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'G',
+                    AEApi.instance().definitions().materials().logicProcessor().maybeStack(1).orElse(ItemStack.EMPTY)
+            ));
+            this.addFakeCrafting(new ResourceLocation(Reference.MOD_ID, "cells/essentia_cell_16384k"));
+        });
+
         ThEApi.instance().items().essentiaExportBus().maybeStack(1).ifPresent(stack ->
                 ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "essentia_export_bus"), new ShapedArcaneRecipe(
                         recipeGroup,
@@ -351,7 +439,7 @@ public class ThEThaumcraft implements IThEIntegration {
                 )));
     }
 
-    private void registerCrucibleRecipes(){
+    private void registerCrucibleRecipes() {
         ThEApi.instance().blocks().thaumiumGearbox().maybeStack(1).ifPresent(box ->
                 ThaumcraftApi.addCrucibleRecipe(new ResourceLocation(Reference.MOD_ID, "thaumium_gearbox"), new CrucibleRecipe(
                         "GEARBOX@2",

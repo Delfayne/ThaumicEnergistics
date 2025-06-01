@@ -9,6 +9,7 @@ tile.thaumicenergistics.arcane_assembler.name=Arcane Assembler
 
 # Items
 item.thaumicenergistics.iron_gear.name=Iron Gear
+item.thaumicenergistics.essentia_housing_advanced.name=ME Essentia Storage Housing
 item.thaumicenergistics.diffusion_core.name=Diffusion Core
 item.thaumicenergistics.coalescence_core.name=Coalescence Core
 
@@ -16,11 +17,19 @@ item.thaumicenergistics.essentia_component_1k.name=1k ME Essentia Storage Compon
 item.thaumicenergistics.essentia_component_4k.name=4k ME Essentia Storage Component
 item.thaumicenergistics.essentia_component_16k.name=16k ME Essentia Storage Component
 item.thaumicenergistics.essentia_component_64k.name=64k ME Essentia Storage Component
+item.thaumicenergistics.essentia_component_256k.name=256k ME Essentia Storage Component
+item.thaumicenergistics.essentia_component_1024k.name=1024k ME Essentia Storage Component
+item.thaumicenergistics.essentia_component_4096k.name=4096k ME Essentia Storage Component
+item.thaumicenergistics.essentia_component_16384k.name=16384k ME Essentia Storage Component
 
 item.thaumicenergistics.essentia_cell_1k.name=1k ME Essentia Storage Cell
 item.thaumicenergistics.essentia_cell_4k.name=4k ME Essentia Storage Cell
 item.thaumicenergistics.essentia_cell_16k.name=16k ME Essentia Storage Cell
 item.thaumicenergistics.essentia_cell_64k.name=64k ME Essentia Storage Cell
+item.thaumicenergistics.essentia_cell_256k.name=256k ME Essentia Storage Cell
+item.thaumicenergistics.essentia_cell_1024k.name=1024k ME Essentia Storage Cell
+item.thaumicenergistics.essentia_cell_4096k.name=4096k ME Essentia Storage Cell
+item.thaumicenergistics.essentia_cell_16384k.name=16384k ME Essentia Storage Cell
 item.thaumicenergistics.essentia_cell_creative.name=Creative ME Essentia Storage Cell
 
 item.thaumicenergistics.essentia_import.name=ME Essentia Import Bus
@@ -120,6 +129,10 @@ research.essentiastorage16k.stage.2=Using another type of processor, I can now s
 research.essentiastorage64k.title=Massive Digisentia Storage
 research.essentiastorage64k.stage.1=My current storage needs are not enough, I hope I can still combine storage components to create a larger one while taking up the same space...
 research.essentiastorage64k.stage.2=I can now store massive amounts of essentia on a storage component, but I feel that this is the limit of the technology
+# Advanced
+research.essentiastorageadvanced.title=Advanced Digisentia Storage
+research.essentiastorageadvanced.stage.1=(WIP) My current storage needs are not enough, I hope I can still combine storage components to create a larger one while taking up the same space...
+research.essentiastorageadvanced.stage.2=(WIP) I can now store massive amounts of essentia on a storage component, but I feel that this is the limit of the technology
 
 # Research Essentia Buses
 research.essentiabuses.title=Digisentia Transportation

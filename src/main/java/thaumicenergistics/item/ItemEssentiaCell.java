@@ -3,9 +3,14 @@ package thaumicenergistics.item;
 import appeng.api.AEApi;
 import appeng.api.config.FuzzyMode;
 import appeng.api.implementations.items.IStorageCell;
+import appeng.api.implementations.items.IUpgradeModule;
 import appeng.api.storage.ICellInventoryHandler;
+import appeng.api.storage.IMEInventoryHandler;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IItemList;
 import appeng.items.contents.CellUpgrades;
 import appeng.util.InventoryAdaptor;
+import appeng.util.Platform;
 import com.google.common.base.Preconditions;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -53,43 +58,60 @@ public class ItemEssentiaCell extends ItemBase implements IStorageCell<IAEEssent
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        if (!player.isSneaking())
-            return super.onItemRightClick(world, player, hand);
-        ItemStack held = player.getHeldItem(hand);
-        if (held.isEmpty())
-            return super.onItemRightClick(world, player, hand);
-        ICellInventoryHandler<IAEEssentiaStack> handler = AEApi.instance().registries().cell().getCellInventory(held, null, this.getChannel());
-        if (handler == null)
-            throw new NullPointerException("Couldn't get ICellInventoryHandler for Essentia Cell");
-        if (!handler.getAvailableItems(this.getChannel().createList()).isEmpty()) // Only try to separate cell if empty
-            return super.onItemRightClick(world, player, hand);
+    public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+        this.disassembleDrive(player.getHeldItem(hand), world, player);
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+    }
 
-        Optional<ItemStack> cellComponentOptional = this.getComponentOfCell(held);
-        Optional<ItemStack> emptyCasingOptional = AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1);
-        if (!cellComponentOptional.isPresent() || !emptyCasingOptional.isPresent())
-            return super.onItemRightClick(world, player, hand);
+    private boolean disassembleDrive(final ItemStack stack, final World world, final EntityPlayer player) {
+        if (player.isSneaking()) {
+            if (Platform.isClient()) {
+                return false;
+            }
 
-        ItemStack emptyCasing = emptyCasingOptional.get();
-        ItemStack cellComponent = cellComponentOptional.get();
-        InventoryPlayer inv = player.inventory;
-        InventoryAdaptor invAdaptor = InventoryAdaptor.getAdaptor(player);
+            Optional<ItemStack> cellComponentOptional = this.getComponentOfCell(stack);
+            Optional<ItemStack> emptyCasingOptional = this.getComponentOfCasing(stack);
+            if (cellComponentOptional.isPresent() && emptyCasingOptional.isPresent()) {
+                final InventoryPlayer playerInventory = player.inventory;
+                final IMEInventoryHandler inv = AEApi.instance().registries().cell().getCellInventory(stack, null, this.getChannel());
+                if (inv != null && playerInventory.getCurrentItem() == stack) {
+                    final InventoryAdaptor ia = InventoryAdaptor.getAdaptor(player);
+                    final IItemList<IAEItemStack> list = inv.getAvailableItems(this.getChannel().createList());
+                    if (list.isEmpty() && ia != null) {
+                        playerInventory.setInventorySlotContents(playerInventory.currentItem, ItemStack.EMPTY);
 
-        if (hand == EnumHand.MAIN_HAND) // Prevent accidental deletion when in off hand
-            inv.setInventorySlotContents(inv.currentItem, ItemStack.EMPTY);
+                        // drop core
+                        final ItemStack extraB = ia.addItems(cellComponentOptional.get());
+                        if (!extraB.isEmpty()) {
+                            player.dropItem(extraB, false);
+                        }
 
-        ItemStack cellRemainder = invAdaptor.addItems(cellComponent);
-        if (!cellRemainder.isEmpty())
-            player.dropItem(cellRemainder, false);
+                        // drop upgrades
+                        final IItemHandler upgradesInventory = this.getUpgradesInventory(stack);
+                        for (int upgradeIndex = 0; upgradeIndex < upgradesInventory.getSlots(); upgradeIndex++) {
+                            final ItemStack upgradeStack = upgradesInventory.getStackInSlot(upgradeIndex);
+                            final ItemStack leftStack = ia.addItems(upgradeStack);
+                            if (!leftStack.isEmpty() && upgradeStack.getItem() instanceof IUpgradeModule) {
+                                player.dropItem(upgradeStack, false);
+                            }
+                        }
 
-        ItemStack casingRemainder = invAdaptor.addItems(emptyCasing);
-        if (!casingRemainder.isEmpty())
-            player.dropItem(emptyCasing, false);
+                        // drop empty storage cell case
+                        final ItemStack extraA = ia.addItems(emptyCasingOptional.get());
+                        if (!extraA.isEmpty()) {
+                            player.dropItem(extraA, false);
+                        }
 
-        if (player.inventoryContainer != null)
-            player.inventoryContainer.detectAndSendChanges();
+                        if (player.inventoryContainer != null) {
+                            player.inventoryContainer.detectAndSendChanges();
+                        }
 
-        return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private Optional<ItemStack> getComponentOfCell(ItemStack stack) {
@@ -106,6 +128,35 @@ public class ItemEssentiaCell extends ItemBase implements IStorageCell<IAEEssent
                 return ThEApi.instance().items().essentiaComponent16k().maybeStack(1);
             case "64k":
                 return ThEApi.instance().items().essentiaComponent64k().maybeStack(1);
+            case "256k":
+                return ThEApi.instance().items().essentiaComponent256k().maybeStack(1);
+            case "1024k":
+                return ThEApi.instance().items().essentiaComponent1024k().maybeStack(1);
+            case "4096k":
+                return ThEApi.instance().items().essentiaComponent4096k().maybeStack(1);
+            case "16384k":
+                return ThEApi.instance().items().essentiaComponent16384k().maybeStack(1);
+            default:
+                return Optional.empty();
+        }
+    }
+
+    private Optional<ItemStack> getComponentOfCasing(ItemStack stack) {
+        Preconditions.checkNotNull(stack);
+        Preconditions.checkNotNull(stack.getItem());
+        Preconditions.checkNotNull(stack.getItem().getRegistryName());
+        Preconditions.checkNotNull(stack.getItem().getRegistryName().getPath());
+        switch (stack.getItem().getRegistryName().getPath().split("_")[2]) {
+            case "1k":
+            case "4k":
+            case "16k":
+            case "64k":
+                return AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1);
+            case "256k":
+            case "1024k":
+            case "4096k":
+            case "16384k":
+                return ThEApi.instance().items().advancedEssentiaHousing().maybeStack(1);
             default:
                 return Optional.empty();
         }

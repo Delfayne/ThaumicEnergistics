@@ -51,6 +51,11 @@ public class ThEItems implements IThEItems {
     private final IItemDefinition itemEssentiaCell4k;
     private final IItemDefinition itemEssentiaCell16k;
     private final IItemDefinition itemEssentiaCell64k;
+    private final IItemDefinition itemEssentiaCell256k;
+    private final IItemDefinition itemEssentiaCell1024k;
+    private final IItemDefinition itemEssentiaCell4096k;
+    private final IItemDefinition itemEssentiaCell16384k;
+
     private final IItemDefinition itemEssentiaCellCreative;
     private final IItemDefinition itemEssentiaImportBus;
     private final IItemDefinition itemEssentiaExportBus;
@@ -64,10 +69,15 @@ public class ThEItems implements IThEItems {
     private final IItemDefinition itemEssentiaComponent4k;
     private final IItemDefinition itemEssentiaComponent16k;
     private final IItemDefinition itemEssentiaComponent64k;
+    private final IItemDefinition itemEssentiaComponent256k;
+    private final IItemDefinition itemEssentiaComponent1024k;
+    private final IItemDefinition itemEssentiaComponent4096k;
+    private final IItemDefinition itemEssentiaComponent16384k;
     private final IItemDefinition itemUpgradeArcane;
     private final IItemDefinition itemKnowledgeCore;
     private final IItemDefinition itemBlankKnowledgeCore;
     public final IItemDefinition ironGear;
+    public final IItemDefinition advancedEssentiaHousing;
     private final IItemDefinition itemDummyAspect;
 
     public ThEItems() {
@@ -75,6 +85,11 @@ public class ThEItems implements IThEItems {
         this.itemEssentiaCell4k = ThEItems.createItem(new ItemEssentiaCell("4k", 1024 * 4, 12));
         this.itemEssentiaCell16k = ThEItems.createItem(new ItemEssentiaCell("16k", 1024 * 16, 12));
         this.itemEssentiaCell64k = ThEItems.createItem(new ItemEssentiaCell("64k", 1024 * 64, 12));
+        this.itemEssentiaCell256k = ThEItems.createItem(new ItemEssentiaCell("256k", 1024 * 256, 32));
+        this.itemEssentiaCell1024k = ThEItems.createItem(new ItemEssentiaCell("1024k", 1024 * 1024, 64));
+        this.itemEssentiaCell4096k = ThEItems.createItem(new ItemEssentiaCell("4096k", 1024 * 4096, 64));
+        this.itemEssentiaCell16384k = ThEItems.createItem(new ItemEssentiaCell("16384k", 1024 * 16384, 128));
+
         this.itemEssentiaCellCreative = ThEItems.createItem(new ItemCreativeEssentiaCell());
         this.itemEssentiaImportBus = ThEItems.createItem(new ItemEssentiaImportBus("essentia_import"));
         this.itemEssentiaExportBus = ThEItems.createItem(new ItemEssentiaExportBus("essentia_export"));
@@ -88,10 +103,16 @@ public class ThEItems implements IThEItems {
         this.itemEssentiaComponent4k = ThEItems.createItem(new ItemMaterial("essentia_component_4k"));
         this.itemEssentiaComponent16k = ThEItems.createItem(new ItemMaterial("essentia_component_16k"));
         this.itemEssentiaComponent64k = ThEItems.createItem(new ItemMaterial("essentia_component_64k"));
+        this.itemEssentiaComponent256k = ThEItems.createItem(new ItemMaterial("essentia_component_256k"));
+        this.itemEssentiaComponent1024k = ThEItems.createItem(new ItemMaterial("essentia_component_1024k"));
+        this.itemEssentiaComponent4096k = ThEItems.createItem(new ItemMaterial("essentia_component_4096k"));
+        this.itemEssentiaComponent16384k = ThEItems.createItem(new ItemMaterial("essentia_component_16384k"));
+
         this.itemUpgradeArcane = ThEItems.createItem(new ItemMaterial("upgrade_arcane"));
         this.itemKnowledgeCore = ThEItems.createItem(new ItemKnowledgeCore("knowledge_core", false));
         this.itemBlankKnowledgeCore = ThEItems.createItem(new ItemKnowledgeCore("blank_knowledge_core", true));
         this.ironGear = ThEItems.createItem(new ItemMaterial("iron_gear"));
+        this.advancedEssentiaHousing = ThEItems.createItem(new ItemMaterial("essentia_housing_advanced"));
         this.itemDummyAspect = ThEItems.createItem(new ItemDummyAspect());
     }
 
@@ -113,6 +134,46 @@ public class ThEItems implements IThEItems {
     @Override
     public IItemDefinition essentiaCell64k() {
         return this.itemEssentiaCell64k;
+    }
+
+    @Override
+    public IItemDefinition essentiaCell256k() {
+        return this.itemEssentiaCell256k;
+    }
+
+    @Override
+    public IItemDefinition essentiaCell1024k() {
+        return this.itemEssentiaCell1024k;
+    }
+
+    @Override
+    public IItemDefinition essentiaCell4096k() {
+        return this.itemEssentiaCell4096k;
+    }
+
+    @Override
+    public IItemDefinition essentiaCell16384k() {
+        return this.itemEssentiaCell16384k;
+    }
+
+    @Override
+    public IItemDefinition essentiaComponent256k() {
+        return this.itemEssentiaComponent256k;
+    }
+
+    @Override
+    public IItemDefinition essentiaComponent1024k() {
+        return this.itemEssentiaComponent1024k;
+    }
+
+    @Override
+    public IItemDefinition essentiaComponent4096k() {
+        return this.itemEssentiaComponent4096k;
+    }
+
+    @Override
+    public IItemDefinition essentiaComponent16384k() {
+        return this.itemEssentiaComponent16384k;
     }
 
     @Override
@@ -203,5 +264,10 @@ public class ThEItems implements IThEItems {
     @Override
     public IItemDefinition ironGear() {
         return this.ironGear;
+    }
+
+    @Override
+    public IItemDefinition advancedEssentiaHousing() {
+        return this.advancedEssentiaHousing;
     }
 }
