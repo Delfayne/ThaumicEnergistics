@@ -32,10 +32,12 @@ import thaumicenergistics.command.CommandAddVis;
 import thaumicenergistics.command.CommandDrainVis;
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.integration.ThEIntegrationLoader;
+import thaumicenergistics.integration.thaumcraft.AEAspectRegister;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.tile.TileArcaneAssembler;
 import thaumicenergistics.tile.TileGearBox;
 import thaumicenergistics.util.ForgeUtil;
+import thaumicenergistics.util.ThELog;
 
 /**
  * <strong>Thaumic Energistics</strong>
@@ -123,6 +125,14 @@ public class ThaumicEnergistics {
 
         //Oredict for Iron gears.
         OreDictionary.registerOre("gearIron", ThaumicEnergisticsApi.instance().items().ironGear().maybeItem().get());
+
+
+        // Give AE items aspects
+        try {
+            AEAspectRegister.INSTANCE.registerAEAspects();
+        } catch (Exception e) {
+            ThELog.warn("Unable to finish aspect registration due to exception:%n%s%n", e.getMessage());
+        }
     }
 
     @Mod.EventHandler
