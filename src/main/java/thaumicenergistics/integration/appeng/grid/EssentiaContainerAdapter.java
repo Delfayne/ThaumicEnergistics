@@ -94,7 +94,7 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
 
     @Override
     public IItemList<IAEEssentiaStack> getAvailableItems(IItemList<IAEEssentiaStack> out) {
-        if (this.container == null || (!this.hasReadAccess && !this.reportInaccessible))
+        if (this.container == null || this.container.getAspects() == null || (!this.hasReadAccess && !this.reportInaccessible))
             return out;
         for (Aspect aspect : this.container.getAspects().getAspects())
             out.add(AEUtil.getAEStackFromAspect(aspect, this.container.containerContains(aspect)));
