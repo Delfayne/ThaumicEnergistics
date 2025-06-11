@@ -11,13 +11,12 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import thaumicenergistics.api.IThEBlocks;
-import thaumicenergistics.block.BlockArcaneAssembler;
-import thaumicenergistics.block.BlockBase;
-import thaumicenergistics.block.BlockInfusionProvider;
+import thaumicenergistics.block.*;
 import thaumicenergistics.client.render.IThEModel;
 import thaumicenergistics.definitions.ThEBlockDefinition;
 import thaumicenergistics.definitions.ThETileDefinition;
 import thaumicenergistics.tile.TileArcaneAssembler;
+import thaumicenergistics.tile.TileGearBox;
 import thaumicenergistics.tile.TileInfusionProvider;
 
 import java.util.ArrayList;
@@ -36,6 +35,9 @@ public class ThEBlocks implements IThEBlocks {
 
     private final ITileDefinition infusionProvider;
     private final ITileDefinition arcaneAssembler;
+
+    private ITileDefinition ironGearbox;
+    private ITileDefinition thaumiumGearbox;
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -74,6 +76,8 @@ public class ThEBlocks implements IThEBlocks {
     public ThEBlocks() {
         this.infusionProvider = ThEBlocks.createTile(new BlockInfusionProvider("infusion_provider"), TileInfusionProvider.class);
         this.arcaneAssembler = ThEBlocks.createTile(new BlockArcaneAssembler("arcane_assembler"), TileArcaneAssembler.class);
+        this.ironGearbox = ThEBlocks.createTile(new BlockGearBox("iron_gearbox"), TileGearBox.class);
+        this.thaumiumGearbox = ThEBlocks.createTile(new BlockGolemGearBox("thaumium_gearbox"), TileGearBox.class);
     }
 
     @Override
@@ -84,5 +88,15 @@ public class ThEBlocks implements IThEBlocks {
     @Override
     public ITileDefinition arcaneAssembler() {
         return this.arcaneAssembler;
+    }
+
+    @Override
+    public ITileDefinition thaumiumGearbox() {
+        return this.thaumiumGearbox;
+    }
+
+    @Override
+    public ITileDefinition ironGearbox() {
+        return this.ironGearbox;
     }
 }

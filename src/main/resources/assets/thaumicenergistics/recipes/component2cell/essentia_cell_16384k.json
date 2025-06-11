@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "thaumicenergistics:essentia_cell_16384k"
+  },
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "thaumicenergistics:essentia_housing_advanced"
+    },
+    {
+      "item": "thaumicenergistics:essentia_component_16384k"
+    }
+  ]
+}

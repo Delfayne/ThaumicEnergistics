@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "thaumicenergistics:essentia_housing_advanced"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "aba",
+    "b b",
+    "ddd"
+  ],
+  "key": {
+    "a": {
+      "item": "appliedenergistics2:quartz_glass"
+    },
+    "d": {
+      "item": "thaumcraft:jar_normal"
+    },
+    "b": {
+      "type": "forge:ore_dict",
+      "ore": "dustFluix"
+    }
+  }
+}

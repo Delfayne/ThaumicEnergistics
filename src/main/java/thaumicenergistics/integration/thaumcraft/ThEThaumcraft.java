@@ -14,6 +14,7 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.blocks.BlocksTC;
+import thaumcraft.api.crafting.CrucibleRecipe;
 import thaumcraft.api.crafting.InfusionRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
 import thaumcraft.api.crafting.ShapelessArcaneRecipe;
@@ -21,6 +22,7 @@ import thaumcraft.api.items.ItemsTC;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ScanningManager;
 import thaumcraft.api.research.theorycraft.TheorycraftManager;
+import thaumicenergistics.ThaumicEnergisticsApi;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.integration.IThEIntegration;
@@ -70,6 +72,7 @@ public class ThEThaumcraft implements IThEIntegration {
         else if (AEApi.instance().definitions().blocks().drive().maybeBlock().isPresent())
             TheorycraftManager.registerAid(new AidMEDrive());
         this.registerArcaneRecipes();
+        this.registerCrucibleRecipes();
         this.registerInfusionRecipes();
     }
 
@@ -82,6 +85,31 @@ public class ThEThaumcraft implements IThEIntegration {
 
         List<ItemStack> netherQuartz = new ArrayList<>(Arrays.asList(CraftingHelper.getIngredient("gemQuartz").getMatchingStacks()));
         netherQuartz.add(AEApi.instance().definitions().materials().purifiedNetherQuartzCrystal().maybeStack(1).orElse(ItemStack.EMPTY));
+
+        ThEApi.instance().items().ironGear().maybeStack(1).ifPresent(stack ->
+                ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "iron_gear"), new ShapedArcaneRecipe(
+                        recipeGroup,
+                        "GEARBOX@1",
+                        5,
+                        new AspectList(),
+                        stack,
+                        " I ",
+                        " G ",
+                        "I I",
+                        'I', "ingotIron",
+                        'G', "gearWood"
+                )));
+        ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "iron_gearbox"), new ShapedArcaneRecipe(
+                recipeGroup,
+                "GEARBOX@1",
+                25,
+                new AspectList(),
+                ThaumicEnergisticsApi.instance().blocks().ironGearbox().maybeBlock().get(),
+                "SGS",
+                "GGG",
+                "SGS",
+                'S', "cobblestone",
+                'G', "gearIron"));
 
         ThEApi.instance().items().coalescenceCore().maybeStack(2).ifPresent(stack ->
                 ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "coalescence_core"), new ShapedArcaneRecipe(
@@ -204,6 +232,94 @@ public class ThEThaumcraft implements IThEIntegration {
             this.addFakeCrafting(new ResourceLocation(Reference.MOD_ID, "cells/essentia_cell_64k"));
         });
 
+        ThEApi.instance().items().essentiaComponent256k().maybeStack(1).ifPresent(stack -> {
+            ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "essentia_component_256k"), new ShapedArcaneRecipe(
+                    recipeGroup,
+                    "ESSENTIASTORAGEADVANCED@2",
+                    100,
+                    new AspectList(),
+                    stack,
+                    "SPS",
+                    "CGC",
+                    "SCS",
+                    'S',
+                    ItemsTC.salisMundus,
+                    'C',
+                    ThEApi.instance().items().essentiaComponent64k().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'P',
+                    AEApi.instance().definitions().materials().engProcessor().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'G',
+                    AEApi.instance().definitions().materials().logicProcessor().maybeStack(1).orElse(ItemStack.EMPTY)
+            ));
+            this.addFakeCrafting(new ResourceLocation(Reference.MOD_ID, "cells/essentia_cell_256k"));
+        });
+
+        ThEApi.instance().items().essentiaComponent1024k().maybeStack(1).ifPresent(stack -> {
+            ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "essentia_component_1024k"), new ShapedArcaneRecipe(
+                    recipeGroup,
+                    "ESSENTIASTORAGEADVANCED@2",
+                    100,
+                    new AspectList(),
+                    stack,
+                    "SPS",
+                    "CGC",
+                    "SCS",
+                    'S',
+                    ItemsTC.salisMundus,
+                    'C',
+                    ThEApi.instance().items().essentiaComponent256k().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'P',
+                    AEApi.instance().definitions().materials().engProcessor().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'G',
+                    AEApi.instance().definitions().materials().logicProcessor().maybeStack(1).orElse(ItemStack.EMPTY)
+            ));
+            this.addFakeCrafting(new ResourceLocation(Reference.MOD_ID, "cells/essentia_cell_1024k"));
+        });
+
+        ThEApi.instance().items().essentiaComponent4096k().maybeStack(1).ifPresent(stack -> {
+            ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "essentia_component_4096k"), new ShapedArcaneRecipe(
+                    recipeGroup,
+                    "ESSENTIASTORAGEADVANCED@2",
+                    100,
+                    new AspectList(),
+                    stack,
+                    "SPS",
+                    "CGC",
+                    "SCS",
+                    'S',
+                    ItemsTC.salisMundus,
+                    'C',
+                    ThEApi.instance().items().essentiaComponent1024k().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'P',
+                    AEApi.instance().definitions().materials().engProcessor().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'G',
+                    AEApi.instance().definitions().materials().logicProcessor().maybeStack(1).orElse(ItemStack.EMPTY)
+            ));
+            this.addFakeCrafting(new ResourceLocation(Reference.MOD_ID, "cells/essentia_cell_4096k"));
+        });
+
+        ThEApi.instance().items().essentiaComponent16384k().maybeStack(1).ifPresent(stack -> {
+            ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "essentia_component_16384k"), new ShapedArcaneRecipe(
+                    recipeGroup,
+                    "ESSENTIASTORAGEADVANCED@2",
+                    100,
+                    new AspectList(),
+                    stack,
+                    "SPS",
+                    "CGC",
+                    "SCS",
+                    'S',
+                    ItemsTC.salisMundus,
+                    'C',
+                    ThEApi.instance().items().essentiaComponent4096k().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'P',
+                    AEApi.instance().definitions().materials().engProcessor().maybeStack(1).orElse(ItemStack.EMPTY),
+                    'G',
+                    AEApi.instance().definitions().materials().logicProcessor().maybeStack(1).orElse(ItemStack.EMPTY)
+            ));
+            this.addFakeCrafting(new ResourceLocation(Reference.MOD_ID, "cells/essentia_cell_16384k"));
+        });
+
         ThEApi.instance().items().essentiaExportBus().maybeStack(1).ifPresent(stack ->
                 ThaumcraftApi.addArcaneCraftingRecipe(new ResourceLocation(Reference.MOD_ID, "essentia_export_bus"), new ShapedArcaneRecipe(
                         recipeGroup,
@@ -321,6 +437,16 @@ public class ThEThaumcraft implements IThEIntegration {
                         'P',
                         AEApi.instance().definitions().materials().calcProcessor().maybeStack(1).orElse(ItemStack.EMPTY)
                 )));
+    }
+
+    private void registerCrucibleRecipes() {
+        ThEApi.instance().blocks().thaumiumGearbox().maybeStack(1).ifPresent(box ->
+                ThaumcraftApi.addCrucibleRecipe(new ResourceLocation(Reference.MOD_ID, "thaumium_gearbox"), new CrucibleRecipe(
+                        "GEARBOX@2",
+                        box,
+                        ThEApi.instance().blocks().ironGearbox().maybeStack(1).get(),
+                        new AspectList().add(Aspect.METAL, 16).add(Aspect.MAGIC, 16)))
+        );
     }
 
     private void registerInfusionRecipes() {

@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "thaumicenergistics:essentia_cell_4096k"
+  },
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "aba",
+    "bcb",
+    "ddd"
+  ],
+  "key": {
+    "a": {
+      "item": "appliedenergistics2:quartz_glass"
+    },
+    "d": {
+      "item": "thaumcraft:jar_normal"
+    },
+    "b": {
+      "type": "forge:ore_dict",
+      "ore": "dustFluix"
+    },
+    "c": {
+      "item": "thaumicenergistics:essentia_component_4096k"
+    }
+  }
+}

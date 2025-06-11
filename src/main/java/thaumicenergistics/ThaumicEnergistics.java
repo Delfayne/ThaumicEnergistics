@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Logger;
 import org.dv.minecraft.thaumicenergistics.Reference;
 import thaumicenergistics.api.IThEBlocks;
@@ -26,13 +27,17 @@ import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.client.ThEItemColors;
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.client.render.ArcaneAssemblerRenderer;
+import thaumicenergistics.client.render.TileGearboxRender;
 import thaumicenergistics.command.CommandAddVis;
 import thaumicenergistics.command.CommandDrainVis;
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.integration.ThEIntegrationLoader;
+import thaumicenergistics.integration.thaumcraft.AEAspectRegister;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.tile.TileArcaneAssembler;
+import thaumicenergistics.tile.TileGearBox;
 import thaumicenergistics.util.ForgeUtil;
+import thaumicenergistics.util.ThELog;
 
 /**
  * <strong>Thaumic Energistics</strong>
@@ -117,6 +122,17 @@ public class ThaumicEnergistics {
         proxy.postInit(event);
 
         ThEIntegrationLoader.postInit();
+
+        //Oredict for Iron gears.
+        OreDictionary.registerOre("gearIron", ThaumicEnergisticsApi.instance().items().ironGear().maybeItem().get());
+
+
+        // Give AE items aspects
+        try {
+            AEAspectRegister.INSTANCE.registerAEAspects();
+        } catch (Exception e) {
+            ThELog.warn("Unable to finish aspect registration due to exception:%n%s%n", e.getMessage());
+        }
     }
 
     @Mod.EventHandler
@@ -147,6 +163,7 @@ public class ThaumicEnergistics {
     public static class ClientProxy implements IProxy {
         public void init(FMLInitializationEvent event) {
             // Init TESR
+            ClientRegistry.bindTileEntitySpecialRenderer(TileGearBox.class, new TileGearboxRender());
             ClientRegistry.bindTileEntitySpecialRenderer(TileArcaneAssembler.class, new ArcaneAssemblerRenderer());
         }
 

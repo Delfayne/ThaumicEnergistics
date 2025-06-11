@@ -2,10 +2,14 @@
 itemGroup.ThaumicEnergistics=Thaumic Energistics
 
 # Blocks
+tile.thaumicenergistics.iron_gearbox.name=Iron Gearbox
+tile.thaumicenergistics.thaumium_gearbox.name=Thaumium Gearbox
 tile.thaumicenergistics.infusion_provider.name=Essentia Infusion Provider
 tile.thaumicenergistics.arcane_assembler.name=Arcane Assembler
 
 # Items
+item.thaumicenergistics.iron_gear.name=Iron Gear
+item.thaumicenergistics.essentia_housing_advanced.name=ME Essentia Storage Housing
 item.thaumicenergistics.diffusion_core.name=Diffusion Core
 item.thaumicenergistics.coalescence_core.name=Coalescence Core
 
@@ -13,11 +17,19 @@ item.thaumicenergistics.essentia_component_1k.name=1k ME Essentia Storage Compon
 item.thaumicenergistics.essentia_component_4k.name=4k ME Essentia Storage Component
 item.thaumicenergistics.essentia_component_16k.name=16k ME Essentia Storage Component
 item.thaumicenergistics.essentia_component_64k.name=64k ME Essentia Storage Component
+item.thaumicenergistics.essentia_component_256k.name=256k ME Essentia Storage Component
+item.thaumicenergistics.essentia_component_1024k.name=1024k ME Essentia Storage Component
+item.thaumicenergistics.essentia_component_4096k.name=4096k ME Essentia Storage Component
+item.thaumicenergistics.essentia_component_16384k.name=16384k ME Essentia Storage Component
 
 item.thaumicenergistics.essentia_cell_1k.name=1k ME Essentia Storage Cell
 item.thaumicenergistics.essentia_cell_4k.name=4k ME Essentia Storage Cell
 item.thaumicenergistics.essentia_cell_16k.name=16k ME Essentia Storage Cell
 item.thaumicenergistics.essentia_cell_64k.name=64k ME Essentia Storage Cell
+item.thaumicenergistics.essentia_cell_256k.name=256k ME Essentia Storage Cell
+item.thaumicenergistics.essentia_cell_1024k.name=1024k ME Essentia Storage Cell
+item.thaumicenergistics.essentia_cell_4096k.name=4096k ME Essentia Storage Cell
+item.thaumicenergistics.essentia_cell_16384k.name=16384k ME Essentia Storage Cell
 item.thaumicenergistics.essentia_cell_creative.name=Creative ME Essentia Storage Cell
 
 item.thaumicenergistics.essentia_import.name=ME Essentia Import Bus
@@ -117,6 +129,10 @@ research.essentiastorage16k.stage.2=Using another type of processor, I can now s
 research.essentiastorage64k.title=Massive Digisentia Storage
 research.essentiastorage64k.stage.1=My current storage needs are not enough, I hope I can still combine storage components to create a larger one while taking up the same space...
 research.essentiastorage64k.stage.2=I can now store massive amounts of essentia on a storage component, but I feel that this is the limit of the technology
+# Advanced
+research.essentiastorageadvanced.title=Advanced Digisentia Storage
+research.essentiastorageadvanced.stage.1=(WIP) My current storage needs are not enough, I hope I can still combine storage components to create a larger one while taking up the same space...
+research.essentiastorageadvanced.stage.2=(WIP) I can now store massive amounts of essentia on a storage component, but I feel that this is the limit of the technology
 
 # Research Essentia Buses
 research.essentiabuses.title=Digisentia Transportation
@@ -155,3 +171,9 @@ research.knowledgecore.stage.2=Eureka! I don't need to have the Arcane Assembler
 research.arcaneinscriber.title=Arcane Inscriber
 research.arcaneinscriber.stage.1=It appears the undead are not very bright. I've been trying to teach this Knowledge Core how to craft for a while now, yet it hasn't learned anything. I need to find a way to force the Knowledge Core to learn.
 research.arcaneinscriber.stage.2=Basing my design off of an ME Pattern Terminal, I have managed to design a kind of terminal that can teach recipes to a Knowledge Core. I simply load the recipe into the grid and then save it! I can also examine what recipes I have saved to a Knowledge Core, and if so desired, erase recipes from the zombie's memory. While a single zombie brain is limited in how many recipes it can remember, zombies are plentiful.
+
+# Research Gearbox
+research.gearbox.title=Gearbox
+research.gearbox.stage.1=Your experiences with the §lWooden Crank§r has left you to wonder, could this be improved?<BR>You have devised a way of setting up a series of gears in a box so that when any side is turned, all other sides will also turn. However you will need a stronger material than wood, to that end you have created the §lIron Gear§r by bonding iron to a wooden gear.<BR>The §lIron Gear Box§r will allow you to crank multiple devices simultaneously. You will need to orient the devices so that their input faces the gearbox.
+research.gearbox.stage.2=When cranking multiple devices, such as a two grinders & a charger, the crank power will be split evenly between all devices that are currently able to be cranked.<BR>Another advantage of the gearbox is that it can be used by multiple people simultaneously. Each person cranking the gearbox will add to the crank power output.<BR>Now if only you had someone who would stand around all day and crank this for you...
+research.gearbox.stage.3=When cranking multiple devices, such as a two grinders & a charger, the crank power will be split evenly between all devices that are currently able to be cranked.<BR>Another advantage of the gearbox is that it can be used by multiple people simultaneously. Each person cranking the gearbox will add to the crank power output.<BR>Now if only you had someone who would stand around all day and crank this for you... <BR> Now that your golems can right-click on your behalf, its time you updated the gearbox to accommodate them. Adding a dash of metal and magic, you have retrofitted the §lIron Gear Box§r and created the §lThaumium Gear Box§r.<BR>The redesigned model will allow any golem with the §lUse Core§r to crank the gearbox.

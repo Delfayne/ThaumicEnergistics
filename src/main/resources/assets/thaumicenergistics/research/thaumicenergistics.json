@@ -47,13 +47,6 @@
           "text": "research.digisentia.stage.1",
           "required_knowledge": [
             "THEORY;THAUMICENERGISTICS;1"
-          ],
-          "required_item": [
-            "appliedenergistics2:material;2;22",
-            "appliedenergistics2:material;2;8",
-            "appliedenergistics2:material;1;0",
-            "minecraft:quartz",
-            "thaumcraft:quicksilver;2"
           ]
         },
         {
@@ -63,9 +56,6 @@
             "thaumicenergistics:diffusion_core"
           ]
         }
-      ],
-      "reward_knowledge": [
-        "OBSERVATION;THAUMICENERGISTICS;1"
       ]
     },
     {
@@ -91,11 +81,6 @@
           "text": "research.essentiastorage1k.stage.1",
           "required_knowledge": [
             "THEORY;THAUMICENERGISTICS;1"
-          ],
-          "required_item": [
-            "thaumcraft:salis_mundus;4",
-            "appliedenergistics2:material;4;0",
-            "appliedenergistics2:material;1;22"
           ]
         },
         {
@@ -105,9 +90,6 @@
             "thaumicenergistics:cells/essentia_cell_1k"
           ]
         }
-      ],
-      "reward_knowledge": [
-        "OBSERVATION;THAUMICENERGISTICS;1"
       ]
     },
     {
@@ -133,12 +115,6 @@
           "text": "research.essentiastorage4k.stage.1",
           "required_knowledge": [
             "THEORY;THAUMICENERGISTICS;1"
-          ],
-          "required_item": [
-            "thaumcraft:salis_mundus;4",
-            "thaumicenergistics:essentia_component_1k;3",
-            "appliedenergistics2:quartz_glass",
-            "appliedenergistics2:material;1;23"
           ]
         },
         {
@@ -148,9 +124,6 @@
             "thaumicenergistics:cells/essentia_cell_4k"
           ]
         }
-      ],
-      "reward_knowledge": [
-        "OBSERVATION;THAUMICENERGISTICS;1"
       ]
     },
     {
@@ -176,12 +149,6 @@
           "text": "research.essentiastorage16k.stage.1",
           "required_knowledge": [
             "THEORY;THAUMICENERGISTICS;1"
-          ],
-          "required_item": [
-            "thaumcraft:salis_mundus;4",
-            "thaumicenergistics:essentia_component_4k;3",
-            "appliedenergistics2:quartz_glass",
-            "appliedenergistics2:material;1;24"
           ]
         },
         {
@@ -191,9 +158,6 @@
             "thaumicenergistics:cells/essentia_cell_16k"
           ]
         }
-      ],
-      "reward_knowledge": [
-        "OBSERVATION;THAUMICENERGISTICS;1"
       ]
     },
     {
@@ -219,12 +183,6 @@
           "text": "research.essentiastorage64k.stage.1",
           "required_knowledge": [
             "THEORY;THAUMICENERGISTICS;2"
-          ],
-          "required_item": [
-            "thaumcraft:salis_mundus;4",
-            "thaumicenergistics:essentia_component_16k;3",
-            "appliedenergistics2:quartz_glass",
-            "appliedenergistics2:material;1;24"
           ]
         },
         {
@@ -234,9 +192,44 @@
             "thaumicenergistics:cells/essentia_cell_64k"
           ]
         }
+      ]
+    },
+    {
+      "key": "ESSENTIASTORAGEADVANCED",
+      "name": "research.essentiastorageadvanced.title",
+      "icons": [
+        "thaumicenergistics:essentia_component_16384k",
+        "thaumicenergistics:essentia_cell_16384k"
       ],
-      "reward_knowledge": [
-        "OBSERVATION;THAUMICENERGISTICS;2"
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        -10,
+        0
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "ESSENTIASTORAGE64k"
+      ],
+      "stages": [
+        {
+          "text": "research.essentiastorageadvanced.stage.1",
+          "required_knowledge": [
+            "THEORY;THAUMICENERGISTICS;3"
+          ]
+        },
+        {
+          "text": "research.essentiastorageadvanced.stage.2",
+          "recipes": [
+            "thaumicenergistics:essentia_component_256k",
+            "thaumicenergistics:essentia_component_1024k",
+            "thaumicenergistics:essentia_component_4096k",
+            "thaumicenergistics:essentia_component_16384k",
+            "thaumicenergistics:misc/essentia_housing_advanced"
+          ],
+          "warp": 3
+        }
       ]
     },
     {
@@ -524,6 +517,56 @@
           "text": "research.arcaneinscriber.stage.2",
           "recipes": [
             "thaumicenergistics:arcane_inscriber"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "GEARBOX",
+      "name": "research.gearbox.title",
+      "icons": [
+        "thaumicenergistics:iron_gear"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        -2,
+        3
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "BASEENERGISTICS"
+      ],
+      "stages": [
+        {
+          "text": "research.gearbox.stage.1",
+          "required_item": [
+            "appliedenergistics2:material;1;40"
+          ],
+          "required_knowledge": [
+            "OBSERVATION;THAUMICENERGISTICS;1"
+          ]
+        },
+        {
+          "text": "research.gearbox.stage.2",
+          "required_knowledge": [
+            "THEORY;THAUMICENERGISTICS;1"
+          ],
+          "required_item": [
+            "thaumcraft:mind;1;1"
+          ],
+          "recipes": [
+            "thaumicenergistics:iron_gear",
+            "thaumicenergistics:iron_gearbox"
+          ]
+        },
+        {
+          "text": "research.gearbox.stage.3",
+          "recipes": [
+            "thaumicenergistics:iron_gear",
+            "thaumicenergistics:iron_gearbox",
+            "thaumicenergistics:thaumium_gearbox"
           ]
         }
       ]
