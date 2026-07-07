@@ -11,6 +11,7 @@ plugins {
     id("eclipse")
     id("com.gtnewhorizons.retrofuturagradle") version "1.4.5"
     id("com.matthewprenger.cursegradle") version "1.4.0"
+    alias(libs.plugins.spotless)
 }
 
 val minecraftVersion: String by project
@@ -128,15 +129,63 @@ dependencies {
     implementation(libs.curse.top)
 
     compileOnly(libs.curse.inventoryTweaks)
-    api(rfg.deobf(libs.curse.baubles.get().toString()))
-    api(rfg.deobf(libs.curse.extraCells.get().toString()))
-    api(rfg.deobf(libs.curse.mekanism.get().toString()))
-    api(rfg.deobf(libs.curse.thaumcraft.get().toString()))
-    api(rfg.deobf(libs.curse.thaumicAug.get().toString()))
-    api(rfg.deobf(libs.curse.thaumicWon.get().toString()))
-    api(rfg.deobf(libs.curse.aaf.get().toString()))
+    api(
+        rfg.deobf(
+            libs.curse.baubles
+                .get()
+                .toString(),
+        ),
+    )
+    api(
+        rfg.deobf(
+            libs.curse.extraCells
+                .get()
+                .toString(),
+        ),
+    )
+    api(
+        rfg.deobf(
+            libs.curse.mekanism
+                .get()
+                .toString(),
+        ),
+    )
+    api(
+        rfg.deobf(
+            libs.curse.thaumcraft
+                .get()
+                .toString(),
+        ),
+    )
+    api(
+        rfg.deobf(
+            libs.curse.thaumicAug
+                .get()
+                .toString(),
+        ),
+    )
+    api(
+        rfg.deobf(
+            libs.curse.thaumicWon
+                .get()
+                .toString(),
+        ),
+    )
+    api(
+        rfg.deobf(
+            libs.curse.aaf
+                .get()
+                .toString(),
+        ),
+    )
     api(libs.curse.thaumicJei)
-    api(rfg.deobf(libs.curse.ae2.get().toString()))
+    api(
+        rfg.deobf(
+            libs.curse.ae2
+                .get()
+                .toString(),
+        ),
+    )
 
     // Testing mods
     // Unsure if needed in future
@@ -153,10 +202,11 @@ dependencies {
     if (useMixins) {
         // Change your mixin refmap name here:
         val mixin: String =
-            modUtils.enableMixins(
-                libs.mixinBooter.get().toString(),
-                "mixins.${archiveBase}.refmap.json"
-            ).toString()
+            modUtils
+                .enableMixins(
+                    libs.mixinBooter.get().toString(),
+                    "mixins.$archiveBase.refmap.json",
+                ).toString()
         api(mixin) {
             isTransitive = false
         }
@@ -173,8 +223,14 @@ dependencies {
 if (projectProperty("useAccessTransformer")) {
     sourceSets.main.get().resources.files.forEach {
         if (it.name.lowercase().endsWith("_at.cfg")) {
-            tasks.deobfuscateMergedJarToSrg.get().accessTransformerFiles.from(it)
-            tasks.srgifyBinpatchedJar.get().accessTransformerFiles.from(it)
+            tasks.deobfuscateMergedJarToSrg
+                .get()
+                .accessTransformerFiles
+                .from(it)
+            tasks.srgifyBinpatchedJar
+                .get()
+                .accessTransformerFiles
+                .from(it)
         }
     }
 }
@@ -189,7 +245,7 @@ tasks.withType<ProcessResources> {
         // Replace version and mcversion
         expand(
             "modversion" to project.version,
-            "mcversion" to project.minecraft.mcVersion
+            "mcversion" to project.minecraft.mcVersion,
         )
     }
 
@@ -251,9 +307,10 @@ idea {
                     javacAdditionalOptions = "-encoding utf8"
                     tasks.withType<JavaCompile> {
                         val args = options.compilerArgs.joinToString(separator = " ") { "\"$it\"" }
-                        moduleJavacAdditionalOptions = mapOf(
-                            project.name + ".main" to args
-                        )
+                        moduleJavacAdditionalOptions =
+                            mapOf(
+                                project.name + ".main" to args,
+                            )
                     }
                 }
             }
@@ -275,14 +332,39 @@ tasks.named<ReobfuscatedJar>("reobfJar") {
     inputJar.set(tasks.named<Jar>("jar").flatMap { it.archiveFile })
 }
 
-val javadocTask = tasks.withType<Javadoc> {
-    isFailOnError = false
-}
+val javadocTask =
+    tasks.withType<Javadoc> {
+        isFailOnError = false
+    }
 
 tasks.register<Jar>("javadocJar") {
     from("build/docs/javadoc")
     archiveClassifier = "javadoc"
     dependsOn(javadocTask)
+}
+
+spotless {
+    java {
+        googleJavaFormat("1.17.0")
+            .aosp()
+            .reorderImports(true)
+        trimTrailingWhitespace()
+        endWithNewline()
+        targetExclude("src/generated/**")
+    }
+
+    kotlin {
+        ktlint(libs.versions.ktlint.get())
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    kotlinGradle {
+        ktlint(libs.versions.ktlint.get())
+        target("*.gradle.kts")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
 }
 
 inline fun <reified T : Any> projectProperty(propertyKey: String): T {

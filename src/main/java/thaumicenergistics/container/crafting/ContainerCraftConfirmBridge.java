@@ -1,8 +1,10 @@
 package thaumicenergistics.container.crafting;
 
 import appeng.container.implementations.ContainerCraftConfirm;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.IThreadListener;
+
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.init.ModGUIs;
 import thaumicenergistics.part.PartSharedTerminal;
@@ -23,7 +25,13 @@ public class ContainerCraftConfirmBridge extends ContainerCraftConfirm {
     @Override
     public void startJob() {
         super.startJob();
-        ((IThreadListener) part.getLocation().getWorld()).addScheduledTask(() ->
-                GuiHandler.openGUI(ModGUIs.values()[this.part.getGui().ordinal()], this.getPlayerInv().player, this.part.getLocation().getPos(), this.part.side));
+        ((IThreadListener) part.getLocation().getWorld())
+                .addScheduledTask(
+                        () ->
+                                GuiHandler.openGUI(
+                                        ModGUIs.values()[this.part.getGui().ordinal()],
+                                        this.getPlayerInv().player,
+                                        this.part.getLocation().getPos(),
+                                        this.part.side));
     }
 }

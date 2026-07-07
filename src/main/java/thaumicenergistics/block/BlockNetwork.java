@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import thaumicenergistics.tile.TileNetwork;
 
 /**
@@ -28,17 +29,22 @@ public abstract class BlockNetwork extends BlockBase implements ITileEntityProvi
 
     public BlockNetwork(String id, Material material) {
         super(id, material);
-        this.setDefaultState(this.getBlockState().getBaseState()
-                .withProperty(POWERED, false)
-                .withProperty(ACTIVE, false)
-        );
+        this.setDefaultState(
+                this.getBlockState()
+                        .getBaseState()
+                        .withProperty(POWERED, false)
+                        .withProperty(ACTIVE, false));
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+    public void onBlockPlacedBy(
+            World world,
+            BlockPos pos,
+            IBlockState state,
+            EntityLivingBase placer,
+            ItemStack stack) {
         super.onBlockPlacedBy(world, pos, state, placer, stack);
-        if (world.isRemote)
-            return;
+        if (world.isRemote) return;
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileNetwork && placer instanceof EntityPlayer) {
             TileNetwork tn = (TileNetwork) te;

@@ -6,7 +6,9 @@ import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.ITerminalHost;
 import appeng.api.storage.data.IAEStack;
 import appeng.me.GridAccessException;
+
 import net.minecraft.nbt.NBTTagCompound;
+
 import thaumicenergistics.init.ModGUIs;
 import thaumicenergistics.integration.appeng.grid.GridUtil;
 import thaumicenergistics.item.ItemPartBase;
@@ -16,7 +18,10 @@ import thaumicenergistics.item.ItemPartBase;
  */
 public abstract class PartSharedTerminal extends PartBase implements ITerminalHost {
 
-    protected final ModGUIs gui;    // the GUI that corresponds to this terminal, mainly used to know where to return to, from a different GUI
+    protected final ModGUIs
+            gui; // the GUI that corresponds to this terminal, mainly used to know where to return
+
+    // to, from a different GUI
 
     public PartSharedTerminal(ItemPartBase item, ModGUIs gui) {
         super(item);

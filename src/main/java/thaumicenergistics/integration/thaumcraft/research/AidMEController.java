@@ -1,6 +1,7 @@
 package thaumicenergistics.integration.thaumcraft.research;
 
 import appeng.api.AEApi;
+
 import thaumcraft.api.research.theorycraft.ITheorycraftAid;
 import thaumcraft.api.research.theorycraft.TheorycraftCard;
 
@@ -18,6 +19,6 @@ public class AidMEController implements ITheorycraftAid {
     @SuppressWarnings("unchecked")
     @Override
     public Class<TheorycraftCard>[] getCards() {
-        return new Class[]{CardTinkerAE.class};
+        return new Class[] {CardTinkerAE.class};
     }
 }

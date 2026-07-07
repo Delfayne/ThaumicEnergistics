@@ -11,11 +11,13 @@ import appeng.api.util.AECableType;
 import appeng.api.util.AEPartLocation;
 import appeng.api.util.DimensionalCoord;
 import appeng.me.GridAccessException;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+
 import thaumicenergistics.api.IThELangKey;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
@@ -27,16 +29,18 @@ import thaumicenergistics.util.ForgeUtil;
 import thaumicenergistics.util.IThEGridNodeBlock;
 import thaumicenergistics.util.IThEOwnable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author BrockWS
  * @author Alex811
  */
-public abstract class TileNetwork extends TileBase implements IThEGridHost, IActionHost, IPowerChannelState, IThEOwnable, IThEGridNodeBlock {
+public abstract class TileNetwork extends TileBase
+        implements IThEGridHost, IActionHost, IPowerChannelState, IThEOwnable, IThEGridNodeBlock {
 
     protected ThEGridBlock gridBlock;
     protected IGridNode gridNode;
@@ -107,9 +111,7 @@ public abstract class TileNetwork extends TileBase implements IThEGridHost, IAct
     }
 
     @Override
-    public void gridChanged() {
-
-    }
+    public void gridChanged() {}
 
     @Override
     public void setOwner(EntityPlayer player) {
@@ -133,14 +135,12 @@ public abstract class TileNetwork extends TileBase implements IThEGridHost, IAct
 
     @Override
     public boolean isActive() {
-        if (ForgeUtil.isServer())
-            return this.gridNode != null && this.gridNode.isActive();
-        else
-            return this.isActive;
+        if (ForgeUtil.isServer()) return this.gridNode != null && this.gridNode.isActive();
+        else return this.isActive;
     }
 
     @Override
-    public void markDirty() {   // server-side, initiate client sync
+    public void markDirty() { // server-side, initiate client sync
         super.markDirty();
         if (world == null) return;
         IBlockState state = world.getBlockState(this.getPos());
@@ -148,12 +148,12 @@ public abstract class TileNetwork extends TileBase implements IThEGridHost, IAct
     }
 
     @MENetworkEventSubscribe
-    public final void updateBootStatus(MENetworkBootingStatusChange event) {   // sync client
+    public final void updateBootStatus(MENetworkBootingStatusChange event) { // sync client
         this.markDirty();
     }
 
     @MENetworkEventSubscribe
-    public void updatePowerStatus(MENetworkPowerStatusChange event) {   // sync client
+    public void updatePowerStatus(MENetworkPowerStatusChange event) { // sync client
         try {
             this.isPowered = GridUtil.getEnergyGrid(this).isNetworkPowered();
             this.markDirty();
@@ -164,7 +164,9 @@ public abstract class TileNetwork extends TileBase implements IThEGridHost, IAct
     }
 
     @Override
-    public NBTTagCompound getUpdateTag() {  // sync, server-side, returns what to send to the client when the TileEntity's chunk gets loaded by it
+    public NBTTagCompound
+            getUpdateTag() { // sync, server-side, returns what to send to the client when the
+        // TileEntity's chunk gets loaded by it
         NBTTagCompound nbtTagCompound = super.getUpdateTag();
         nbtTagCompound.setBoolean("powered", this.isPowered());
         nbtTagCompound.setBoolean("active", this.isActive());
@@ -172,7 +174,8 @@ public abstract class TileNetwork extends TileBase implements IThEGridHost, IAct
     }
 
     @Override
-    public void handleUpdateTag(NBTTagCompound tag) {   // sync, client-side, receives from getUpdateTag()
+    public void handleUpdateTag(
+            NBTTagCompound tag) { // sync, client-side, receives from getUpdateTag()
         super.handleUpdateTag(tag);
         isPowered = tag.getBoolean("powered");
         isActive = tag.getBoolean("active");
@@ -180,22 +183,27 @@ public abstract class TileNetwork extends TileBase implements IThEGridHost, IAct
 
     @Nullable
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() { // sync, server-side, returns what to send to the client on block update, triggered by markDirty()
+    public SPacketUpdateTileEntity
+            getUpdatePacket() { // sync, server-side, returns what to send to the client on block
+        // update, triggered by markDirty()
         return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) { // sync, client-side, receives from getUpdatePacket()
+    public void onDataPacket(
+            NetworkManager net,
+            SPacketUpdateTileEntity packet) { // sync, client-side, receives from getUpdatePacket()
         handleUpdateTag(packet.getNbtCompound());
     }
 
-    public void withPowerStateText(Consumer<String> consumer, Function<IThELangKey, String> localizationMapper) {
+    public void withPowerStateText(
+            Consumer<String> consumer, Function<IThELangKey, String> localizationMapper) {
         if (this.isPowered()) {
             if (this.isActive())
                 consumer.accept(localizationMapper.apply(ThEApi.instance().lang().deviceOnline()));
             else
-                consumer.accept(localizationMapper.apply(ThEApi.instance().lang().deviceMissingChannel()));
-        } else
-            consumer.accept(localizationMapper.apply(ThEApi.instance().lang().deviceOffline()));
+                consumer.accept(
+                        localizationMapper.apply(ThEApi.instance().lang().deviceMissingChannel()));
+        } else consumer.accept(localizationMapper.apply(ThEApi.instance().lang().deviceOffline()));
     }
 }

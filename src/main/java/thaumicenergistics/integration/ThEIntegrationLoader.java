@@ -2,6 +2,7 @@ package thaumicenergistics.integration;
 
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModAPIManager;
+
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.integration.appeng.ThEAppliedEnergistics;
 import thaumicenergistics.integration.hwyla.ThEHwyla;
@@ -27,7 +28,8 @@ public class ThEIntegrationLoader {
         registerIntegration("theoneprobe", ThETheOneProbe.class);
     }
 
-    private static void registerIntegration(String modId, Class<? extends IThEIntegration> integration) {
+    private static void registerIntegration(
+            String modId, Class<? extends IThEIntegration> integration) {
         if (Loader.isModLoaded(modId) || apiManager.hasAPI(modId)) {
             try {
                 INTEGRATIONS.put(integration.newInstance(), modId);
@@ -35,8 +37,7 @@ public class ThEIntegrationLoader {
             } catch (InstantiationException | IllegalAccessException ex) {
                 ThELog.error("Failed to instantiate an integration class", ex);
             }
-        } else
-            ThELog.debug("Integrations: Not found [" + modId + "]");
+        } else ThELog.debug("Integrations: Not found [" + modId + "]");
     }
 
     public static String getModId(IThEIntegration integration) {

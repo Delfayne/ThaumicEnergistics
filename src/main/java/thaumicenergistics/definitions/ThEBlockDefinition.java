@@ -1,6 +1,7 @@
 package thaumicenergistics.definitions;
 
 import appeng.api.definitions.IBlockDefinition;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -39,6 +40,7 @@ public class ThEBlockDefinition extends ThEItemDefinition implements IBlockDefin
 
     @Override
     public boolean isSameAs(IBlockAccess world, BlockPos pos) {
-        return this.maybeBlock().isPresent() && world.getBlockState(pos).getBlock() == this.maybeBlock().get();
+        return this.maybeBlock().isPresent()
+                && world.getBlockState(pos).getBlock() == this.maybeBlock().get();
     }
 }

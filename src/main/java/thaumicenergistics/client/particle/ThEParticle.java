@@ -1,6 +1,7 @@
 package thaumicenergistics.client.particle;
 
 import mcp.MethodsReturnNonnullByDefault;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -15,26 +16,32 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.*;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
- * Makes custom particles!
- * Supports:
- * animated particles {@link #setFrameCount(int)}
- * changing texture hue {@link #setTint(Color, Color, float)}
- * changing texture opacity {@link #setAlpha(float, float, float)}
- * changing particle size {@link #setScale(float, float, float)}
- * you can change the hue, opacity and size progressively and/or randomly
+ * Makes custom particles! Supports: animated particles {@link #setFrameCount(int)} changing texture
+ * hue {@link #setTint(Color, Color, float)} changing texture opacity {@link #setAlpha(float, float,
+ * float)} changing particle size {@link #setScale(float, float, float)} you can change the hue,
+ * opacity and size progressively and/or randomly
  *
  * @author Alex811
  */
 @SideOnly(Side.CLIENT)
 public class ThEParticle extends Particle {
-    private static final VertexFormat VERTEX_FORMAT = (new VertexFormat()).addElement(DefaultVertexFormats.POSITION_3F).addElement(DefaultVertexFormats.TEX_2F).addElement(DefaultVertexFormats.COLOR_4UB).addElement(DefaultVertexFormats.TEX_2S).addElement(DefaultVertexFormats.NORMAL_3B).addElement(DefaultVertexFormats.PADDING_1B);
+    private static final VertexFormat VERTEX_FORMAT =
+            (new VertexFormat())
+                    .addElement(DefaultVertexFormats.POSITION_3F)
+                    .addElement(DefaultVertexFormats.TEX_2F)
+                    .addElement(DefaultVertexFormats.COLOR_4UB)
+                    .addElement(DefaultVertexFormats.TEX_2S)
+                    .addElement(DefaultVertexFormats.NORMAL_3B)
+                    .addElement(DefaultVertexFormats.PADDING_1B);
     private double[][] texMap = {{1.0F, 1.0F}, {1.0F, 0.0F}, {0.0F, 0.0F}, {0.0F, 1.0F}};
     private float frameHeight;
     private int frameCurr;
@@ -52,15 +59,23 @@ public class ThEParticle extends Particle {
      * Use this for moving particles, to set overall speed see {@link #multiplyVelocity(float)}
      *
      * @param textureName texture filename, should be inside textures/particle
-     * @param worldIn     world to spawn in
-     * @param xCoordIn    x coordinate to spawn in
-     * @param yCoordIn    y coordinate to spawn in
-     * @param zCoordIn    z coordinate to spawn in
-     * @param xSpeedIn    initial speed in x axis
-     * @param ySpeedIn    initial speed in y axis
-     * @param zSpeedIn    initial speed in z axis
+     * @param worldIn world to spawn in
+     * @param xCoordIn x coordinate to spawn in
+     * @param yCoordIn y coordinate to spawn in
+     * @param zCoordIn z coordinate to spawn in
+     * @param xSpeedIn initial speed in x axis
+     * @param ySpeedIn initial speed in y axis
+     * @param zSpeedIn initial speed in z axis
      */
-    public ThEParticle(String textureName, World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn) {
+    public ThEParticle(
+            String textureName,
+            World worldIn,
+            double xCoordIn,
+            double yCoordIn,
+            double zCoordIn,
+            double xSpeedIn,
+            double ySpeedIn,
+            double zSpeedIn) {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn);
         this.motionY -= 0.10000000149011612D;
         init(textureName);
@@ -70,18 +85,20 @@ public class ThEParticle extends Particle {
      * Use this for particles that spawn motionless
      *
      * @param textureName texture filename, should be inside textures/particle
-     * @param worldIn     world to spawn in
-     * @param xCoordIn    x coordinate to spawn in
-     * @param yCoordIn    y coordinate to spawn in
-     * @param zCoordIn    z coordinate to spawn in
+     * @param worldIn world to spawn in
+     * @param xCoordIn x coordinate to spawn in
+     * @param yCoordIn y coordinate to spawn in
+     * @param zCoordIn z coordinate to spawn in
      */
-    public ThEParticle(String textureName, World worldIn, double xCoordIn, double yCoordIn, double zCoordIn) {
+    public ThEParticle(
+            String textureName, World worldIn, double xCoordIn, double yCoordIn, double zCoordIn) {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn);
         init(textureName);
     }
 
     protected void init(String textureName) {
-        this.resourceLocation = new ResourceLocation(Reference.MOD_ID, "textures/particle/" + textureName + ".png");
+        this.resourceLocation =
+                new ResourceLocation(Reference.MOD_ID, "textures/particle/" + textureName + ".png");
     }
 
     @Override
@@ -95,9 +112,7 @@ public class ThEParticle extends Particle {
         processFrame();
     }
 
-    /**
-     * Set speed multiplier
-     */
+    /** Set speed multiplier */
     @Override
     @MethodsReturnNonnullByDefault
     public Particle multiplyVelocity(float multiplier) {
@@ -113,14 +128,23 @@ public class ThEParticle extends Particle {
             this.frameCurr = Math.round(progress * (this.frameCount - 1));
             float frameCurrTop = this.frameHeight * this.frameCurr;
             float frameCurrBottom = frameCurrTop + this.frameHeight;
-            texMap = new double[][]{{1.0F, frameCurrBottom}, {1.0F, frameCurrTop}, {0.0F, frameCurrTop}, {0.0F, frameCurrBottom}};
+            texMap =
+                    new double[][] {
+                        {1.0F, frameCurrBottom},
+                        {1.0F, frameCurrTop},
+                        {0.0F, frameCurrTop},
+                        {0.0F, frameCurrBottom}
+                    };
         }
         if (this.initialAlpha != this.finalAlpha)
             this.particleAlpha = valFromProgress(this.initialAlpha, this.finalAlpha);
         if (this.initialScale != this.finalScale)
             this.particleScale = valFromProgress(this.initialScale, this.finalScale);
         if (!this.initialTint.equals(this.finalTint))
-            setRBGColorF(valFromProgress(this.initialTint.getRed(), this.finalTint.getRed()), valFromProgress(this.initialTint.getGreen(), this.finalTint.getGreen()), valFromProgress(this.initialTint.getBlue(), this.finalTint.getBlue()));
+            setRBGColorF(
+                    valFromProgress(this.initialTint.getRed(), this.finalTint.getRed()),
+                    valFromProgress(this.initialTint.getGreen(), this.finalTint.getGreen()),
+                    valFromProgress(this.initialTint.getBlue(), this.finalTint.getBlue()));
     }
 
     /**
@@ -144,14 +168,34 @@ public class ThEParticle extends Particle {
 
     @Override
     @ParametersAreNonnullByDefault
-    public void renderParticle(BufferBuilder bufferIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+    public void renderParticle(
+            BufferBuilder bufferIn,
+            Entity entityIn,
+            float partialTicks,
+            float rotationX,
+            float rotationZ,
+            float rotationYZ,
+            float rotationXY,
+            float rotationXZ) {
         if (Minecraft.getMinecraft().isGamePaused()) return;
         processFrame();
 
         float vecScale = 0.1F * this.particleScale;
-        float xInterp = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);
-        float yInterp = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
-        float zInterp = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
+        float xInterp =
+                (float)
+                        (this.prevPosX
+                                + (this.posX - this.prevPosX) * (double) partialTicks
+                                - interpPosX);
+        float yInterp =
+                (float)
+                        (this.prevPosY
+                                + (this.posY - this.prevPosY) * (double) partialTicks
+                                - interpPosY);
+        float zInterp =
+                (float)
+                        (this.prevPosZ
+                                + (this.posZ - this.prevPosZ) * (double) partialTicks
+                                - interpPosZ);
         int brightness = this.getBrightnessForRender(partialTicks);
         int skyL = brightness >> 16 & 65535;
         int blockL = brightness & 65535;
@@ -161,23 +205,28 @@ public class ThEParticle extends Particle {
         rotationZ *= vecScale;
         rotationYZ *= vecScale;
         rotationXZ *= vecScale;
-        Vec3d[] avec3d = new Vec3d[]{
-                new Vec3d(-rotationX - rotationXY, -rotationZ, -rotationYZ - rotationXZ),
-                new Vec3d(-rotationX + rotationXY, rotationZ, -rotationYZ + rotationXZ),
-                new Vec3d(rotationX + rotationXY, rotationZ, rotationYZ + rotationXZ),
-                new Vec3d(rotationX - rotationXY, -rotationZ, rotationYZ - rotationXZ)
-        };
+        Vec3d[] avec3d =
+                new Vec3d[] {
+                    new Vec3d(-rotationX - rotationXY, -rotationZ, -rotationYZ - rotationXZ),
+                    new Vec3d(-rotationX + rotationXY, rotationZ, -rotationYZ + rotationXZ),
+                    new Vec3d(rotationX + rotationXY, rotationZ, rotationYZ + rotationXZ),
+                    new Vec3d(rotationX - rotationXY, -rotationZ, rotationYZ - rotationXZ)
+                };
 
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.blendFunc(
+                GlStateManager.SourceFactor.SRC_ALPHA,
+                GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GlStateManager.alphaFunc(516, 0.003921569F);
         GlStateManager.color(1.0F, 1.0F, 1.0F, this.particleAlpha);
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(this.resourceLocation);
 
         if (this.particleAngle != 0.0F) {
-            float angleInterp = this.particleAngle + (this.particleAngle - this.prevParticleAngle) * partialTicks;
+            float angleInterp =
+                    this.particleAngle
+                            + (this.particleAngle - this.prevParticleAngle) * partialTicks;
             float vecMod = MathHelper.cos(angleInterp * 0.5F);
             float vecModSq = vecMod * vecMod;
             float vecMod2 = 2.0F * vecMod;
@@ -188,9 +237,10 @@ public class ThEParticle extends Particle {
             Vec3d vec3d = new Vec3d(xComponent, yComponent, zComponent);
 
             for (int i = 0; i < 4; ++i)
-                avec3d[i] = vec3d.scale(2.0D * avec3d[i].dotProduct(vec3d))
-                        .add(avec3d[i].scale(vecModSq - vec3d.dotProduct(vec3d)))
-                        .add(vec3d.crossProduct(avec3d[i]).scale(vecMod2));
+                avec3d[i] =
+                        vec3d.scale(2.0D * avec3d[i].dotProduct(vec3d))
+                                .add(avec3d[i].scale(vecModSq - vec3d.dotProduct(vec3d)))
+                                .add(vec3d.crossProduct(avec3d[i]).scale(vecMod2));
         }
 
         bufferIn.begin(GL11.GL_QUADS, VERTEX_FORMAT);
@@ -198,7 +248,11 @@ public class ThEParticle extends Particle {
         for (int i = 0; i < 4; i++)
             bufferIn.pos(xInterp + avec3d[i].x, yInterp + avec3d[i].y, zInterp + avec3d[i].z)
                     .tex(texMap[i][0], texMap[i][1])
-                    .color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha)
+                    .color(
+                            this.particleRed,
+                            this.particleGreen,
+                            this.particleBlue,
+                            this.particleAlpha)
                     .lightmap(skyL, blockL)
                     .normal(0.0F, 0.0F, 0.0F)
                     .endVertex();
@@ -216,8 +270,8 @@ public class ThEParticle extends Particle {
      * Set opacity
      *
      * @param initialAlpha Alpha to start with
-     * @param finalAlpha   Alpha to end at
-     * @param randomness   0 - 1
+     * @param finalAlpha Alpha to end at
+     * @param randomness 0 - 1
      * @return The particle, for convenience
      */
     public ThEParticle setAlpha(float initialAlpha, float finalAlpha, float randomness) {
@@ -235,8 +289,8 @@ public class ThEParticle extends Particle {
      * Set particle scale
      *
      * @param initialScale Scale to start with
-     * @param finalScale   Scale to end at
-     * @param randomness   0 - 1
+     * @param finalScale Scale to end at
+     * @param randomness 0 - 1
      * @return The particle, for convenience
      */
     public ThEParticle setScale(float initialScale, float finalScale, float randomness) {
@@ -254,8 +308,8 @@ public class ThEParticle extends Particle {
      * Set texture hue
      *
      * @param initialTint Color/tint to start with
-     * @param finalTint   Color/tint to end at
-     * @param randomness  0 - 1
+     * @param finalTint Color/tint to end at
+     * @param randomness 0 - 1
      * @return The particle, for convenience
      */
     public ThEParticle setTint(Color initialTint, Color finalTint, float randomness) {
@@ -265,19 +319,23 @@ public class ThEParticle extends Particle {
             this.initialTint = randColor(this.initialTint, randomness);
             this.finalTint = randColor(this.finalTint, randomness);
         }
-        setRBGColorF(this.initialTint.getRed(), this.initialTint.getGreen(), this.initialTint.getBlue());
+        setRBGColorF(
+                this.initialTint.getRed(), this.initialTint.getGreen(), this.initialTint.getBlue());
         return this;
     }
 
     /**
      * Randomizes colors
      *
-     * @param color      Color to randomize
+     * @param color Color to randomize
      * @param randomness 0 - 1
      * @return the new Color
      */
     protected Color randColor(Color color, float randomness) {
-        return safeColor(color.getRed() * getRand(randomness) / 255, color.getGreen() * getRand(randomness) / 255, color.getBlue() * getRand(randomness) / 255);
+        return safeColor(
+                color.getRed() * getRand(randomness) / 255,
+                color.getGreen() * getRand(randomness) / 255,
+                color.getBlue() * getRand(randomness) / 255);
     }
 
     /**
@@ -299,8 +357,8 @@ public class ThEParticle extends Particle {
     }
 
     /**
-     * Use this to make animated particles!
-     * All the frames should be in the same texture, stacked in a column.
+     * Use this to make animated particles! All the frames should be in the same texture, stacked in
+     * a column.
      *
      * @param frameCount the number of frames contained in the texture
      */

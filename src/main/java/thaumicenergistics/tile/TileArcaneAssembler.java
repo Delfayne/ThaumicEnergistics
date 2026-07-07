@@ -21,7 +21,9 @@ import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.me.GridAccessException;
+
 import mcp.MethodsReturnNonnullByDefault;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryCrafting;
@@ -32,7 +34,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+
 import thaumcraft.api.aura.AuraHelper;
+
 import thaumicenergistics.api.IThELangKey;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.client.gui.GuiHandler;
@@ -47,8 +51,6 @@ import thaumicenergistics.util.inventory.ThEInternalInventory;
 import thaumicenergistics.util.inventory.ThEKnowledgeCoreInventory;
 import thaumicenergistics.util.inventory.ThEUpgradeInventory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,26 +61,44 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * @author Alex811
  */
-public class TileArcaneAssembler extends TileNetwork implements IThESubscribable, IThEInvTile, IThEGuiTile, ICraftingProvider, IStorageMonitorable, IGridTickable {
-    protected static final int BASE_STEP = 5;               // step to increase progress by / tick (not counting upgrades)
+public class TileArcaneAssembler extends TileNetwork
+        implements IThESubscribable,
+                IThEInvTile,
+                IThEGuiTile,
+                ICraftingProvider,
+                IStorageMonitorable,
+                IGridTickable {
+    protected static final int BASE_STEP =
+            5; // step to increase progress by / tick (not counting upgrades)
     private IItemStorageChannel channel;
-    protected ThEInternalInventory coreInv;                 // contains Knowledge Core
+    protected ThEInternalInventory coreInv; // contains Knowledge Core
     protected ThEUpgradeInventory upgradeInv;
-    protected ThEInternalInventory craftingInv;             // what's being crafted
-    protected int progress = 0;                             // crafting progress %
+    protected ThEInternalInventory craftingInv; // what's being crafted
+    protected int progress = 0; // crafting progress %
     protected HashMap<String, Boolean> aspectExists = new HashMap<>();
     protected boolean hasEnoughVis = true;
     protected AtomicBoolean missingAspect = new AtomicBoolean(false);
     protected boolean hasJob = false;
     protected boolean isCrafting = false;
-    protected boolean noPushFlag = false; // true if an AE tick passed where AE didn't try to push a pattern and we ticked having a job but without something to craft, used to check for aborted jobs
+    protected boolean noPushFlag =
+            false; // true if an AE tick passed where AE didn't try to push a pattern and we ticked
+
+    // having a job but without something to craft, used to check for aborted jobs
 
     public TileArcaneAssembler() {
         super();
-        ItemStack assemblerItem = ThEApi.instance().blocks().arcaneAssembler().maybeStack(1).orElseThrow(RuntimeException::new);
+        ItemStack assemblerItem =
+                ThEApi.instance()
+                        .blocks()
+                        .arcaneAssembler()
+                        .maybeStack(1)
+                        .orElseThrow(RuntimeException::new);
         this.coreInv = new ThEKnowledgeCoreInventory("cores", 1, 1, assemblerItem);
         this.upgradeInv = new ThEUpgradeInventory("upgrades", 5, 1, assemblerItem);
         this.craftingInv = new ThEInternalInventory("crafting", 1, 64);
@@ -86,7 +106,9 @@ public class TileArcaneAssembler extends TileNetwork implements IThESubscribable
     }
 
     @Override
-    public NBTTagCompound getUpdateTag() {  // sync, server-side, returns what to send to the client when the TileEntity's chunk gets loaded by it
+    public NBTTagCompound
+            getUpdateTag() { // sync, server-side, returns what to send to the client when the
+        // TileEntity's chunk gets loaded by it
         NBTTagCompound nbtTagCompound = super.getUpdateTag();
         nbtTagCompound.setBoolean("missingAspect", this.missingAspect.get());
         nbtTagCompound.setBoolean("hasEnoughVis", this.hasEnoughVis);
@@ -97,7 +119,8 @@ public class TileArcaneAssembler extends TileNetwork implements IThESubscribable
     }
 
     @Override
-    public void handleUpdateTag(NBTTagCompound tag) {   // sync, client-side, receives from getUpdateTag()
+    public void handleUpdateTag(
+            NBTTagCompound tag) { // sync, client-side, receives from getUpdateTag()
         super.handleUpdateTag(tag);
         this.missingAspect.set(tag.getBoolean("missingAspect"));
         this.hasEnoughVis = tag.getBoolean("hasEnoughVis");
@@ -163,10 +186,11 @@ public class TileArcaneAssembler extends TileNetwork implements IThESubscribable
         final ItemStack knowledgeCore = coreInv.getStackInSlot(0);
         KnowledgeCoreUtil.recipeStreamOf(knowledgeCore)
                 .map(recipe -> KnowledgeCoreUtil.getAEPattern(recipe, world))
-                .forEach(AEPattern -> {
-                    AEPattern.setPriority(0);
-                    craftingTracker.addCraftingOption(this, AEPattern);
-                });
+                .forEach(
+                        AEPattern -> {
+                            AEPattern.setPriority(0);
+                            craftingTracker.addCraftingOption(this, AEPattern);
+                        });
     }
 
     /**
@@ -177,7 +201,8 @@ public class TileArcaneAssembler extends TileNetwork implements IThESubscribable
     @Override
     public boolean pushPattern(ICraftingPatternDetails patternDetails, InventoryCrafting table) {
         ItemStack result = patternDetails.getOutputs()[0].createItemStack();
-        KnowledgeCoreUtil.Recipe recipe = KnowledgeCoreUtil.getRecipe(this.coreInv.getStackInSlot(0), result);
+        KnowledgeCoreUtil.Recipe recipe =
+                KnowledgeCoreUtil.getRecipe(this.coreInv.getStackInSlot(0), result);
         if (recipe == null) return false;
         this.noPushFlag = false;
         this.hasJob = true;
@@ -192,29 +217,57 @@ public class TileArcaneAssembler extends TileNetwork implements IThESubscribable
         IMEMonitor<IAEItemStack> inventory = this.getInventory(this.channel);
         ArrayList<ItemStack> aspects = new ArrayList<>();
         this.missingAspect.set(false);
-        recipe.getIngredientPart(true).forEach(aspect -> {
-            if (!aspect.isEmpty()) {
-                IAEItemStack canExtractAmount = AEUtil.inventoryExtract(this.channel.createStack(aspect), inventory, this.src, Actionable.SIMULATE);
-                String aspectName = Objects.requireNonNull(TCUtil.getCrystalAspect(aspect)).getTag();
-                this.aspectExists.put(aspectName, canExtractAmount != null && canExtractAmount.getStackSize() == aspect.getCount());
-                if (this.aspectExists.get(aspectName)) aspects.add(aspect);
-                else this.missingAspect.set(true);
-            }
-        });
+        recipe.getIngredientPart(true)
+                .forEach(
+                        aspect -> {
+                            if (!aspect.isEmpty()) {
+                                IAEItemStack canExtractAmount =
+                                        AEUtil.inventoryExtract(
+                                                this.channel.createStack(aspect),
+                                                inventory,
+                                                this.src,
+                                                Actionable.SIMULATE);
+                                String aspectName =
+                                        Objects.requireNonNull(TCUtil.getCrystalAspect(aspect))
+                                                .getTag();
+                                this.aspectExists.put(
+                                        aspectName,
+                                        canExtractAmount != null
+                                                && canExtractAmount.getStackSize()
+                                                        == aspect.getCount());
+                                if (this.aspectExists.get(aspectName)) aspects.add(aspect);
+                                else this.missingAspect.set(true);
+                            }
+                        });
         boolean canCraft = this.hasEnoughVis && !this.missingAspect.get();
         if (canCraft)
-            this.aspectExists = new HashMap<>(); // we have what we need, clear this, since we're not trying to find the aspects anymore
-        if (prevHasEnoughVis != this.hasEnoughVis || prevMissingAspect != this.missingAspect.get())  // update client if needed
-            this.markDirty();
-        if (prevHasEnoughVis != this.hasEnoughVis || !prevAspectExists.equals(this.aspectExists))    // update client if needed
-            this.notifySubs();
-        if (!canCraft)
-            return false; // we don't have the ingredients, tell AE2 we can't craft
+            this.aspectExists =
+                    new HashMap<>(); // we have what we need, clear this, since we're not trying to
+        // find the aspects anymore
+        if (prevHasEnoughVis != this.hasEnoughVis
+                || prevMissingAspect != this.missingAspect.get()) // update client if needed
+        this.markDirty();
+        if (prevHasEnoughVis != this.hasEnoughVis
+                || !prevAspectExists.equals(this.aspectExists)) // update client if needed
+        this.notifySubs();
+        if (!canCraft) return false; // we don't have the ingredients, tell AE2 we can't craft
         // Craft
-        aspects.forEach(aspect -> AEUtil.inventoryExtract(this.channel.createStack(aspect), inventory, this.src));
+        aspects.forEach(
+                aspect ->
+                        AEUtil.inventoryExtract(
+                                this.channel.createStack(aspect), inventory, this.src));
         if (recipe.getVisCost() > 0) {
-            final ItemStack visRangeUpgrade = ThEApi.instance().items().upgradeArcane().maybeStack(1).orElseThrow(RuntimeException::new);
-            TCUtil.drainVis(this.getWorld(), this.getPos(), recipe.getVisCost(), this.upgradeInv.getUpgrades(visRangeUpgrade));
+            final ItemStack visRangeUpgrade =
+                    ThEApi.instance()
+                            .items()
+                            .upgradeArcane()
+                            .maybeStack(1)
+                            .orElseThrow(RuntimeException::new);
+            TCUtil.drainVis(
+                    this.getWorld(),
+                    this.getPos(),
+                    recipe.getVisCost(),
+                    this.upgradeInv.getUpgrades(visRangeUpgrade));
         }
         this.progress = 0;
         this.craftingInv.setInventorySlotContents(0, result);
@@ -239,9 +292,16 @@ public class TileArcaneAssembler extends TileNetwork implements IThESubscribable
     public void init() {
         this.markDirty();
         if (ForgeUtil.isServer()) {
-            this.getActionableNode().getGrid().postEvent(new MENetworkCraftingPatternChange(this, this.getActionableNode())); // update ME system available patterns
+            this.getActionableNode()
+                    .getGrid()
+                    .postEvent(
+                            new MENetworkCraftingPatternChange(
+                                    this, this.getActionableNode())); // update ME system available
+            // patterns
             this.channel = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class);
-            ((ITickManager) this.gridNode.getGrid().getCache(ITickManager.class)).wakeDevice(this.gridNode); // wake up, necessary for AE ticks to start again when reloading the world
+            ((ITickManager) this.gridNode.getGrid().getCache(ITickManager.class))
+                    .wakeDevice(this.gridNode); // wake up, necessary for AE ticks to start again
+            // when reloading the world
         }
     }
 
@@ -258,7 +318,11 @@ public class TileArcaneAssembler extends TileNetwork implements IThESubscribable
     @Nonnull
     @Override
     public TickingRequest getTickingRequest(@Nonnull IGridNode node) {
-        return new TickingRequest(ThEApi.instance().config().tickTimeArcaneAssemblerMin(), ThEApi.instance().config().tickTimeArcaneAssemblerMax(), !this.isBusy(), false);
+        return new TickingRequest(
+                ThEApi.instance().config().tickTimeArcaneAssemblerMin(),
+                ThEApi.instance().config().tickTimeArcaneAssemblerMax(),
+                !this.isBusy(),
+                false);
     }
 
     /**
@@ -273,15 +337,14 @@ public class TileArcaneAssembler extends TileNetwork implements IThESubscribable
         if (this.craftingInv.getStackInSlot(0).isEmpty()) {
             this.isCrafting = false;
             if (this.hasJob) {
-                if (this.noPushFlag) {    // job probably aborted, let client know
+                if (this.noPushFlag) { // job probably aborted, let client know
                     this.hasJob = false;
                     this.missingAspect.set(false);
                     this.aspectExists = new HashMap<>();
                     this.hasEnoughVis = true;
                     this.markDirty();
                     this.notifySubs();
-                } else
-                    this.noPushFlag = true;
+                } else this.noPushFlag = true;
             }
             return TickRateModulation.SLOWER;
         } else {
@@ -292,13 +355,23 @@ public class TileArcaneAssembler extends TileNetwork implements IThESubscribable
                 IMEMonitor<IAEItemStack> inventory = this.getInventory(this.channel);
                 if (Stream.of(stack, inventory, this.src).anyMatch(Objects::isNull)) {
                     this.progress -= getStep();
-                    ThELog.trace("Arcane Assembler @ (" + this.getPos().getX() + ", " + this.getPos().getY() + ", " + this.getPos().getZ() + "): ME system not ready for crafting yet, retrying...");
+                    ThELog.trace(
+                            "Arcane Assembler @ ("
+                                    + this.getPos().getX()
+                                    + ", "
+                                    + this.getPos().getY()
+                                    + ", "
+                                    + this.getPos().getZ()
+                                    + "): ME system not ready for crafting yet, retrying...");
                     return TickRateModulation.SAME;
                 }
-                AEUtil.inventoryInsert(this.channel.createStack(this.craftingInv.getStackInSlot(0)), this.getInventory(this.channel), this.src);
+                AEUtil.inventoryInsert(
+                        this.channel.createStack(this.craftingInv.getStackInSlot(0)),
+                        this.getInventory(this.channel),
+                        this.src);
                 this.craftingInv.removeStackFromSlot(0);
-                if (this.craftingInv.getStackInSlot(0).isEmpty())    // done crafting everything
-                    this.hasJob = false;
+                if (this.craftingInv.getStackInSlot(0).isEmpty()) // done crafting everything
+                this.hasJob = false;
             }
             this.markDirty();
             return TickRateModulation.URGENT;
@@ -306,7 +379,10 @@ public class TileArcaneAssembler extends TileNetwork implements IThESubscribable
     }
 
     protected void notifySubs() { // update client side, to show details in the GUI
-        this.notifySubs(player -> PacketHandler.sendToPlayer((EntityPlayerMP) player, new PacketAssemblerGUIUpdate(this)));
+        this.notifySubs(
+                player ->
+                        PacketHandler.sendToPlayer(
+                                (EntityPlayerMP) player, new PacketAssemblerGUIUpdate(this)));
     }
 
     public HashMap<String, Boolean> getAspectExists() {
@@ -333,47 +409,97 @@ public class TileArcaneAssembler extends TileNetwork implements IThESubscribable
         return this.isCrafting;
     }
 
-    public void withInfoText(Consumer<String> consumer, Function<IThELangKey, String> localizationMapper) {
+    public void withInfoText(
+            Consumer<String> consumer, Function<IThELangKey, String> localizationMapper) {
         if (this.isActive()) {
             if (this.hasJob()) {
                 if (this.isCrafting()) {
-                    consumer.accept(localizationMapper.apply(ThEApi.instance().lang().arcaneAssemblerBusy()));
-                    consumer.accept(localizationMapper.apply(ThEApi.instance().lang().arcaneAssemblerProgress()) + " " + this.getProgress() + "%");
+                    consumer.accept(
+                            localizationMapper.apply(
+                                    ThEApi.instance().lang().arcaneAssemblerBusy()));
+                    consumer.accept(
+                            localizationMapper.apply(
+                                            ThEApi.instance().lang().arcaneAssemblerProgress())
+                                    + " "
+                                    + this.getProgress()
+                                    + "%");
                 } else {
-                    consumer.accept(localizationMapper.apply(ThEApi.instance().lang().arcaneAssemblerPrep()));
+                    consumer.accept(
+                            localizationMapper.apply(
+                                    ThEApi.instance().lang().arcaneAssemblerPrep()));
                     if (this.isMissingAspect())
-                        consumer.accept(localizationMapper.apply(ThEApi.instance().lang().arcaneAssemblerNoAspect()));
+                        consumer.accept(
+                                localizationMapper.apply(
+                                        ThEApi.instance().lang().arcaneAssemblerNoAspect()));
                     if (!this.getHasEnoughVis())
-                        consumer.accept(localizationMapper.apply(ThEApi.instance().lang().arcaneAssemblerNoVis()));
+                        consumer.accept(
+                                localizationMapper.apply(
+                                        ThEApi.instance().lang().arcaneAssemblerNoVis()));
                 }
             } else
-                consumer.accept(localizationMapper.apply(ThEApi.instance().lang().arcaneAssemblerIdle()));
+                consumer.accept(
+                        localizationMapper.apply(ThEApi.instance().lang().arcaneAssemblerIdle()));
         }
     }
 
     protected int getStep() {
         AtomicInteger step = new AtomicInteger(BASE_STEP);
-        AEApi.instance().definitions().materials().cardSpeed().maybeStack(1).ifPresent(cardSpeed -> step.set((int) (BASE_STEP + Math.pow(3, this.upgradeInv.getUpgrades(cardSpeed)))));
+        AEApi.instance()
+                .definitions()
+                .materials()
+                .cardSpeed()
+                .maybeStack(1)
+                .ifPresent(
+                        cardSpeed ->
+                                step.set(
+                                        (int)
+                                                (BASE_STEP
+                                                        + Math.pow(
+                                                                3,
+                                                                this.upgradeInv.getUpgrades(
+                                                                        cardSpeed)))));
         return step.get();
     }
 
     protected float getWorldVis() {
-        return ThEApi.instance().items().upgradeArcane().maybeStack(1).map(visRangeUpgrade -> {
-            float vis = AuraHelper.getVis(this.getWorld(), this.getPos());
-            if (this.upgradeInv.getUpgrades(visRangeUpgrade) > 0) {
-                vis += AuraHelper.getVis(this.getWorld(), this.getPos().add(-16, 0, -16));
-                vis += AuraHelper.getVis(this.getWorld(), this.getPos().add(-16, 0, 0));
-                vis += AuraHelper.getVis(this.getWorld(), this.getPos().add(-16, 0, 16));
+        return ThEApi.instance()
+                .items()
+                .upgradeArcane()
+                .maybeStack(1)
+                .map(
+                        visRangeUpgrade -> {
+                            float vis = AuraHelper.getVis(this.getWorld(), this.getPos());
+                            if (this.upgradeInv.getUpgrades(visRangeUpgrade) > 0) {
+                                vis +=
+                                        AuraHelper.getVis(
+                                                this.getWorld(), this.getPos().add(-16, 0, -16));
+                                vis +=
+                                        AuraHelper.getVis(
+                                                this.getWorld(), this.getPos().add(-16, 0, 0));
+                                vis +=
+                                        AuraHelper.getVis(
+                                                this.getWorld(), this.getPos().add(-16, 0, 16));
 
-                vis += AuraHelper.getVis(this.getWorld(), this.getPos().add(0, 0, -16));
-                vis += AuraHelper.getVis(this.getWorld(), this.getPos().add(0, 0, 16));
+                                vis +=
+                                        AuraHelper.getVis(
+                                                this.getWorld(), this.getPos().add(0, 0, -16));
+                                vis +=
+                                        AuraHelper.getVis(
+                                                this.getWorld(), this.getPos().add(0, 0, 16));
 
-                vis += AuraHelper.getVis(this.getWorld(), this.getPos().add(16, 0, -16));
-                vis += AuraHelper.getVis(this.getWorld(), this.getPos().add(16, 0, 0));
-                vis += AuraHelper.getVis(this.getWorld(), this.getPos().add(16, 0, 16));
-            }
-            return vis;
-        }).orElse(AuraHelper.getVis(this.getWorld(), this.getPos()));
+                                vis +=
+                                        AuraHelper.getVis(
+                                                this.getWorld(), this.getPos().add(16, 0, -16));
+                                vis +=
+                                        AuraHelper.getVis(
+                                                this.getWorld(), this.getPos().add(16, 0, 0));
+                                vis +=
+                                        AuraHelper.getVis(
+                                                this.getWorld(), this.getPos().add(16, 0, 16));
+                            }
+                            return vis;
+                        })
+                .orElse(AuraHelper.getVis(this.getWorld(), this.getPos()));
     }
 
     public ThEInternalInventory getCraftingInv() {

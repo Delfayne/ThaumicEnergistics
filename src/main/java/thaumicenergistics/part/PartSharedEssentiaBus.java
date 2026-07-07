@@ -10,6 +10,7 @@ import appeng.api.networking.ticking.IGridTickable;
 import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.parts.PartItemStack;
 import appeng.api.util.AECableType;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -18,22 +19,26 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+
 import thaumcraft.api.aspects.IAspectContainer;
+
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.item.ItemPartBase;
 import thaumicenergistics.util.EssentiaFilter;
 import thaumicenergistics.util.inventory.ThEUpgradeInventory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author BrockWS
  * @author Alex811
  */
-public abstract class PartSharedEssentiaBus extends PartBase implements IGridTickable, IUpgradeableHost {
+public abstract class PartSharedEssentiaBus extends PartBase
+        implements IGridTickable, IUpgradeableHost {
 
     public EssentiaFilter config;
     public ThEUpgradeInventory upgrades;
@@ -46,21 +51,24 @@ public abstract class PartSharedEssentiaBus extends PartBase implements IGridTic
 
     public PartSharedEssentiaBus(ItemPartBase item, int configSlots, int upgradeSlots) {
         super(item);
-        this.config = new EssentiaFilter(configSlots) {
-            @Override
-            protected void onContentsChanged() {
-                super.onContentsChanged();
-                PartSharedEssentiaBus.this.host.markForSave();
-            }
-        };
-        this.upgrades = new ThEUpgradeInventory("upgrades", upgradeSlots, 1, this.getItemStack(PartItemStack.NETWORK)) {
-            @Override
-            public void markDirty() {
-                super.markDirty();
-                PartSharedEssentiaBus.this.host.markForSave();
-                upgradeChangeListeners.forEach(Runnable::run);
-            }
-        };
+        this.config =
+                new EssentiaFilter(configSlots) {
+                    @Override
+                    protected void onContentsChanged() {
+                        super.onContentsChanged();
+                        PartSharedEssentiaBus.this.host.markForSave();
+                    }
+                };
+        this.upgrades =
+                new ThEUpgradeInventory(
+                        "upgrades", upgradeSlots, 1, this.getItemStack(PartItemStack.NETWORK)) {
+                    @Override
+                    public void markDirty() {
+                        super.markDirty();
+                        PartSharedEssentiaBus.this.host.markForSave();
+                        upgradeChangeListeners.forEach(Runnable::run);
+                    }
+                };
     }
 
     protected int calculateAmountToSend() {
@@ -100,8 +108,8 @@ public abstract class PartSharedEssentiaBus extends PartBase implements IGridTic
 
     /**
      * Converts the provided tile entity to an AspectContainer, else returns null.
-     * <p>
-     * The instance of check implicitly also filters out nulls.
+     *
+     * <p>The instance of check implicitly also filters out nulls.
      */
     @Nullable
     public IAspectContainer toAspectContainer(TileEntity tileEntity) {
@@ -125,14 +133,13 @@ public abstract class PartSharedEssentiaBus extends PartBase implements IGridTic
 
     /**
      * Gets the chunk that contains the BlockPos.
-     * <p>
-     * This uses bit-shifting down by 4, effectively divine by 16 to efficiently
-     * get the chunk co-ords from the block co-ords.
+     *
+     * <p>This uses bit-shifting down by 4, effectively divine by 16 to efficiently get the chunk
+     * co-ords from the block co-ords.
      */
     @Nullable
     private static Chunk getLoadedChunk(World world, BlockPos pos) {
-        return world.getChunkProvider()
-                .getLoadedChunk(pos.getX() >> 4, pos.getZ() >> 4);
+        return world.getChunkProvider().getLoadedChunk(pos.getX() >> 4, pos.getZ() >> 4);
     }
 
     protected IEssentiaStorageChannel getChannel() {
@@ -146,10 +153,8 @@ public abstract class PartSharedEssentiaBus extends PartBase implements IGridTic
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        if (tag.hasKey("config"))
-            this.config.deserializeNBT(tag.getCompoundTag("config"));
-        if (tag.hasKey("upgrades"))
-            this.upgrades.deserializeNBT(tag.getTagList("upgrades", 10));
+        if (tag.hasKey("config")) this.config.deserializeNBT(tag.getCompoundTag("config"));
+        if (tag.hasKey("upgrades")) this.upgrades.deserializeNBT(tag.getTagList("upgrades", 10));
         this.getConfigManager().readFromNBT(tag);
     }
 
@@ -187,14 +192,15 @@ public abstract class PartSharedEssentiaBus extends PartBase implements IGridTic
     @Nonnull
     @Override
     public TickRateModulation tickingRequest(@Nonnull IGridNode node, int ticksSinceLastCall) {
-        return (this.canWork() && this.workAllowedByRedstone()) ? this.doWork() : TickRateModulation.IDLE;
+        return (this.canWork() && this.workAllowedByRedstone())
+                ? this.doWork()
+                : TickRateModulation.IDLE;
     }
 
     protected abstract TickRateModulation doWork();
 
     protected RedstoneMode getRSMode() {
-        if (!hasRedstoneCard())
-            return RedstoneMode.IGNORE;
+        if (!hasRedstoneCard()) return RedstoneMode.IGNORE;
         return (RedstoneMode) this.getConfigManager().getSetting(Settings.REDSTONE_CONTROLLED);
     }
 
@@ -205,19 +211,21 @@ public abstract class PartSharedEssentiaBus extends PartBase implements IGridTic
     protected boolean workAllowedByRedstone() {
         boolean hasRedstone = this.hasRedstone();
         RedstoneMode mode = this.getRSMode();
-        return !hasRedstoneCard() ||
-                (mode == RedstoneMode.IGNORE) ||
-                (mode == RedstoneMode.HIGH_SIGNAL && hasRedstone) ||
-                (mode == RedstoneMode.LOW_SIGNAL && !hasRedstone);
+        return !hasRedstoneCard()
+                || (mode == RedstoneMode.IGNORE)
+                || (mode == RedstoneMode.HIGH_SIGNAL && hasRedstone)
+                || (mode == RedstoneMode.LOW_SIGNAL && !hasRedstone);
     }
 
     @Override
-    public void onNeighborChanged(IBlockAccess iBlockAccess, BlockPos blockPos, BlockPos blockPos1) {
+    public void onNeighborChanged(
+            IBlockAccess iBlockAccess, BlockPos blockPos, BlockPos blockPos1) {
         super.onNeighborChanged(iBlockAccess, blockPos, blockPos1);
         if (this.lastRedstone != this.hasRedstone()) {
             this.lastRedstone = !this.lastRedstone;
-            if (this.lastRedstone && this.canWork() && this.getRSMode() == RedstoneMode.SIGNAL_PULSE)
-                this.doWork();
+            if (this.lastRedstone
+                    && this.canWork()
+                    && this.getRSMode() == RedstoneMode.SIGNAL_PULSE) this.doWork();
         }
     }
 }

@@ -1,6 +1,7 @@
 package thaumicenergistics.mixin.core;
 
 import com.google.common.collect.ImmutableList;
+
 import zone.rong.mixinbooter.ILateMixinLoader;
 
 import java.util.List;

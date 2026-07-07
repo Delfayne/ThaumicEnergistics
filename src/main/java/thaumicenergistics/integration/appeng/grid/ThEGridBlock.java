@@ -4,16 +4,19 @@ import appeng.api.networking.*;
 import appeng.api.parts.PartItemStack;
 import appeng.api.util.AEColor;
 import appeng.api.util.DimensionalCoord;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
 import thaumicenergistics.part.PartBase;
 
-import javax.annotation.Nonnull;
 import java.util.EnumSet;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author BrockWS
@@ -74,9 +77,7 @@ public class ThEGridBlock implements IGridBlock {
     }
 
     @Override
-    public void onGridNotification(@Nonnull GridNotification gridNotification) {
-
-    }
+    public void onGridNotification(@Nonnull GridNotification gridNotification) {}
 
     @Override
     @Deprecated
@@ -110,8 +111,7 @@ public class ThEGridBlock implements IGridBlock {
             IBlockState state = world.getBlockState(pos);
             return new ItemStack(state.getBlock());
         }
-        if (this.rep == null)
-            return ItemStack.EMPTY;
+        if (this.rep == null) return ItemStack.EMPTY;
         return this.rep;
     }
 }

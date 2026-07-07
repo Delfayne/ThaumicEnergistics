@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
+
 import thaumicenergistics.client.gui.GuiConfigurable;
 import thaumicenergistics.container.part.ContainerSharedEssentiaBus;
 import thaumicenergistics.container.slot.ISlotOptional;
@@ -36,8 +37,7 @@ public abstract class GuiSharedEssentiaBus extends GuiConfigurable {
         this.upgradesChanged();
     }
 
-    protected void upgradesChanged() {
-    }
+    protected void upgradesChanged() {}
 
     @Override
     public void updateScreen() {
@@ -55,8 +55,20 @@ public abstract class GuiSharedEssentiaBus extends GuiConfigurable {
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         this.mc.getTextureManager().bindTexture(this.getGuiBackground());
         // TODO: Check if user has network tool
-        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.mainBackgroundWidth, this.mainBackgroundHeight);
-        this.drawTexturedModalRect(this.guiLeft + this.mainBackgroundWidth + this.upgradeOffset, this.guiTop, this.mainBackgroundWidth + this.upgradeOffset, 0, this.upgradeBackgroundWidth, this.upgradeBackgroundHeight);
+        this.drawTexturedModalRect(
+                this.guiLeft,
+                this.guiTop,
+                0,
+                0,
+                this.mainBackgroundWidth,
+                this.mainBackgroundHeight);
+        this.drawTexturedModalRect(
+                this.guiLeft + this.mainBackgroundWidth + this.upgradeOffset,
+                this.guiTop,
+                this.mainBackgroundWidth + this.upgradeOffset,
+                0,
+                this.upgradeBackgroundWidth,
+                this.upgradeBackgroundHeight);
 
         this.inventorySlots.inventorySlots.forEach(this::drawSlotBackground);
     }
@@ -64,17 +76,23 @@ public abstract class GuiSharedEssentiaBus extends GuiConfigurable {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 94, 4210752);
+        this.fontRenderer.drawString(
+                I18n.format("container.inventory"), 8, this.ySize - 94, 4210752);
     }
 
     protected void drawSlotBackground(Slot slot) {
-        if (!(slot instanceof ISlotOptional))
-            return;
+        if (!(slot instanceof ISlotOptional)) return;
         if (!((ISlotOptional) slot).isSlotEnabled()) {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 0.4F);
             GlStateManager.enableBlend();
         }
-        this.drawTexturedModalRect(this.guiLeft + slot.xPos - 1, this.guiTop + slot.yPos - 1, this.getSlotBackgroundX(), this.getSlotBackgroundY(), 18, 18);
+        this.drawTexturedModalRect(
+                this.guiLeft + slot.xPos - 1,
+                this.guiTop + slot.yPos - 1,
+                this.getSlotBackgroundX(),
+                this.getSlotBackgroundY(),
+                18,
+                18);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1);
     }
 

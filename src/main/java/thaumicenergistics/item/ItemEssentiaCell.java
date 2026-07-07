@@ -6,7 +6,9 @@ import appeng.api.implementations.items.IStorageCell;
 import appeng.api.storage.ICellInventoryHandler;
 import appeng.items.contents.CellUpgrades;
 import appeng.util.InventoryAdaptor;
+
 import com.google.common.base.Preconditions;
+
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +20,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.items.IItemHandler;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
+
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
@@ -26,14 +30,16 @@ import thaumicenergistics.client.render.IThEModel;
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.util.inventory.EssentiaCellConfig;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
+
+import javax.annotation.Nullable;
 
 /**
  * @author BrockWS
  */
-public class ItemEssentiaCell extends ItemBase implements IStorageCell<IAEEssentiaStack>, IThEModel {
+public class ItemEssentiaCell extends ItemBase
+        implements IStorageCell<IAEEssentiaStack>, IThEModel {
 
     private final String size;
     private final int bytes;
@@ -53,20 +59,25 @@ public class ItemEssentiaCell extends ItemBase implements IStorageCell<IAEEssent
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        if (!player.isSneaking())
-            return super.onItemRightClick(world, player, hand);
+    public ActionResult<ItemStack> onItemRightClick(
+            World world, EntityPlayer player, EnumHand hand) {
+        if (!player.isSneaking()) return super.onItemRightClick(world, player, hand);
         ItemStack held = player.getHeldItem(hand);
-        if (held.isEmpty())
-            return super.onItemRightClick(world, player, hand);
-        ICellInventoryHandler<IAEEssentiaStack> handler = AEApi.instance().registries().cell().getCellInventory(held, null, this.getChannel());
+        if (held.isEmpty()) return super.onItemRightClick(world, player, hand);
+        ICellInventoryHandler<IAEEssentiaStack> handler =
+                AEApi.instance()
+                        .registries()
+                        .cell()
+                        .getCellInventory(held, null, this.getChannel());
         if (handler == null)
             throw new NullPointerException("Couldn't get ICellInventoryHandler for Essentia Cell");
-        if (!handler.getAvailableItems(this.getChannel().createList()).isEmpty()) // Only try to separate cell if empty
-            return super.onItemRightClick(world, player, hand);
+        if (!handler.getAvailableItems(this.getChannel().createList())
+                .isEmpty()) // Only try to separate cell if empty
+        return super.onItemRightClick(world, player, hand);
 
         Optional<ItemStack> cellComponentOptional = this.getComponentOfCell(held);
-        Optional<ItemStack> emptyCasingOptional = AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1);
+        Optional<ItemStack> emptyCasingOptional =
+                AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1);
         if (!cellComponentOptional.isPresent() || !emptyCasingOptional.isPresent())
             return super.onItemRightClick(world, player, hand);
 
@@ -76,18 +87,15 @@ public class ItemEssentiaCell extends ItemBase implements IStorageCell<IAEEssent
         InventoryAdaptor invAdaptor = InventoryAdaptor.getAdaptor(player);
 
         if (hand == EnumHand.MAIN_HAND) // Prevent accidental deletion when in off hand
-            inv.setInventorySlotContents(inv.currentItem, ItemStack.EMPTY);
+        inv.setInventorySlotContents(inv.currentItem, ItemStack.EMPTY);
 
         ItemStack cellRemainder = invAdaptor.addItems(cellComponent);
-        if (!cellRemainder.isEmpty())
-            player.dropItem(cellRemainder, false);
+        if (!cellRemainder.isEmpty()) player.dropItem(cellRemainder, false);
 
         ItemStack casingRemainder = invAdaptor.addItems(emptyCasing);
-        if (!casingRemainder.isEmpty())
-            player.dropItem(emptyCasing, false);
+        if (!casingRemainder.isEmpty()) player.dropItem(emptyCasing, false);
 
-        if (player.inventoryContainer != null)
-            player.inventoryContainer.detectAndSendChanges();
+        if (player.inventoryContainer != null) player.inventoryContainer.detectAndSendChanges();
 
         return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
@@ -112,8 +120,13 @@ public class ItemEssentiaCell extends ItemBase implements IStorageCell<IAEEssent
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        ICellInventoryHandler<IAEEssentiaStack> cellInventory = AEApi.instance().registries().cell().getCellInventory(stack, null, this.getChannel());
+    public void addInformation(
+            ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        ICellInventoryHandler<IAEEssentiaStack> cellInventory =
+                AEApi.instance()
+                        .registries()
+                        .cell()
+                        .getCellInventory(stack, null, this.getChannel());
         AEApi.instance().client().addCellInformation(cellInventory, tooltip);
     }
 
@@ -178,12 +191,14 @@ public class ItemEssentiaCell extends ItemBase implements IStorageCell<IAEEssent
     }
 
     @Override
-    public void setFuzzyMode(ItemStack itemStack, FuzzyMode fuzzyMode) {
-
-    }
+    public void setFuzzyMode(ItemStack itemStack, FuzzyMode fuzzyMode) {}
 
     @Override
     public void initModel() {
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(Reference.MOD_ID + ":cell/essentia_cell_" + this.size, "inventory"));
+        ModelLoader.setCustomModelResourceLocation(
+                this,
+                0,
+                new ModelResourceLocation(
+                        Reference.MOD_ID + ":cell/essentia_cell_" + this.size, "inventory"));
     }
 }

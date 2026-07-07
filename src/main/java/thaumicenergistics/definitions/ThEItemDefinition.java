@@ -1,12 +1,14 @@
 package thaumicenergistics.definitions;
 
 import appeng.api.definitions.IItemDefinition;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.Optional;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author BrockWS
@@ -42,6 +44,8 @@ public class ThEItemDefinition implements IItemDefinition {
 
     @Override
     public boolean isSameAs(ItemStack itemStack) {
-        return itemStack != null && this.maybeStack(1).isPresent() && itemStack.isItemEqual(this.maybeStack(1).get());
+        return itemStack != null
+                && this.maybeStack(1).isPresent()
+                && itemStack.isItemEqual(this.maybeStack(1).get());
     }
 }

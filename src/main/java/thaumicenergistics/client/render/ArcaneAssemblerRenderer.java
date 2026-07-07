@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.client.particle.ParticleCrafting;
 import thaumicenergistics.tile.TileArcaneAssembler;
@@ -17,11 +18,19 @@ import thaumicenergistics.tile.TileArcaneAssembler;
  */
 @SideOnly(Side.CLIENT)
 public class ArcaneAssemblerRenderer extends TileEntitySpecialRenderer<TileArcaneAssembler> {
-    private final double particleMultiplier = ThEApi.instance().config().arcaneAssemblerParticleMultiplier();
+    private final double particleMultiplier =
+            ThEApi.instance().config().arcaneAssemblerParticleMultiplier();
     private double particleProgress = 0.0F;
 
     @Override
-    public void render(TileArcaneAssembler te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(
+            TileArcaneAssembler te,
+            double x,
+            double y,
+            double z,
+            float partialTicks,
+            int destroyStage,
+            float alpha) {
         final ItemStack renderedItem = te.getCraftingInv().getStackInSlot(0);
         if (renderedItem != null && !renderedItem.isEmpty()) {
             GlStateManager.pushMatrix();
@@ -33,7 +42,9 @@ public class ArcaneAssemblerRenderer extends TileEntitySpecialRenderer<TileArcan
 
             GlStateManager.disableLighting();
             RenderHelper.enableStandardItemLighting();
-            Minecraft.getMinecraft().getRenderItem().renderItem(renderedItem, ItemCameraTransforms.TransformType.FIXED);
+            Minecraft.getMinecraft()
+                    .getRenderItem()
+                    .renderItem(renderedItem, ItemCameraTransforms.TransformType.FIXED);
             RenderHelper.disableStandardItemLighting();
             GlStateManager.enableLighting();
 
@@ -42,7 +53,14 @@ public class ArcaneAssemblerRenderer extends TileEntitySpecialRenderer<TileArcan
                 particleProgress += particleMultiplier;
                 if (particleProgress >= 1) {
                     for (int i = 0; i < (int) particleProgress; i++)
-                        Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleCrafting(getWorld(), (double) te.getPos().getX() + 0.5D, (double) te.getPos().getY() + 0.5D, (double) te.getPos().getZ() + 0.5D));
+                        Minecraft.getMinecraft()
+                                .effectRenderer
+                                .addEffect(
+                                        new ParticleCrafting(
+                                                getWorld(),
+                                                (double) te.getPos().getX() + 0.5D,
+                                                (double) te.getPos().getY() + 0.5D,
+                                                (double) te.getPos().getZ() + 0.5D));
                     particleProgress %= 1.0;
                 }
             }

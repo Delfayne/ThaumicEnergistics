@@ -1,6 +1,5 @@
 package thaumicenergistics.api;
 
-
 import net.minecraft.util.ResourceLocation;
 
 /**

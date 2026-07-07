@@ -3,6 +3,7 @@ package thaumicenergistics.client.gui.helpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+
 import thaumicenergistics.client.gui.GuiBase;
 
 /**
@@ -26,13 +27,18 @@ public class GuiScrollBar {
     }
 
     public void draw(GuiBase gui) {
-        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("minecraft", "textures/gui/container/creative_inventory/tabs.png"));
+        Minecraft.getMinecraft()
+                .getTextureManager()
+                .bindTexture(
+                        new ResourceLocation(
+                                "minecraft", "textures/gui/container/creative_inventory/tabs.png"));
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 
         if (this.getRange() == 0) { // We don't need to scroll
             gui.drawTexturedModalRect(this.x, this.y, 244, 0, 12, 15);
         } else {
-            int offset = (this.currentPosition - this.minScroll) * (this.height - 15) / this.getRange();
+            int offset =
+                    (this.currentPosition - this.minScroll) * (this.height - 15) / this.getRange();
             gui.drawTexturedModalRect(this.x, this.y + offset, 232, 0, 12, 15);
         }
     }
@@ -44,16 +50,17 @@ public class GuiScrollBar {
     }
 
     public void click(int mouseY) {
-        if (this.getRange() == 0)
-            return;
+        if (this.getRange() == 0) return;
         this.currentPosition = mouseY - this.getY();
-        this.currentPosition = this.minScroll + ((this.currentPosition * 2 * this.getRange() / this.height));
+        this.currentPosition =
+                this.minScroll + ((this.currentPosition * 2 * this.getRange() / this.height));
         this.currentPosition = (this.currentPosition + 1) >> 1;
         this.lockRange();
     }
 
     private void lockRange() {
-        this.currentPosition = Math.max(Math.min(this.currentPosition, this.maxScroll), this.minScroll);
+        this.currentPosition =
+                Math.max(Math.min(this.currentPosition, this.maxScroll), this.minScroll);
     }
 
     public void setRange(int min, int max, int rows) {
@@ -61,8 +68,7 @@ public class GuiScrollBar {
         this.maxScroll = max;
         this.rows = rows;
 
-        if (this.minScroll > this.maxScroll)
-            this.maxScroll = this.minScroll;
+        if (this.minScroll > this.maxScroll) this.maxScroll = this.minScroll;
 
         this.lockRange();
     }

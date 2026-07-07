@@ -17,8 +17,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
 import org.apache.logging.log4j.Logger;
 import org.dv.minecraft.thaumicenergistics.Reference;
+
 import thaumicenergistics.api.IThEBlocks;
 import thaumicenergistics.api.IThEItems;
 import thaumicenergistics.api.IThEUpgrades;
@@ -35,31 +37,27 @@ import thaumicenergistics.tile.TileArcaneAssembler;
 import thaumicenergistics.util.ForgeUtil;
 
 /**
- * <strong>Thaumic Energistics</strong>
- * <hr>
- * A bridge between Thaumcraft and Applied Energistics. Essentia storage management, transportation, and application.
+ * <strong>Thaumic Energistics</strong> <hr> A bridge between Thaumcraft and Applied Energistics.
+ * Essentia storage management, transportation, and application.
  *
  * @author Nividica
  */
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, dependencies = ModGlobals.MOD_DEPENDENCIES)
+@Mod(
+        modid = Reference.MOD_ID,
+        name = Reference.NAME,
+        version = Reference.VERSION,
+        dependencies = ModGlobals.MOD_DEPENDENCIES)
 @Mod.EventBusSubscriber
 public class ThaumicEnergistics {
 
-    /**
-     * Singleton instance
-     */
+    /** Singleton instance */
     @Mod.Instance(value = Reference.MOD_ID)
     public static ThaumicEnergistics INSTANCE;
 
-    /**
-     * Proxy class that runs code that should be strictly on the physical client
-     */
-    @SidedProxy
-    public static IProxy proxy;
+    /** Proxy class that runs code that should be strictly on the physical client */
+    @SidedProxy public static IProxy proxy;
 
-    /**
-     * Thaumic Energistics Logger
-     */
+    /** Thaumic Energistics Logger */
     public static Logger LOGGER;
 
     /**
@@ -129,13 +127,16 @@ public class ThaumicEnergistics {
 
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        //Temporary alpha warning
-        //TextComponentString s1 = new TextComponentString("Thaumic Energistics is currently in alpha. Post issues to GitHub");
-        //s1.getStyle().setColor(TextFormatting.RED);
-        //TextComponentString link = new TextComponentString("https://github.com/Nividica/ThaumicEnergistics");
-        //link.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/Nividica/ThaumicEnergistics")).setColor(TextFormatting.GOLD);
+        // Temporary alpha warning
+        // TextComponentString s1 = new TextComponentString("Thaumic Energistics is currently in
+        // alpha. Post issues to GitHub");
+        // s1.getStyle().setColor(TextFormatting.RED);
+        // TextComponentString link = new
+        // TextComponentString("https://github.com/Nividica/ThaumicEnergistics");
+        // link.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
+        // "https://github.com/Nividica/ThaumicEnergistics")).setColor(TextFormatting.GOLD);
         //
-        //event.player.sendMessage(s1.appendSibling(link));
+        // event.player.sendMessage(s1.appendSibling(link));
     }
 
     @SubscribeEvent
@@ -147,11 +148,14 @@ public class ThaumicEnergistics {
     public static class ClientProxy implements IProxy {
         public void init(FMLInitializationEvent event) {
             // Init TESR
-            ClientRegistry.bindTileEntitySpecialRenderer(TileArcaneAssembler.class, new ArcaneAssemblerRenderer());
+            ClientRegistry.bindTileEntitySpecialRenderer(
+                    TileArcaneAssembler.class, new ArcaneAssemblerRenderer());
         }
 
         public EntityPlayer getPlayerEntFromCtx(MessageContext ctx) {
-            return ctx.side.isClient() ? Minecraft.getMinecraft().player : ctx.getServerHandler().player;
+            return ctx.side.isClient()
+                    ? Minecraft.getMinecraft().player
+                    : ctx.getServerHandler().player;
         }
     }
 
@@ -162,14 +166,11 @@ public class ThaumicEnergistics {
     }
 
     public interface IProxy {
-        default void preInit(FMLPreInitializationEvent event) {
-        }
+        default void preInit(FMLPreInitializationEvent event) {}
 
-        default void init(FMLInitializationEvent event) {
-        }
+        default void init(FMLInitializationEvent event) {}
 
-        default void postInit(FMLPostInitializationEvent event) {
-        }
+        default void postInit(FMLPostInitializationEvent event) {}
 
         EntityPlayer getPlayerEntFromCtx(MessageContext ctx);
     }

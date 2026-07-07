@@ -3,7 +3,9 @@ package thaumicenergistics.client.gui.part;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.data.IAEStack;
+
 import net.minecraft.inventory.Slot;
+
 import thaumicenergistics.client.gui.GuiConfigurable;
 import thaumicenergistics.client.gui.helpers.MERepo;
 import thaumicenergistics.container.ContainerBaseTerminal;
@@ -13,7 +15,8 @@ import thaumicenergistics.container.slot.SlotME;
  * @author BrockWS
  * @author Alex811
  */
-public abstract class GuiAbstractTerminal<T extends IAEStack<T>, C extends IStorageChannel<T>> extends GuiConfigurable implements IPowerChannelState {
+public abstract class GuiAbstractTerminal<T extends IAEStack<T>, C extends IStorageChannel<T>>
+        extends GuiConfigurable implements IPowerChannelState {
 
     protected ContainerBaseTerminal container;
     protected MERepo<T> repo;

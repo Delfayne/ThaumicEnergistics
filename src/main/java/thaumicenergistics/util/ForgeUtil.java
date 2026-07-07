@@ -38,22 +38,29 @@ public class ForgeUtil {
         return GameRegistry.findRegistry(reg);
     }
 
-    public static <K extends IForgeRegistryEntry<K>> IForgeRegistryEntry getRegistryEntry(Class<K> reg, ResourceLocation resourceLocation) {
+    public static <K extends IForgeRegistryEntry<K>> IForgeRegistryEntry getRegistryEntry(
+            Class<K> reg, ResourceLocation resourceLocation) {
         return ForgeUtil.getRegistry(reg).getValue(resourceLocation);
     }
 
-    public static ItemStack addStackToPlayerInventory(EntityPlayer player, ItemStack stack, boolean simulate) {
-        if (stack == null || stack.isEmpty())
-            return ItemStack.EMPTY;
+    public static ItemStack addStackToPlayerInventory(
+            EntityPlayer player, ItemStack stack, boolean simulate) {
+        if (stack == null || stack.isEmpty()) return ItemStack.EMPTY;
         return ItemHandlerUtil.insert(new PlayerMainInvWrapper(player.inventory), stack, simulate);
     }
 
     public static boolean areItemStacksEqual(ItemStack a, ItemStack b) {
-        return a != null && b != null && ItemStack.areItemsEqual(a, b) && ForgeUtil.areNBTTagsEqual(a.getTagCompound(), b.getTagCompound());
+        return a != null
+                && b != null
+                && ItemStack.areItemsEqual(a, b)
+                && ForgeUtil.areNBTTagsEqual(a.getTagCompound(), b.getTagCompound());
     }
 
     public static boolean areNBTTagsEqual(NBTBase a, NBTBase b) {
-        return a == b || (a.isEmpty() && b.isEmpty()) || (a.isEmpty() != b.isEmpty()) || a.equals(b);
+        return a == b
+                || (a.isEmpty() && b.isEmpty())
+                || (a.isEmpty() != b.isEmpty())
+                || a.equals(b);
     }
 
     /**

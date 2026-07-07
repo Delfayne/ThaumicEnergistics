@@ -16,7 +16,9 @@ import appeng.api.util.AECableType;
 import appeng.api.util.AEPartLocation;
 import appeng.api.util.DimensionalCoord;
 import appeng.me.GridAccessException;
+
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,6 +34,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
+
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.integration.appeng.grid.GridUtil;
 import thaumicenergistics.integration.appeng.grid.IThEGridHost;
@@ -45,16 +48,25 @@ import thaumicenergistics.util.IThEOwnable;
 import thaumicenergistics.util.ItemHandlerUtil;
 import thaumicenergistics.util.inventory.IThEInvTile;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author BrockWS
  * @author Alex811
  */
-public abstract class PartBase implements IPart, IThEGridHost, IUpgradeableHost, IActionHost, IPowerChannelState, IThEInvTile, IThEOwnable, IThEGridNodeBlock {
+public abstract class PartBase
+        implements IPart,
+                IThEGridHost,
+                IUpgradeableHost,
+                IActionHost,
+                IPowerChannelState,
+                IThEInvTile,
+                IThEOwnable,
+                IThEGridNodeBlock {
 
     protected ThEConfigManager configManager = new ThEConfigManager();
 
@@ -79,8 +91,7 @@ public abstract class PartBase implements IPart, IThEGridHost, IUpgradeableHost,
 
     protected abstract AESettings.SUBJECT getAESettingSubject();
 
-    public void settingChanged(Settings setting) {
-    }
+    public void settingChanged(Settings setting) {}
 
     public ItemStack getRepr() {
         return new ItemStack(this.item);
@@ -101,7 +112,9 @@ public abstract class PartBase implements IPart, IThEGridHost, IUpgradeableHost,
 
     @Override
     public DimensionalCoord getLocation() {
-        if (this.hostTile != null && this.hostTile.hasWorld() && this.hostTile.getWorld().provider != null)
+        if (this.hostTile != null
+                && this.hostTile.hasWorld()
+                && this.hostTile.getWorld().provider != null)
             return new DimensionalCoord(this.hostTile.getWorld(), this.hostTile.getPos());
         return null;
     }
@@ -123,21 +136,19 @@ public abstract class PartBase implements IPart, IThEGridHost, IUpgradeableHost,
 
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
-        if (gridNode != null)
-            this.gridNode.saveToNBT("part", nbt);
+        if (gridNode != null) this.gridNode.saveToNBT("part", nbt);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        if (gridNode != null)
-            this.gridNode.loadFromNBT("part", nbt);
+        if (gridNode != null) this.gridNode.loadFromNBT("part", nbt);
     }
 
     protected int blockLight(int emit) {
-        if (this.lightOpacity >= 0)
-            return (int) (emit * (this.lightOpacity / 255.0F));
+        if (this.lightOpacity >= 0) return (int) (emit * (this.lightOpacity / 255.0F));
         TileEntity te = this.getTile();
-        return this.lightOpacity = 255 - te.getWorld().getBlockLightOpacity(te.getPos().offset(this.side.getFacing()));
+        return this.lightOpacity =
+                255 - te.getWorld().getBlockLightOpacity(te.getPos().offset(this.side.getFacing()));
     }
 
     @Override
@@ -156,7 +167,8 @@ public abstract class PartBase implements IPart, IThEGridHost, IUpgradeableHost,
     }
 
     @Override
-    public void onNeighborChanged(IBlockAccess iBlockAccess, BlockPos blockPos, BlockPos blockPos1) {
+    public void onNeighborChanged(
+            IBlockAccess iBlockAccess, BlockPos blockPos, BlockPos blockPos1) {
         this.host.markForUpdate();
     }
 
@@ -189,25 +201,21 @@ public abstract class PartBase implements IPart, IThEGridHost, IUpgradeableHost,
     }
 
     @Override
-    public void onEntityCollision(Entity entity) {
-
-    }
+    public void onEntityCollision(Entity entity) {}
 
     @Override
     public void removeFromWorld() {
-        if (this.gridNode != null)
-            this.gridNode.destroy();
+        if (this.gridNode != null) this.gridNode.destroy();
     }
 
     @Override
     public void addToWorld() {
-        if (ForgeUtil.isClient())
-            return;
+        if (ForgeUtil.isClient()) return;
         this.gridBlock = new ThEGridBlock(this);
         this.gridNode = AEApi.instance().grid().createGridNode(this.gridBlock);
         this.initGridNodeOwner();
         this.gridNode.updateState();
-        //this.setPower(null); TODO
+        // this.setPower(null); TODO
         BlockPos pos = this.gridBlock.getLocation().getPos();
         this.onNeighborChanged(null, pos, pos.offset(this.side.getFacing()));
     }
@@ -246,12 +254,11 @@ public abstract class PartBase implements IPart, IThEGridHost, IUpgradeableHost,
     }
 
     @Override
-    public void randomDisplayTick(World world, BlockPos blockPos, Random random) {
-
-    }
+    public void randomDisplayTick(World world, BlockPos blockPos, Random random) {}
 
     @Override
-    public void onPlacement(EntityPlayer player, EnumHand hand, ItemStack stack, AEPartLocation side) {
+    public void onPlacement(
+            EntityPlayer player, EnumHand hand, ItemStack stack, AEPartLocation side) {
         this.setOwner(player);
     }
 
@@ -305,7 +312,8 @@ public abstract class PartBase implements IPart, IThEGridHost, IUpgradeableHost,
         Vec3d posVec = new Vec3d(pos).add(.5, .5, .5).add(offset);
         World world = this.getTile().getWorld();
         world.playEvent(2001, pos, Block.getStateId(world.getBlockState(pos)));
-        world.spawnEntity(new EntityItem(world, posVec.x, posVec.y, posVec.z, this.getRepr().copy()));
+        world.spawnEntity(
+                new EntityItem(world, posVec.x, posVec.y, posVec.z, this.getRepr().copy()));
     }
 
     @Override
@@ -341,9 +349,7 @@ public abstract class PartBase implements IPart, IThEGridHost, IUpgradeableHost,
     }
 
     @Override
-    public void gridChanged() {
-
-    }
+    public void gridChanged() {}
 
     @Override
     public int getInstalledUpgrades(Upgrades u) {
