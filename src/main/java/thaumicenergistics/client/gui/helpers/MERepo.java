@@ -158,7 +158,7 @@ public class MERepo<T extends IAEStack<T>> {
 
                     searchMod =
                             false; // Set to false so when MOD is ENABLED but we want to only search
-                    // aspects
+                // aspects
                 default:
             }
         }
