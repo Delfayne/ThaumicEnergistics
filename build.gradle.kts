@@ -7,10 +7,10 @@ plugins {
     id("java")
     id("java-library")
     id("maven-publish")
-    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.4.1"
     id("eclipse")
-    id("com.gtnewhorizons.retrofuturagradle") version "1.4.5"
-    id("com.matthewprenger.cursegradle") version "1.4.0"
+    id("com.gtnewhorizons.retrofuturagradle") version "2.0.2"
+    id("net.darkhax.curseforgegradle") version "1.3.33"
     alias(libs.plugins.spotless)
 }
 
