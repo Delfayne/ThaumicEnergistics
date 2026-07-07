@@ -14,12 +14,12 @@ plugins {
     alias(libs.plugins.spotless)
 }
 
-val minecraftVersion: String by project
-val modVersion: String by project
-val mavenGroup: String by project
-val modName: String by project
-val archiveBase: String by project
-val modArchiveName: String by project
+val minecraftVersion = project.property("minecraftVersion") as String
+val modVersion = project.property("modVersion") as String
+val mavenGroup = project.property("mavenGroup") as String
+val modName = project.property("modName") as String
+val archiveBase = project.property("archiveBase") as String
+val modArchiveName = project.property("modArchiveName") as String
 
 version = modVersion + (System.getenv("CI_SHA_SHORT") ?: "")
 group = mavenGroup
@@ -67,7 +67,7 @@ minecraft {
     // Add various JVM arguments here for runtime
     val args = mutableListOf("-ea:${project.group}")
     if (projectProperty("useCoreMod")) {
-        val coreModPluginClassName: String by project
+        val coreModPluginClassName = project.property("coreModPluginClassName") as String
         args += "-Dfml.coreMods.load=$coreModPluginClassName"
     }
     if (projectProperty("useMixins")) {
@@ -236,16 +236,19 @@ if (projectProperty("useAccessTransformer")) {
 }
 
 tasks.withType<ProcessResources> {
+    val modVersionValue = project.version
+    val mcVersionValue = project.minecraft.mcVersion
+
     // This will ensure that this task is redone when the versions change
-    inputs.property("modversion", project.version)
-    inputs.property("mcversion", project.minecraft.mcVersion)
+    inputs.property("modversion", modVersionValue)
+    inputs.property("mcversion", mcVersionValue)
 
     // Replace various properties in mcmod.info and pack.mcmeta if applicable
     filesMatching(listOf("mcmod.info", "pack.mcmeta")) {
         // Replace version and mcversion
         expand(
-            "modversion" to project.version,
-            "mcversion" to project.minecraft.mcVersion,
+            "modversion" to modVersionValue,
+            "mcversion" to mcVersionValue,
         )
     }
 
@@ -265,7 +268,7 @@ tasks.withType<Jar> {
     manifest {
         val attributes = mutableMapOf<String, Any>()
         if (projectProperty("useCoreMod")) {
-            val coreModPluginClassName: String by project
+            val coreModPluginClassName = project.property("coreModPluginClassName") as String
             attributes["FMLCorePlugin"] = coreModPluginClassName
             if (projectProperty("includeMod")) {
                 attributes["FMLCorePluginContainsFMLMod"] = true
@@ -345,12 +348,12 @@ tasks.register<Jar>("javadocJar") {
 
 spotless {
     java {
-        googleJavaFormat("1.17.0")
+        googleJavaFormat("1.35.0")
             .aosp()
             .reorderImports(true)
         trimTrailingWhitespace()
         endWithNewline()
-        targetExclude("src/generated/**")
+        targetExclude("src/generated/**", "build/**")
     }
 
     kotlin {
@@ -368,7 +371,7 @@ spotless {
 }
 
 inline fun <reified T : Any> projectProperty(propertyKey: String): T {
-    val value = project.properties[propertyKey].let { it.toString() }
+    val value = project.findProperty(propertyKey).let { it.toString() }
     return when (T::class) {
         Boolean::class -> value.toBoolean() as T
         else -> throw IllegalArgumentException()
