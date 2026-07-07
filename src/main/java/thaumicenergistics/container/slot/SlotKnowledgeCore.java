@@ -1,6 +1,7 @@
 package thaumicenergistics.container.slot;
 
 import net.minecraftforge.items.IItemHandler;
+
 import thaumicenergistics.ThaumicEnergisticsApi;
 
 import javax.annotation.Nullable;

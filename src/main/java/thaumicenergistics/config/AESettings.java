@@ -3,9 +3,10 @@ package thaumicenergistics.config;
 import appeng.api.config.*;
 import appeng.api.util.IConfigManager;
 
+import java.util.HashMap;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
 
 /**
  * Manages AE settings for Parts and TileEntities.
@@ -36,16 +37,19 @@ public final class AESettings {
         addSetting(SUBJECT.ESSENTIA_EXPORT_BUS, Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
 
         addSetting(SUBJECT.ESSENTIA_STORAGE_BUS, Settings.ACCESS, AccessRestriction.READ_WRITE);
-        addSetting(SUBJECT.ESSENTIA_STORAGE_BUS, Settings.STORAGE_FILTER, StorageFilter.EXTRACTABLE_ONLY);
+        addSetting(
+                SUBJECT.ESSENTIA_STORAGE_BUS,
+                Settings.STORAGE_FILTER,
+                StorageFilter.EXTRACTABLE_ONLY);
     }
 
     private static void addSetting(SUBJECT settingSubject, Settings setting, Enum<?> def) {
-        if (!SETTINGS.containsKey(settingSubject))
-            SETTINGS.put(settingSubject, new HashMap<>());
+        if (!SETTINGS.containsKey(settingSubject)) SETTINGS.put(settingSubject, new HashMap<>());
         SETTINGS.get(settingSubject).put(setting, def);
     }
 
-    public static void registerSettings(@Nullable SUBJECT settingSubject, @Nonnull IConfigManager configManager) {
+    public static void registerSettings(
+            @Nullable SUBJECT settingSubject, @Nonnull IConfigManager configManager) {
         if (settingSubject != null)
             SETTINGS.get(settingSubject).forEach(configManager::registerSetting);
     }

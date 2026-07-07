@@ -1,7 +1,9 @@
 package thaumicenergistics.upgrade;
 
 import appeng.api.definitions.IItemDefinition;
+
 import net.minecraft.item.ItemStack;
+
 import thaumicenergistics.api.IThEUpgrade;
 import thaumicenergistics.util.ForgeUtil;
 
@@ -30,8 +32,7 @@ public class ThEUpgrade implements IThEUpgrade {
 
     @Override
     public void registerItem(ItemStack item, int max) {
-        if (item == null)
-            return;
+        if (item == null) return;
         this.getSupported().put(item, max);
     }
 
@@ -47,7 +48,9 @@ public class ThEUpgrade implements IThEUpgrade {
 
     @Override
     public int getSupported(ItemStack upgradeStack) {
-        Stream<ItemStack> stream = this.getSupported().keySet().stream().filter(stack -> ForgeUtil.areItemStacksEqual(stack, upgradeStack));
+        Stream<ItemStack> stream =
+                this.getSupported().keySet().stream()
+                        .filter(stack -> ForgeUtil.areItemStacksEqual(stack, upgradeStack));
         return this.getSupported().getOrDefault(stream.findFirst().orElse(ItemStack.EMPTY), 0);
     }
 

@@ -1,5 +1,15 @@
 package thaumicenergistics.client.gui.helpers;
 
+import static appeng.api.config.Settings.SEARCH_TOOLTIPS;
+import static appeng.api.config.ViewItems.CRAFTABLE;
+import static appeng.api.config.ViewItems.STORED;
+import static appeng.api.config.YesNo.NO;
+
+import static com.google.common.collect.Lists.newArrayList;
+
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
+import static java.util.regex.Pattern.UNICODE_CASE;
+
 import appeng.api.config.SearchBoxMode;
 import appeng.api.config.SortDir;
 import appeng.api.config.SortOrder;
@@ -11,8 +21,10 @@ import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.core.AEConfig;
 import appeng.util.Platform;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.config.PrefixSetting;
 import thaumicenergistics.integration.jei.ThEJEI;
@@ -25,14 +37,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static appeng.api.config.Settings.SEARCH_TOOLTIPS;
-import static appeng.api.config.ViewItems.CRAFTABLE;
-import static appeng.api.config.ViewItems.STORED;
-import static appeng.api.config.YesNo.NO;
-import static com.google.common.collect.Lists.newArrayList;
-import static java.util.regex.Pattern.CASE_INSENSITIVE;
-import static java.util.regex.Pattern.UNICODE_CASE;
-
 /**
  * Based on ItemRepo and FluidRepo
  *
@@ -42,10 +46,10 @@ import static java.util.regex.Pattern.UNICODE_CASE;
 public class MERepo<T extends IAEStack<T>> {
 
     private final IItemList<T> list;
-    /**
-     * Contains all stacks currently in the view.
-     */
+
+    /** Contains all stacks currently in the view. */
     private ArrayList<T> view = new ArrayList<>();
+
     private String searchString = "";
     private String innerSearch = "";
     private ViewItems viewMode;
@@ -115,7 +119,12 @@ public class MERepo<T extends IAEStack<T>> {
         PrefixSetting modSearchSetting = ThEApi.instance().config().modSearchSetting();
         PrefixSetting aspectSearchSetting = ThEApi.instance().config().aspectSearchSetting();
 
-        if (Stream.of(SearchBoxMode.JEI_AUTOSEARCH, SearchBoxMode.JEI_MANUAL_SEARCH, SearchBoxMode.JEI_AUTOSEARCH_KEEP, SearchBoxMode.JEI_MANUAL_SEARCH_KEEP).anyMatch(m -> m == this.searchBoxMode)) {
+        if (Stream.of(
+                        SearchBoxMode.JEI_AUTOSEARCH,
+                        SearchBoxMode.JEI_MANUAL_SEARCH,
+                        SearchBoxMode.JEI_AUTOSEARCH_KEEP,
+                        SearchBoxMode.JEI_MANUAL_SEARCH_KEEP)
+                .anyMatch(m -> m == this.searchBoxMode)) {
             ThEJEI.setSearchText(searchString);
         }
 
@@ -129,8 +138,7 @@ public class MERepo<T extends IAEStack<T>> {
                 searchMod = true;
             case REQUIRE_PREFIX:
                 String modSearchPrefix = ThEApi.instance().config().modSearchPrefix();
-                if (!innerSearch.startsWith(modSearchPrefix))
-                    break;
+                if (!innerSearch.startsWith(modSearchPrefix)) break;
                 innerSearch = innerSearch.substring(modSearchPrefix.length());
                 searchSpecific = true;
                 searchMod = true;
@@ -143,13 +151,14 @@ public class MERepo<T extends IAEStack<T>> {
                     searchAspect = true;
                 case REQUIRE_PREFIX:
                     String aspectSearchPrefix = ThEApi.instance().config().aspectSearchPrefix();
-                    if (!innerSearch.startsWith(aspectSearchPrefix))
-                        break;
+                    if (!innerSearch.startsWith(aspectSearchPrefix)) break;
                     innerSearch = innerSearch.substring(aspectSearchPrefix.length());
                     searchSpecific = true;
                     searchAspect = true;
 
-                    searchMod = false; // Set to false so when MOD is ENABLED but we want to only search aspects
+                    searchMod =
+                            false; // Set to false so when MOD is ENABLED but we want to only search
+                    // aspects
                 default:
             }
         }
@@ -159,7 +168,9 @@ public class MERepo<T extends IAEStack<T>> {
             pattern = Pattern.compile(innerSearch, CASE_INSENSITIVE | UNICODE_CASE);
         } catch (Throwable ignored) {
             try {
-                pattern = Pattern.compile(Pattern.quote(innerSearch), CASE_INSENSITIVE | UNICODE_CASE);
+                pattern =
+                        Pattern.compile(
+                                Pattern.quote(innerSearch), CASE_INSENSITIVE | UNICODE_CASE);
             } catch (Throwable ignored2) {
                 return;
             }
@@ -172,22 +183,23 @@ public class MERepo<T extends IAEStack<T>> {
         final boolean searchByAspect = searchAspect;
 
         newArrayList(list).stream()
-                .filter(t ->
-                        !(this.getViewMode() == CRAFTABLE && !t.isCraftable()) ||
-                                !(this.getViewMode() == STORED && t.getStackSize() == 0)
-                )
+                .filter(
+                        t ->
+                                !(this.getViewMode() == CRAFTABLE && !t.isCraftable())
+                                        || !(this.getViewMode() == STORED && t.getStackSize() == 0))
                 .filter(t -> searchByQuery(finalSearchSpecific, searchByAspect, searchByMod, t, p))
-                .forEach(t -> {
-                    T stack = t.copy();
-                    if (this.getViewMode().equals(CRAFTABLE)) {
-                        if (!stack.isCraftable())
-                            return;
-                        stack.setStackSize(0);
-                    } else if (this.getViewMode().equals(STORED) && stack.getStackSize() < 1) {
-                        return;
-                    }
-                    this.view.add(stack);
-                });
+                .forEach(
+                        t -> {
+                            T stack = t.copy();
+                            if (this.getViewMode().equals(CRAFTABLE)) {
+                                if (!stack.isCraftable()) return;
+                                stack.setStackSize(0);
+                            } else if (this.getViewMode().equals(STORED)
+                                    && stack.getStackSize() < 1) {
+                                return;
+                            }
+                            this.view.add(stack);
+                        });
 
         ThEItemSorters.setDirection(sortDir);
         ThEItemSorters.init();
@@ -210,11 +222,12 @@ public class MERepo<T extends IAEStack<T>> {
         return c;
     }
 
-    public boolean searchByQuery(boolean searchSpecific,
-                                 boolean searchByAspect,
-                                 boolean searchByMod,
-                                 T t,
-                                 Pattern pattern) {
+    public boolean searchByQuery(
+            boolean searchSpecific,
+            boolean searchByAspect,
+            boolean searchByMod,
+            T t,
+            Pattern pattern) {
         if (searchSpecific) {
             if (searchByAspect) {
                 return searchAspects(t, pattern);
@@ -222,10 +235,8 @@ public class MERepo<T extends IAEStack<T>> {
                 return searchMod(t, pattern);
             }
         } else {
-            if (searchByAspect && searchAspects(t, pattern))
-                return true;
-            if (searchByMod && searchMod(t, pattern))
-                return true;
+            if (searchByAspect && searchAspects(t, pattern)) return true;
+            if (searchByMod && searchMod(t, pattern)) return true;
             return searchName(t, pattern) || searchTooltip(t, pattern);
         }
 
@@ -245,10 +256,15 @@ public class MERepo<T extends IAEStack<T>> {
     }
 
     public T getReferenceStack(int i) {
-        int scroll = (int) Math.max(Math.min(this.scrollBar.getCurrentPosition(), Math.ceil((double) this.view.size() / this.rowSize)), 0);
+        int scroll =
+                (int)
+                        Math.max(
+                                Math.min(
+                                        this.scrollBar.getCurrentPosition(),
+                                        Math.ceil((double) this.view.size() / this.rowSize)),
+                                0);
         i += scroll * this.rowSize;
-        if (i < this.view.size())
-            return this.view.get(i);
+        if (i < this.view.size()) return this.view.get(i);
         return null;
     }
 
@@ -321,8 +337,8 @@ public class MERepo<T extends IAEStack<T>> {
     }
 
     private boolean searchTooltip(T stack, Pattern p) {
-        boolean terminalSearchToolTips = AEConfig.instance().getConfigManager()
-                .getSetting(SEARCH_TOOLTIPS) != NO;
+        boolean terminalSearchToolTips =
+                AEConfig.instance().getConfigManager().getSetting(SEARCH_TOOLTIPS) != NO;
 
         // Returning false means we don't display, so if the config for
         // tooltips is off, return true - i.e. always keep
@@ -349,8 +365,7 @@ public class MERepo<T extends IAEStack<T>> {
 
     private boolean searchAspects(T stack, Pattern p) {
         AspectList aspects = TCUtil.getItemAspects(stack.asItemStackRepresentation());
-        if (aspects == null || aspects.size() < 1)
-            return false;
+        if (aspects == null || aspects.size() < 1) return false;
         final Pattern pf = p;
         Stream<Aspect> stream = aspects.aspects.keySet().stream();
         return stream.anyMatch(aspect -> pf.matcher(aspect.getName()).find());

@@ -1,7 +1,9 @@
 package thaumicenergistics.network.packets;
 
 import appeng.api.util.AEPartLocation;
+
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.IThreadListener;
@@ -9,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.init.ModGUIs;
 
@@ -21,8 +24,7 @@ public class PacketOpenGUI implements IMessage {
     public BlockPos pos;
     public AEPartLocation side;
 
-    public PacketOpenGUI() {
-    }
+    public PacketOpenGUI() {}
 
     public PacketOpenGUI(ModGUIs gui, BlockPos pos, AEPartLocation side) {
         this.gui = gui.ordinal();
@@ -53,7 +55,13 @@ public class PacketOpenGUI implements IMessage {
             NetHandlerPlayServer handler = ctx.getServerHandler();
             EntityPlayerMP player = handler.player;
             IThreadListener thread = (IThreadListener) player.world;
-            thread.addScheduledTask(() -> GuiHandler.openGUI(ModGUIs.values()[message.gui], ctx.getServerHandler().player, message.pos, message.side));
+            thread.addScheduledTask(
+                    () ->
+                            GuiHandler.openGUI(
+                                    ModGUIs.values()[message.gui],
+                                    ctx.getServerHandler().player,
+                                    message.pos,
+                                    message.side));
             return null;
         }
     }

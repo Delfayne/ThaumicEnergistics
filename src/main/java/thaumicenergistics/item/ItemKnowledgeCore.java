@@ -3,8 +3,8 @@ package thaumicenergistics.item;
 import thaumicenergistics.util.KnowledgeCoreUtil;
 
 /**
- * If you're looking for methods to operate on a
- * Knowledge Core ItemStack and its recipes, check out {@link KnowledgeCoreUtil}
+ * If you're looking for methods to operate on a Knowledge Core ItemStack and its recipes, check out
+ * {@link KnowledgeCoreUtil}
  *
  * @author Alex811
  */

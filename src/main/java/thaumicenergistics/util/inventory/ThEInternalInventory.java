@@ -18,21 +18,16 @@ import java.util.Iterator;
  *
  * @author BrockWS
  */
-public class ThEInternalInventory implements IInventory, INBTSerializable<NBTTagList>, Iterable<ItemStack> {
+public class ThEInternalInventory
+        implements IInventory, INBTSerializable<NBTTagList>, Iterable<ItemStack> {
 
-    /**
-     * Stack size limit.
-     */
+    /** Stack size limit. */
     private final int stackLimit;
 
-    /**
-     * The inventory slots.
-     */
+    /** The inventory slots. */
     private final NonNullList<ItemStack> slots;
 
-    /**
-     * Name of the inventory.
-     */
+    /** Name of the inventory. */
     private final String customName;
 
     public ThEInternalInventory(String customName, int size, int stackLimit) {
@@ -48,9 +43,7 @@ public class ThEInternalInventory implements IInventory, INBTSerializable<NBTTag
 
     @Override
     public boolean isEmpty() {
-        for (ItemStack stack : this.slots)
-            if (stack != null)
-                return false;
+        for (ItemStack stack : this.slots) if (stack != null) return false;
         return true;
     }
 
@@ -62,8 +55,7 @@ public class ThEInternalInventory implements IInventory, INBTSerializable<NBTTag
     @Override
     public ItemStack decrStackSize(int index, int count) {
         ItemStack stack = this.getStackInSlot(index);
-        if (stack.isEmpty())
-            return stack;
+        if (stack.isEmpty()) return stack;
         ItemStack toReturn = stack.splitStack(count);
         this.setInventorySlotContents(index, stack);
         return toReturn;
@@ -91,9 +83,7 @@ public class ThEInternalInventory implements IInventory, INBTSerializable<NBTTag
     }
 
     @Override
-    public void markDirty() {
-
-    }
+    public void markDirty() {}
 
     @Override
     public boolean isUsableByPlayer(EntityPlayer player) {
@@ -101,14 +91,10 @@ public class ThEInternalInventory implements IInventory, INBTSerializable<NBTTag
     }
 
     @Override
-    public void openInventory(EntityPlayer player) {
-
-    }
+    public void openInventory(EntityPlayer player) {}
 
     @Override
-    public void closeInventory(EntityPlayer player) {
-
-    }
+    public void closeInventory(EntityPlayer player) {}
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
@@ -152,12 +138,11 @@ public class ThEInternalInventory implements IInventory, INBTSerializable<NBTTag
 
     public NBTTagList serializeNBT(boolean noAir) {
         NBTTagList nbt = new NBTTagList();
-        this.slots.forEach(slot -> {
-            if (noAir && slot.isEmpty())
-                nbt.appendTag(new NBTTagCompound());
-            else
-                nbt.appendTag(slot.serializeNBT());
-        });
+        this.slots.forEach(
+                slot -> {
+                    if (noAir && slot.isEmpty()) nbt.appendTag(new NBTTagCompound());
+                    else nbt.appendTag(slot.serializeNBT());
+                });
         return nbt;
     }
 

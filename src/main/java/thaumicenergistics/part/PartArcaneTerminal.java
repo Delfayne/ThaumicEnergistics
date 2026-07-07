@@ -2,6 +2,7 @@ package thaumicenergistics.part;
 
 import appeng.api.parts.IPartModel;
 import appeng.api.parts.PartItemStack;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,7 +11,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
+
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.init.ModGUIs;
@@ -23,8 +26,9 @@ import thaumicenergistics.util.ItemHandlerUtil;
 import thaumicenergistics.util.inventory.ThEInternalInventory;
 import thaumicenergistics.util.inventory.ThEUpgradeInventory;
 
-import javax.annotation.Nonnull;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author BrockWS
@@ -32,18 +36,20 @@ import java.util.List;
  */
 public class PartArcaneTerminal extends PartSharedTerminal {
 
-    public static ResourceLocation[] MODELS = new ResourceLocation[]{
-            new ResourceLocation(Reference.MOD_ID, "part/arcane_terminal/base"), // 0
-            new ResourceLocation(Reference.MOD_ID, "part/arcane_terminal/on"), // 1
-            new ResourceLocation(Reference.MOD_ID, "part/arcane_terminal/off"), // 2
-            new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_has_channel"), // 3
-            new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_on"), // 4
-            new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_off") // 5
-    };
+    public static ResourceLocation[] MODELS =
+            new ResourceLocation[] {
+                new ResourceLocation(Reference.MOD_ID, "part/arcane_terminal/base"), // 0
+                new ResourceLocation(Reference.MOD_ID, "part/arcane_terminal/on"), // 1
+                new ResourceLocation(Reference.MOD_ID, "part/arcane_terminal/off"), // 2
+                new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_has_channel"), // 3
+                new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_on"), // 4
+                new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_off") // 5
+            };
 
     private static final IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1], MODELS[4]);
     private static final IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2], MODELS[5]);
-    private static final IPartModel MODEL_HAS_CHANNEL = new ThEPartModel(MODELS[0], MODELS[1], MODELS[3]);
+    private static final IPartModel MODEL_HAS_CHANNEL =
+            new ThEPartModel(MODELS[0], MODELS[1], MODELS[3]);
 
     protected ThEInternalInventory craftingInventory;
     protected ThEInternalInventory upgradeInventory;
@@ -55,7 +61,8 @@ public class PartArcaneTerminal extends PartSharedTerminal {
     public PartArcaneTerminal(ItemArcaneTerminal item, ModGUIs gui) {
         super(item, gui);
         this.craftingInventory = new ThEInternalInventory("matrix", 15, 64);
-        this.upgradeInventory = new ThEUpgradeInventory("upgrades", 1, 1, this.getItemStack(PartItemStack.NETWORK));
+        this.upgradeInventory =
+                new ThEUpgradeInventory("upgrades", 1, 1, this.getItemStack(PartItemStack.NETWORK));
     }
 
     @Override
@@ -65,10 +72,8 @@ public class PartArcaneTerminal extends PartSharedTerminal {
 
     @Override
     public IItemHandler getInventoryByName(String name) {
-        if (name.equalsIgnoreCase("crafting"))
-            return new InvWrapper(this.craftingInventory);
-        if (name.equalsIgnoreCase("upgrades"))
-            return new InvWrapper(this.upgradeInventory);
+        if (name.equalsIgnoreCase("crafting")) return new InvWrapper(this.craftingInventory);
+        if (name.equalsIgnoreCase("upgrades")) return new InvWrapper(this.upgradeInventory);
         return super.getInventoryByName(name);
     }
 
@@ -80,7 +85,8 @@ public class PartArcaneTerminal extends PartSharedTerminal {
 
     @Override
     public boolean onActivate(EntityPlayer player, EnumHand hand, Vec3d pos) {
-        if ((player.isSneaking() && AEUtil.isWrench(player.getHeldItem(hand), player, this.getTile().getPos())))
+        if ((player.isSneaking()
+                && AEUtil.isWrench(player.getHeldItem(hand), player, this.getTile().getPos())))
             return false;
 
         if (ForgeUtil.isServer())
@@ -110,10 +116,8 @@ public class PartArcaneTerminal extends PartSharedTerminal {
     @Override
     public IPartModel getStaticModels() {
         if (this.isPowered())
-            if (this.isActive())
-                return MODEL_HAS_CHANNEL;
-            else
-                return MODEL_ON;
+            if (this.isActive()) return MODEL_HAS_CHANNEL;
+            else return MODEL_ON;
         return MODEL_OFF;
     }
 }

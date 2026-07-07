@@ -1,5 +1,7 @@
 package thaumicenergistics.client.render;
 
+import static net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -9,13 +11,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
+
 import thaumcraft.api.aspects.Aspect;
+
 import thaumicenergistics.item.ItemDummyAspect;
 
 import java.awt.*;
-
-import static net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 
 /**
  * @author BrockWS
@@ -45,14 +48,50 @@ public class DummyAspectRenderer extends TileEntityItemStackRenderer {
             GlStateManager.translate(0f, -1f, 0);
 
             Color c = new Color(aspect.getColor());
-            GlStateManager.color((float) c.getRed() / 255.0F, (float) c.getGreen() / 255.0F, (float) c.getBlue() / 255.0F, 1.0f);
+            GlStateManager.color(
+                    (float) c.getRed() / 255.0F,
+                    (float) c.getGreen() / 255.0F,
+                    (float) c.getBlue() / 255.0F,
+                    1.0f);
 
             Tessellator tess = Tessellator.getInstance();
             tess.getBuffer().begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-            tess.getBuffer().pos(0.0D, 1.0D, 0).tex(0.0D, 1.0D).color((float) c.getRed() / 255.0F, (float) c.getGreen() / 255.0F, (float) c.getBlue() / 255.0F, 1.0f).endVertex();
-            tess.getBuffer().pos(1.0D, 1.0D, 0).tex(1.0D, 1.0D).color((float) c.getRed() / 255.0F, (float) c.getGreen() / 255.0F, (float) c.getBlue() / 255.0F, 1.0f).endVertex();
-            tess.getBuffer().pos(1.0D, 0.0D, 0).tex(1.0D, 0.0D).color((float) c.getRed() / 255.0F, (float) c.getGreen() / 255.0F, (float) c.getBlue() / 255.0F, 1.0f).endVertex();
-            tess.getBuffer().pos(0.0D, 0.0D, 0).tex(0.0D, 0.0D).color((float) c.getRed() / 255.0F, (float) c.getGreen() / 255.0F, (float) c.getBlue() / 255.0F, 1.0f).endVertex();
+            tess.getBuffer()
+                    .pos(0.0D, 1.0D, 0)
+                    .tex(0.0D, 1.0D)
+                    .color(
+                            (float) c.getRed() / 255.0F,
+                            (float) c.getGreen() / 255.0F,
+                            (float) c.getBlue() / 255.0F,
+                            1.0f)
+                    .endVertex();
+            tess.getBuffer()
+                    .pos(1.0D, 1.0D, 0)
+                    .tex(1.0D, 1.0D)
+                    .color(
+                            (float) c.getRed() / 255.0F,
+                            (float) c.getGreen() / 255.0F,
+                            (float) c.getBlue() / 255.0F,
+                            1.0f)
+                    .endVertex();
+            tess.getBuffer()
+                    .pos(1.0D, 0.0D, 0)
+                    .tex(1.0D, 0.0D)
+                    .color(
+                            (float) c.getRed() / 255.0F,
+                            (float) c.getGreen() / 255.0F,
+                            (float) c.getBlue() / 255.0F,
+                            1.0f)
+                    .endVertex();
+            tess.getBuffer()
+                    .pos(0.0D, 0.0D, 0)
+                    .tex(0.0D, 0.0D)
+                    .color(
+                            (float) c.getRed() / 255.0F,
+                            (float) c.getGreen() / 255.0F,
+                            (float) c.getBlue() / 255.0F,
+                            1.0f)
+                    .endVertex();
             tess.draw();
             GlStateManager.enableLighting();
 

@@ -5,10 +5,13 @@ import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IItemList;
 import appeng.me.GridAccessException;
+
 import net.minecraft.nbt.NBTTagCompound;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectSource;
+
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.integration.appeng.grid.GridUtil;
@@ -42,12 +45,15 @@ public class TileInfusionProvider extends TileNetwork implements IAspectSource {
 
     @Override
     public AspectList getAspects() {
-        if (ForgeUtil.isClient())
-            return this.clientAspects;
+        if (ForgeUtil.isClient()) return this.clientAspects;
         AspectList list = new AspectList();
         IItemList<IAEEssentiaStack> stored = this.getStoredAspects();
         for (IAEEssentiaStack stack : stored)
-            list.add(stack.getAspect(), stack.getStackSize() >= Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) stack.getStackSize());
+            list.add(
+                    stack.getAspect(),
+                    stack.getStackSize() >= Integer.MAX_VALUE
+                            ? Integer.MAX_VALUE
+                            : (int) stack.getStackSize());
         return list;
     }
 
@@ -56,9 +62,10 @@ public class TileInfusionProvider extends TileNetwork implements IAspectSource {
         try {
             IStorageGrid storage = GridUtil.getStorageGrid(this);
             IMEMonitor<IAEEssentiaStack> monitor = storage.getInventory(this.getChannel());
-            IAEEssentiaStack canExtract = monitor.extractItems(AEUtil.getAEStackFromAspect(aspect, i), Actionable.SIMULATE, this.src);
-            if (canExtract == null || canExtract.getStackSize() != i)
-                return false;
+            IAEEssentiaStack canExtract =
+                    monitor.extractItems(
+                            AEUtil.getAEStackFromAspect(aspect, i), Actionable.SIMULATE, this.src);
+            if (canExtract == null || canExtract.getStackSize() != i) return false;
             monitor.extractItems(canExtract, Actionable.MODULATE, this.src);
             this.markDirty();
         } catch (GridAccessException e) {
@@ -74,8 +81,7 @@ public class TileInfusionProvider extends TileNetwork implements IAspectSource {
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        if (ForgeUtil.isClient())
-            return super.writeToNBT(tag);
+        if (ForgeUtil.isClient()) return super.writeToNBT(tag);
         super.writeToNBT(tag);
         this.getAspects().writeToNBT(tag, "storedAspects");
         return tag;

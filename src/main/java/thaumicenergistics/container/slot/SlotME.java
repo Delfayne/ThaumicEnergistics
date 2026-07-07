@@ -1,9 +1,11 @@
 package thaumicenergistics.container.slot;
 
 import appeng.api.storage.data.IAEStack;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
+
 import thaumicenergistics.client.gui.helpers.MERepo;
 
 /**
@@ -37,9 +39,7 @@ public class SlotME<T extends IAEStack<T>> extends ThESlot {
     }
 
     @Override
-    public void putStack(ItemStack stack) {
-
-    }
+    public void putStack(ItemStack stack) {}
 
     @Override
     public boolean isItemValid(ItemStack stack) {

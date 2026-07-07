@@ -2,6 +2,7 @@ package thaumicenergistics.container.slot;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
 import thaumicenergistics.container.ICraftingContainer;
 
 /**
@@ -12,7 +13,12 @@ public class SlotArcaneResult extends ThESlot {
     private ICraftingContainer container;
     private EntityPlayer player;
 
-    public SlotArcaneResult(ICraftingContainer container, EntityPlayer player, int index, int xPosition, int yPosition) {
+    public SlotArcaneResult(
+            ICraftingContainer container,
+            EntityPlayer player,
+            int index,
+            int xPosition,
+            int yPosition) {
         super(container.getInventory("result"), index, xPosition, yPosition);
         this.player = player;
         this.container = container;

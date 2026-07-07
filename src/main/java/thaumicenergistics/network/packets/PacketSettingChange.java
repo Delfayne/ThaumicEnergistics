@@ -3,7 +3,9 @@ package thaumicenergistics.network.packets;
 import appeng.api.config.Settings;
 import appeng.api.util.IConfigManager;
 import appeng.api.util.IConfigurableObject;
+
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -13,6 +15,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
 import thaumicenergistics.client.gui.GuiBase;
 import thaumicenergistics.container.IPartContainer;
 
@@ -25,8 +28,7 @@ public class PacketSettingChange implements IMessage {
     private String setting;
     private String value;
 
-    public PacketSettingChange() {
-    }
+    public PacketSettingChange() {}
 
     public PacketSettingChange(Settings setting, Enum value) {
         this(setting.name(), value.name());
@@ -55,8 +57,7 @@ public class PacketSettingChange implements IMessage {
 
     public Enum getValue() {
         for (Enum e : this.getSetting().getPossibleValues())
-            if (e.name().equalsIgnoreCase(this.value))
-                return e;
+            if (e.name().equalsIgnoreCase(this.value)) return e;
         return null;
     }
 
@@ -67,16 +68,20 @@ public class PacketSettingChange implements IMessage {
             NetHandlerPlayServer handler = ctx.getServerHandler();
             EntityPlayerMP player = handler.player;
             IThreadListener thread = (IThreadListener) player.world;
-            thread.addScheduledTask(() -> {
-                if (player.openContainer instanceof IConfigurableObject) {
-                    IConfigManager cm = ((IConfigurableObject) player.openContainer).getConfigManager();
-                    if (cm != null) {
-                        cm.putSetting(message.getSetting(), message.getValue());
-                        if (player.openContainer instanceof IPartContainer)
-                            ((IPartContainer) player.openContainer).getPart().settingChanged(message.getSetting());
-                    }
-                }
-            });
+            thread.addScheduledTask(
+                    () -> {
+                        if (player.openContainer instanceof IConfigurableObject) {
+                            IConfigManager cm =
+                                    ((IConfigurableObject) player.openContainer).getConfigManager();
+                            if (cm != null) {
+                                cm.putSetting(message.getSetting(), message.getValue());
+                                if (player.openContainer instanceof IPartContainer)
+                                    ((IPartContainer) player.openContainer)
+                                            .getPart()
+                                            .settingChanged(message.getSetting());
+                            }
+                        }
+                    });
             return null;
         }
     }
@@ -85,11 +90,15 @@ public class PacketSettingChange implements IMessage {
 
         @Override
         public IMessage onMessage(PacketSettingChange message, MessageContext ctx) {
-            Minecraft.getMinecraft().addScheduledTask(() -> {
-                GuiScreen gui = Minecraft.getMinecraft().currentScreen;
-                if (gui instanceof GuiBase)
-                    ((GuiBase) gui).updateSetting(message.getSetting(), message.getValue());
-            });
+            Minecraft.getMinecraft()
+                    .addScheduledTask(
+                            () -> {
+                                GuiScreen gui = Minecraft.getMinecraft().currentScreen;
+                                if (gui instanceof GuiBase)
+                                    ((GuiBase) gui)
+                                            .updateSetting(
+                                                    message.getSetting(), message.getValue());
+                            });
             return null;
         }
     }

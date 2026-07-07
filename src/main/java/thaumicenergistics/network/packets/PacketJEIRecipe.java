@@ -3,6 +3,7 @@ package thaumicenergistics.network.packets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,6 +12,7 @@ import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
 import thaumicenergistics.container.ContainerBase;
 import thaumicenergistics.util.ThELog;
 
@@ -23,8 +25,7 @@ public class PacketJEIRecipe implements IMessage {
 
     private NBTTagCompound tag;
 
-    public PacketJEIRecipe() {
-    }
+    public PacketJEIRecipe() {}
 
     public PacketJEIRecipe(NBTTagCompound tag) {
         this.tag = tag;
@@ -37,8 +38,7 @@ public class PacketJEIRecipe implements IMessage {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (tag == null || tag.isEmpty())
-            ThELog.error("[FROM] TAG HAS NO INFO");
+        if (tag == null || tag.isEmpty()) ThELog.error("[FROM] TAG HAS NO INFO");
     }
 
     @Override
@@ -66,11 +66,13 @@ public class PacketJEIRecipe implements IMessage {
             NetHandlerPlayServer handler = ctx.getServerHandler();
             EntityPlayerMP player = handler.player;
             IThreadListener thread = (IThreadListener) player.world;
-            thread.addScheduledTask(() -> {
-                if (player.openContainer instanceof ContainerBase) {
-                    ((ContainerBase) player.openContainer).handleJEITransfer(player, message.tag);
-                }
-            });
+            thread.addScheduledTask(
+                    () -> {
+                        if (player.openContainer instanceof ContainerBase) {
+                            ((ContainerBase) player.openContainer)
+                                    .handleJEITransfer(player, message.tag);
+                        }
+                    });
             return null;
         }
     }

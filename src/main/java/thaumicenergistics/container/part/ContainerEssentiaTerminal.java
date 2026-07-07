@@ -8,6 +8,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.IConfigurableObject;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,9 +16,11 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
+
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.items.consumables.ItemPhial;
+
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
@@ -38,7 +41,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * @author BrockWS
  */
-public class ContainerEssentiaTerminal extends ContainerBaseTerminal implements IMEMonitorHandlerReceiver<IAEEssentiaStack>, IConfigurableObject {
+public class ContainerEssentiaTerminal extends ContainerBaseTerminal
+        implements IMEMonitorHandlerReceiver<IAEEssentiaStack>, IConfigurableObject {
 
     private final PartEssentiaTerminal part;
     private IMEMonitor<IAEEssentiaStack> monitor;
@@ -48,7 +52,11 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal implements 
         this.part = part;
 
         if (ForgeUtil.isServer()) {
-            this.monitor = this.part.getInventory(AEApi.instance().storage().getStorageChannel(IEssentiaStorageChannel.class));
+            this.monitor =
+                    this.part.getInventory(
+                            AEApi.instance()
+                                    .storage()
+                                    .getStorageChannel(IEssentiaStorageChannel.class));
             if (this.monitor != null) {
                 this.monitor.addListener(this, null);
             }
@@ -70,22 +78,30 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal implements 
     @Override
     public void onAction(EntityPlayerMP player, PacketUIAction packet) {
         InventoryPlayer inv = player.inventory;
-        if (packet.action == ActionType.FILL_ESSENTIA_ITEM && packet.requestedStack instanceof IAEEssentiaStack) {
+        if (packet.action == ActionType.FILL_ESSENTIA_ITEM
+                && packet.requestedStack instanceof IAEEssentiaStack) {
             IAEEssentiaStack requestedStack = (IAEEssentiaStack) packet.requestedStack;
             ItemStack toFill = inv.getItemStack().copy();
             ResourceLocation registryName = toFill.getItem().getRegistryName();
-            if (toFill.isEmpty() || !(toFill.getItem() instanceof IEssentiaContainerItem) || registryName == null)
-                return;
+            if (toFill.isEmpty()
+                    || !(toFill.getItem() instanceof IEssentiaContainerItem)
+                    || registryName == null) return;
             toFill.setCount(1);
 
             IEssentiaContainerItem containerItem = (IEssentiaContainerItem) toFill.getItem();
-            int max = ThEApi.instance().config().essentiaContainerCapacity().getOrDefault(registryName.toString(), 0);
-            if (max < 1 || (containerItem.getAspects(toFill) != null && containerItem.getAspects(toFill).size() > 0))
-                return;
+            int max =
+                    ThEApi.instance()
+                            .config()
+                            .essentiaContainerCapacity()
+                            .getOrDefault(registryName.toString(), 0);
+            if (max < 1
+                    || (containerItem.getAspects(toFill) != null
+                            && containerItem.getAspects(toFill).size() > 0)) return;
 
-            IAEEssentiaStack stack = this.monitor.extractItems(requestedStack, Actionable.SIMULATE, this.part.source);
-            if (stack == null || stack.getStackSize() < max)
-                return;
+            IAEEssentiaStack stack =
+                    this.monitor.extractItems(
+                            requestedStack, Actionable.SIMULATE, this.part.source);
+            if (stack == null || stack.getStackSize() < max) return;
             stack.setStackSize(max);
             containerItem.setAspects(toFill, new AspectList().add(stack.getAspect(), max));
             if (toFill.getItem() instanceof ItemPhial) {
@@ -105,32 +121,39 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal implements 
                 filledItem = true;
                 PacketHandler.sendToPlayer(player, new PacketInvHeldUpdate(toFill));
             }
-            if (filledItem)
-                this.monitor.extractItems(stack, Actionable.MODULATE, this.part.source);
+            if (filledItem) this.monitor.extractItems(stack, Actionable.MODULATE, this.part.source);
         } else if (packet.action == ActionType.EMPTY_ESSENTIA_ITEM) {
             ItemStack toEmpty = inv.getItemStack().copy();
             ResourceLocation registryName = toEmpty.getItem().getRegistryName();
-            if (toEmpty.isEmpty() || !(toEmpty.getItem() instanceof IEssentiaContainerItem) || registryName == null)
-                return;
+            if (toEmpty.isEmpty()
+                    || !(toEmpty.getItem() instanceof IEssentiaContainerItem)
+                    || registryName == null) return;
             IEssentiaContainerItem containerItem = (IEssentiaContainerItem) toEmpty.getItem();
             AspectList list = containerItem.getAspects(toEmpty);
-            if (list == null || list.size() < 1 || ThEApi.instance().config().essentiaContainerCapacity().getOrDefault(registryName.toString(), 0) < 1)
-                return;
+            if (list == null
+                    || list.size() < 1
+                    || ThEApi.instance()
+                                    .config()
+                                    .essentiaContainerCapacity()
+                                    .getOrDefault(registryName.toString(), 0)
+                            < 1) return;
             AtomicBoolean canInsert = new AtomicBoolean(true);
-            list.aspects.forEach((aspect, amount) -> {
-                IAEEssentiaStack stack = this.monitor.injectItems(AEUtil.getAEStackFromAspect(aspect, amount), Actionable.SIMULATE, this.part.source);
-                if (stack != null && stack.getStackSize() > 0)
-                    canInsert.set(false);
-            });
-            if (!canInsert.get())
-                return;
+            list.aspects.forEach(
+                    (aspect, amount) -> {
+                        IAEEssentiaStack stack =
+                                this.monitor.injectItems(
+                                        AEUtil.getAEStackFromAspect(aspect, amount),
+                                        Actionable.SIMULATE,
+                                        this.part.source);
+                        if (stack != null && stack.getStackSize() > 0) canInsert.set(false);
+                    });
+            if (!canInsert.get()) return;
 
             if (toEmpty.getCount() > 1) {
                 toEmpty.setCount(1);
                 toEmpty.setTagCompound(null);
                 toEmpty.setItemDamage(0);
-                if (!inv.addItemStackToInventory(toEmpty))
-                    return;
+                if (!inv.addItemStackToInventory(toEmpty)) return;
                 ItemStack held = inv.getItemStack();
                 held.setCount(held.getCount() - 1);
                 inv.setItemStack(held);
@@ -141,7 +164,12 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal implements 
                 inv.setItemStack(toEmpty);
                 PacketHandler.sendToPlayer(player, new PacketInvHeldUpdate(toEmpty));
             }
-            list.aspects.forEach((aspect, amount) -> this.monitor.injectItems(AEUtil.getAEStackFromAspect(aspect, amount), Actionable.MODULATE, this.part.source));
+            list.aspects.forEach(
+                    (aspect, amount) ->
+                            this.monitor.injectItems(
+                                    AEUtil.getAEStackFromAspect(aspect, amount),
+                                    Actionable.MODULATE,
+                                    this.part.source));
         }
         super.onAction(player, packet);
     }
@@ -152,7 +180,10 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal implements 
     }
 
     @Override
-    public void postChange(IBaseMonitor<IAEEssentiaStack> iBaseMonitor, Iterable<IAEEssentiaStack> iterable, IActionSource iActionSource) {
+    public void postChange(
+            IBaseMonitor<IAEEssentiaStack> iBaseMonitor,
+            Iterable<IAEEssentiaStack> iterable,
+            IActionSource iActionSource) {
         for (IContainerListener c : this.listeners) {
             this.sendInventory(c);
         }
@@ -184,8 +215,7 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal implements 
             return;
         IItemList<IAEEssentiaStack> storage = this.monitor.getStorageList();
         PacketMEEssentiaUpdate packet = new PacketMEEssentiaUpdate();
-        for (IAEEssentiaStack stack : storage)
-            packet.appendStack(stack);
+        for (IAEEssentiaStack stack : storage) packet.appendStack(stack);
         PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
     }
 }

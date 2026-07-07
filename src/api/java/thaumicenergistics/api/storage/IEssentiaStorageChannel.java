@@ -7,5 +7,4 @@ import appeng.api.storage.IStorageChannel;
  *
  * @author BrockWS
  */
-public interface IEssentiaStorageChannel extends IStorageChannel<IAEEssentiaStack> {
-}
+public interface IEssentiaStorageChannel extends IStorageChannel<IAEEssentiaStack> {}

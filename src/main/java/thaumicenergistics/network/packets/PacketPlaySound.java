@@ -1,6 +1,7 @@
 package thaumicenergistics.network.packets;
 
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -10,6 +11,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
 import thaumicenergistics.ThaumicEnergistics;
 
 /**
@@ -23,10 +25,10 @@ public class PacketPlaySound implements IMessage {
     public float vol;
     public float pitch;
 
-    public PacketPlaySound() {
-    }
+    public PacketPlaySound() {}
 
-    public PacketPlaySound(BlockPos pos, ResourceLocation sound, SoundCategory category, float vol, float pitch) {
+    public PacketPlaySound(
+            BlockPos pos, ResourceLocation sound, SoundCategory category, float vol, float pitch) {
         this.sound = sound;
         this.pos = pos;
         this.category = category;
@@ -58,7 +60,15 @@ public class PacketPlaySound implements IMessage {
 
         @Override
         public IMessage onMessage(PacketPlaySound message, MessageContext ctx) {
-            Minecraft.getMinecraft().world.playSound(ThaumicEnergistics.proxy.getPlayerEntFromCtx(ctx), message.pos, new SoundEvent(message.sound), message.category, message.vol, message.pitch);
+            Minecraft.getMinecraft()
+                    .world
+                    .playSound(
+                            ThaumicEnergistics.proxy.getPlayerEntFromCtx(ctx),
+                            message.pos,
+                            new SoundEvent(message.sound),
+                            message.category,
+                            message.vol,
+                            message.pitch);
             return null;
         }
     }

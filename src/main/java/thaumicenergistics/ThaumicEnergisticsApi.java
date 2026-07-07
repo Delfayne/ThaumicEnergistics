@@ -34,8 +34,7 @@ public class ThaumicEnergisticsApi implements IThEApi {
     }
 
     public static IThEApi instance() {
-        if (INSTANCE == null)
-            INSTANCE = new ThaumicEnergisticsApi();
+        if (INSTANCE == null) INSTANCE = new ThaumicEnergisticsApi();
         return INSTANCE;
     }
 

@@ -12,12 +12,12 @@ import java.awt.*;
 @SideOnly(Side.CLIENT)
 public class ParticleCrafting extends ThEParticle {
     protected static final Color[] colors = { // (ﾉ´ヮ´)ﾉ
-            new Color(112, 239, 253),
-            new Color(126, 150, 248),
-            new Color(234, 162, 110),
-            new Color(224, 92, 105),
-            new Color(234, 234, 100),
-            new Color(101, 238, 151)
+        new Color(112, 239, 253),
+        new Color(126, 150, 248),
+        new Color(234, 162, 110),
+        new Color(224, 92, 105),
+        new Color(234, 234, 100),
+        new Color(101, 238, 151)
     };
 
     public ParticleCrafting(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn) {
