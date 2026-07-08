@@ -29,6 +29,7 @@ import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.container.ActionType;
 import thaumicenergistics.container.ContainerBaseTerminal;
+import thaumicenergistics.container.ThETerminalNetworkSync;
 import thaumicenergistics.integration.appeng.grid.ThEWirelessEssentiaGuiObject;
 import thaumicenergistics.integration.appeng.util.ThEActionSource;
 import thaumicenergistics.network.PacketHandler;
@@ -56,6 +57,13 @@ public class ContainerWirelessEssentiaTerminal extends ContainerBaseTerminal
     private final ThEWirelessEssentiaGuiObject wirelessHost;
     private final IEssentiaStorageChannel channel;
     private final IActionSource playerSource;
+    private final IItemList<IAEEssentiaStack> items =
+            AEApi.instance()
+                    .storage()
+                    .getStorageChannel(IEssentiaStorageChannel.class)
+                    .createList();
+    private final ThETerminalNetworkSync<IAEEssentiaStack, PacketMEEssentiaUpdate> networkSync =
+            new ThETerminalNetworkSync<>(PacketMEEssentiaUpdate::new);
     private IMEMonitor<IAEEssentiaStack> monitor;
     private boolean isValidContainer = true;
     private int ticksSinceCheck = 0;
@@ -193,8 +201,8 @@ public class ContainerWirelessEssentiaTerminal extends ContainerBaseTerminal
             IBaseMonitor<IAEEssentiaStack> iBaseMonitor,
             Iterable<IAEEssentiaStack> iterable,
             IActionSource iActionSource) {
-        for (IContainerListener c : this.listeners) {
-            this.sendInventory(c);
+        for (IAEEssentiaStack stack : iterable) {
+            this.items.add(stack);
         }
     }
 
@@ -211,6 +219,8 @@ public class ContainerWirelessEssentiaTerminal extends ContainerBaseTerminal
             if (this.monitor != this.wirelessHost.getInventory(this.channel)) {
                 this.setValidContainer(false);
             }
+
+            this.networkSync.sendDelta(this.items, this.monitor, this.listeners);
 
             this.ticksSinceCheck++;
             if (this.ticksSinceCheck >= 10) {
@@ -265,11 +275,7 @@ public class ContainerWirelessEssentiaTerminal extends ContainerBaseTerminal
     }
 
     private void sendInventory(IContainerListener listener) {
-        if (ForgeUtil.isClient() || !(listener instanceof EntityPlayer) || this.monitor == null)
-            return;
-        IItemList<IAEEssentiaStack> storage = this.monitor.getStorageList();
-        PacketMEEssentiaUpdate packet = new PacketMEEssentiaUpdate();
-        for (IAEEssentiaStack stack : storage) packet.appendStack(stack);
-        PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
+        if (ForgeUtil.isClient() || this.monitor == null) return;
+        this.networkSync.sendFull(listener, this.monitor);
     }
 }

@@ -28,7 +28,7 @@ import java.util.zip.GZIPOutputStream;
 /**
  * @author BrockWS
  */
-public class PacketMEItemUpdate implements IMessage {
+public class PacketMEItemUpdate implements IMessage, IStackUpdatePacket<IAEItemStack> {
 
     private static final int UNCOMPRESSED_PACKET_BYTE_LIMIT = 16 * 1024 * 1024;
     private static final int OPERATION_BYTE_LIMIT = 2 * 1024;
@@ -113,6 +113,7 @@ public class PacketMEItemUpdate implements IMessage {
         }
     }
 
+    @Override
     public void appendStack(IAEItemStack stack) throws IOException, BufferOverflowException {
 
         ByteBuf tmp = Unpooled.buffer(OPERATION_BYTE_LIMIT);
@@ -155,6 +156,7 @@ public class PacketMEItemUpdate implements IMessage {
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return this.empty;
     }

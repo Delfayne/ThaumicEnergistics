@@ -28,6 +28,7 @@ import thaumicenergistics.config.AESettings;
 import thaumicenergistics.container.ActionType;
 import thaumicenergistics.container.ContainerBaseTerminal;
 import thaumicenergistics.container.IPartContainer;
+import thaumicenergistics.container.ThETerminalNetworkSync;
 import thaumicenergistics.integration.appeng.util.ThEActionSource;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.network.packets.PacketInvHeldUpdate;
@@ -51,6 +52,13 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
     private final PartEssentiaTerminal part;
     private final IEssentiaStorageChannel channel;
     private final IActionSource playerSource;
+    private final IItemList<IAEEssentiaStack> items =
+            AEApi.instance()
+                    .storage()
+                    .getStorageChannel(IEssentiaStorageChannel.class)
+                    .createList();
+    private final ThETerminalNetworkSync<IAEEssentiaStack, PacketMEEssentiaUpdate> networkSync =
+            new ThETerminalNetworkSync<>(PacketMEEssentiaUpdate::new);
     private IMEMonitor<IAEEssentiaStack> monitor;
     private boolean isValidContainer = true;
 
@@ -189,8 +197,8 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
             IBaseMonitor<IAEEssentiaStack> iBaseMonitor,
             Iterable<IAEEssentiaStack> iterable,
             IActionSource iActionSource) {
-        for (IContainerListener c : this.listeners) {
-            this.sendInventory(c);
+        for (IAEEssentiaStack stack : iterable) {
+            this.items.add(stack);
         }
     }
 
@@ -203,13 +211,17 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
 
     @Override
     public void detectAndSendChanges() {
-        if (ForgeUtil.isServer() && this.monitor != this.part.getInventory(this.channel)) {
-            // Mirrors AE2's own ContainerMEMonitorable: if the grid handed us back a different
-            // monitor instance than the one we're subscribed to (or none at all), don't try to
-            // hot-swap the subscription - just invalidate the container so canInteractWith()
-            // makes vanilla close the GUI. Reopening constructs a fresh container against
-            // whatever the current monitor is.
-            this.setValidContainer(false);
+        if (ForgeUtil.isServer()) {
+            if (this.monitor != this.part.getInventory(this.channel)) {
+                // Mirrors AE2's own ContainerMEMonitorable: if the grid handed us back a different
+                // monitor instance than the one we're subscribed to (or none at all), don't try to
+                // hot-swap the subscription - just invalidate the container so canInteractWith()
+                // makes vanilla close the GUI. Reopening constructs a fresh container against
+                // whatever the current monitor is.
+                this.setValidContainer(false);
+            }
+
+            this.networkSync.sendDelta(this.items, this.monitor, this.listeners);
         }
         super.detectAndSendChanges();
     }
@@ -242,11 +254,7 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
     }
 
     private void sendInventory(IContainerListener listener) {
-        if (ForgeUtil.isClient() || !(listener instanceof EntityPlayer) || this.monitor == null)
-            return;
-        IItemList<IAEEssentiaStack> storage = this.monitor.getStorageList();
-        PacketMEEssentiaUpdate packet = new PacketMEEssentiaUpdate();
-        for (IAEEssentiaStack stack : storage) packet.appendStack(stack);
-        PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
+        if (ForgeUtil.isClient() || this.monitor == null) return;
+        this.networkSync.sendFull(listener, this.monitor);
     }
 }
