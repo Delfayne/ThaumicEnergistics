@@ -75,6 +75,11 @@ public class PacketHandler {
                 PacketAssemblerGUIUpdate.class,
                 PacketHandler.nextID(),
                 Side.CLIENT);
+        PacketHandler.INSTANCE.registerMessage(
+                PacketLevelEmitterValue.HandlerClient.class,
+                PacketLevelEmitterValue.class,
+                PacketHandler.nextID(),
+                Side.CLIENT);
 
         PacketHandler.INSTANCE.registerMessage(
                 PacketUIAction.Handler.class,
@@ -119,6 +124,11 @@ public class PacketHandler {
         PacketHandler.INSTANCE.registerMessage(
                 PacketGhostEssentia.Handler.class,
                 PacketGhostEssentia.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
+        PacketHandler.INSTANCE.registerMessage(
+                PacketLevelEmitterValue.HandlerServer.class,
+                PacketLevelEmitterValue.class,
                 PacketHandler.nextID(),
                 Side.SERVER);
     }

@@ -106,6 +106,8 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerEssentiaExportBus(player, (PartEssentiaExportBus) part);
             case ESSENTIA_STORAGE_BUS:
                 return new ContainerEssentiaStorageBus(player, (PartEssentiaStorageBus) part);
+            case ESSENTIA_LEVEL_EMITTER:
+                return new ContainerEssentiaLevelEmitter(player, (PartEssentiaLevelEmitter) part);
             case ESSENTIA_TERMINAL:
                 return new ContainerEssentiaTerminal(player, (PartEssentiaTerminal) part);
             case ARCANE_TERMINAL:
@@ -154,6 +156,9 @@ public class GuiHandler implements IGuiHandler {
             case ESSENTIA_STORAGE_BUS:
                 return new GuiEssentiaStorageBus(
                         new ContainerEssentiaStorageBus(player, (PartEssentiaStorageBus) part));
+            case ESSENTIA_LEVEL_EMITTER:
+                return new GuiEssentiaLevelEmitter(
+                        new ContainerEssentiaLevelEmitter(player, (PartEssentiaLevelEmitter) part));
             case ESSENTIA_TERMINAL:
                 return new GuiEssentiaTerminal(
                         new ContainerEssentiaTerminal(player, (PartEssentiaTerminal) part));
