@@ -120,10 +120,10 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
     public void onAction(EntityPlayerMP player, PacketUIAction packet) {
         // TODO: Give inventoryInsert/inventoryExtract IEnergyGrid to extract power
         if (this.monitor == null) return;
+        IAEItemStack requestedStack = (IAEItemStack) packet.getStack(this.channel);
         if (packet.action == ActionType.PICKUP_OR_SETDOWN) { // Normal lmb
-            if (player.inventory.getItemStack().isEmpty()
-                    && packet.requestedStack != null) { // PICKUP
-                IAEItemStack stack = (IAEItemStack) packet.requestedStack.copy();
+            if (player.inventory.getItemStack().isEmpty() && requestedStack != null) { // PICKUP
+                IAEItemStack stack = requestedStack.copy();
                 stack.setStackSize(stack.getDefinition().getMaxStackSize());
                 stack = AEUtil.inventoryExtract(stack, this.monitor, this.part.source);
 
@@ -141,9 +141,8 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
                         player, new PacketInvHeldUpdate(player.inventory.getItemStack()));
             }
         } else if (packet.action == ActionType.SPLIT_OR_PLACE_SINGLE) { // Normal rmb
-            if (player.inventory.getItemStack().isEmpty()
-                    && packet.requestedStack != null) { // Grab half
-                IAEItemStack stack = (IAEItemStack) packet.requestedStack.copy();
+            if (player.inventory.getItemStack().isEmpty() && requestedStack != null) { // Grab half
+                IAEItemStack stack = requestedStack.copy();
                 stack.setStackSize(
                         stack.getDefinition().getMaxStackSize()); // Cap it to max stack size
                 stack =
@@ -178,14 +177,13 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
             }
         } else if ((packet.action == ActionType.SCROLL_UP
                         || packet.action == ActionType.PICKUP_SINGLE)
-                && packet.requestedStack instanceof IAEItemStack) { // Shift rmb
+                && requestedStack != null) { // Shift rmb
             ItemStack held = player.inventory.getItemStack();
             if (!held.isEmpty()
                     && (held.getCount() >= held.getMaxStackSize()
-                            || !ForgeUtil.areItemStacksEqual(
-                                    ((IAEItemStack) packet.requestedStack).getDefinition(), held)))
+                            || !ForgeUtil.areItemStacksEqual(requestedStack.getDefinition(), held)))
                 return;
-            IAEItemStack stack = (IAEItemStack) packet.requestedStack.copy();
+            IAEItemStack stack = requestedStack.copy();
             stack.setStackSize(1);
             stack = AEUtil.inventoryExtract(stack, this.monitor, this.part.source);
             if (stack != null) {
@@ -202,8 +200,10 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
             Objects.requireNonNull(is);
             is.setStackSize(1);
             is = AEUtil.inventoryInsert(is, this.monitor, this.part.source, Actionable.MODULATE);
-            if (is != null) // Failed to insert one item
-            return;
+            // Failed to insert one item
+            if (is != null) {
+                return;
+            }
             if (held.getCount() > 1) {
                 held.shrink(1);
             } else {
@@ -212,9 +212,8 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
             player.inventory.setItemStack(held);
             PacketHandler.sendToPlayer(
                     player, new PacketInvHeldUpdate(player.inventory.getItemStack()));
-        } else if (packet.action == ActionType.SHIFT_MOVE
-                && packet.requestedStack instanceof IAEItemStack) {
-            IAEItemStack stack = ((IAEItemStack) packet.requestedStack).copy();
+        } else if (packet.action == ActionType.SHIFT_MOVE && requestedStack != null) {
+            IAEItemStack stack = requestedStack.copy();
             ItemStack is = stack.createItemStack();
 
             // Cap to max stack size
@@ -227,7 +226,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
             if (stack != null)
                 ForgeUtil.addStackToPlayerInventory(player, stack.createItemStack(), false);
         } else if (packet.action == ActionType.AUTO_CRAFT) {
-            if (!packet.requestedStack.isCraftable()) return;
+            if (requestedStack == null || !requestedStack.isCraftable()) return;
             GuiHandler.openGUI(
                     ModGUIs.AE2_CRAFT_AMOUNT,
                     player,
@@ -235,8 +234,8 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
                     this.part.side);
             if (player.openContainer instanceof ContainerCraftAmountBridge) {
                 ContainerCraftAmountBridge cca = (ContainerCraftAmountBridge) player.openContainer;
-                cca.getCraftingItem().putStack(packet.requestedStack.asItemStackRepresentation());
-                cca.setItemToCraft((IAEItemStack) packet.requestedStack);
+                cca.getCraftingItem().putStack(requestedStack.asItemStackRepresentation());
+                cca.setItemToCraft(requestedStack);
             }
         } else if (packet.action == ActionType.CLEAR_GRID) {
             clearCrafting();
@@ -367,9 +366,10 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
             if (aeExtract != null && aeExtract.getStackSize() > 0)
                 crafting.insertItem(slot, aeExtract.createItemStack(), false);
 
-            if (crafting.getStackInSlot(slot).getCount()
-                    >= stack.getCount()) // We managed to pull everything from the system
-            continue;
+            // We managed to pull everything from the system
+            if (crafting.getStackInSlot(slot).getCount() >= stack.getCount()) {
+                continue;
+            }
 
             // Try pull from player
             ThELog.debug("Failed to pull item from ae inv, trying player inventory");
@@ -474,8 +474,10 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
             NonNullList<ItemStack> remaining = this.getRemaining(this.recipe, inv);
 
             for (int j = 0; j < remaining.size(); j++) {
-                if (crafting.getStackInSlot(j).isEmpty()) // The slot is empty so ignore it
-                continue;
+                // The slot is empty so ignore it
+                if (crafting.getStackInSlot(j).isEmpty()) {
+                    continue;
+                }
                 ItemStack extract = crafting.extractItem(j, Integer.MAX_VALUE, false);
                 if (!remaining.get(j).isEmpty()) { // We still have some remaining
                     crafting.insertItem(j, remaining.get(j), false);
@@ -493,8 +495,10 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
             // Re-craft safety checks
             inv = this.getInvCrafting(crafting, this.recipe);
 
-            if (!this.recipe.matches(inv, this.player.world)) // Check if we can craft again
-            craftAgain = false;
+            // Check if we can craft again
+            if (!this.recipe.matches(inv, this.player.world)) {
+                craftAgain = false;
+            }
 
             if (this.getWorldVis() < this.getCurrentRequiredVis()) craftAgain = false;
 
