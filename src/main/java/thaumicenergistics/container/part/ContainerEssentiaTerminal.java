@@ -51,6 +51,11 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
     private final PartEssentiaTerminal part;
     private final IEssentiaStorageChannel channel;
     private final IActionSource playerSource;
+    private final IItemList<IAEEssentiaStack> items =
+            AEApi.instance()
+                    .storage()
+                    .getStorageChannel(IEssentiaStorageChannel.class)
+                    .createList();
     private IMEMonitor<IAEEssentiaStack> monitor;
     private boolean isValidContainer = true;
 
@@ -189,8 +194,8 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
             IBaseMonitor<IAEEssentiaStack> iBaseMonitor,
             Iterable<IAEEssentiaStack> iterable,
             IActionSource iActionSource) {
-        for (IContainerListener c : this.listeners) {
-            this.sendInventory(c);
+        for (IAEEssentiaStack stack : iterable) {
+            this.items.add(stack);
         }
     }
 
@@ -203,13 +208,42 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
 
     @Override
     public void detectAndSendChanges() {
-        if (ForgeUtil.isServer() && this.monitor != this.part.getInventory(this.channel)) {
-            // Mirrors AE2's own ContainerMEMonitorable: if the grid handed us back a different
-            // monitor instance than the one we're subscribed to (or none at all), don't try to
-            // hot-swap the subscription - just invalidate the container so canInteractWith()
-            // makes vanilla close the GUI. Reopening constructs a fresh container against
-            // whatever the current monitor is.
-            this.setValidContainer(false);
+        if (ForgeUtil.isServer()) {
+            if (this.monitor != this.part.getInventory(this.channel)) {
+                // Mirrors AE2's own ContainerMEMonitorable: if the grid handed us back a different
+                // monitor instance than the one we're subscribed to (or none at all), don't try to
+                // hot-swap the subscription - just invalidate the container so canInteractWith()
+                // makes vanilla close the GUI. Reopening constructs a fresh container against
+                // whatever the current monitor is.
+                this.setValidContainer(false);
+            }
+
+            // Mirrors ContainerArcaneTerminal/AE2's own ContainerMEMonitorable: postChange only
+            // accumulates what changed into this.items, and the actual packet is built and sent
+            // here, once per tick, containing only those changed stacks - not the whole network's
+            // essentia list on every single change notification.
+            if (!this.items.isEmpty()) {
+                IItemList<IAEEssentiaStack> monitorCache = this.monitor.getStorageList();
+                PacketMEEssentiaUpdate packet = new PacketMEEssentiaUpdate();
+
+                for (IAEEssentiaStack is : this.items) {
+                    IAEEssentiaStack send = monitorCache.findPrecise(is);
+                    if (send == null) {
+                        is.setStackSize(0);
+                        packet.appendStack(is);
+                    } else {
+                        packet.appendStack(send);
+                    }
+                }
+
+                this.items.resetStatus();
+
+                for (IContainerListener c : this.listeners) {
+                    if (c instanceof EntityPlayer) {
+                        PacketHandler.sendToPlayer((EntityPlayerMP) c, packet);
+                    }
+                }
+            }
         }
         super.detectAndSendChanges();
     }
