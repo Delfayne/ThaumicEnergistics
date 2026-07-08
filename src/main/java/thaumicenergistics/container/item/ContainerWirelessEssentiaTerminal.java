@@ -1,4 +1,4 @@
-package thaumicenergistics.container.part;
+package thaumicenergistics.container.item;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -15,53 +15,61 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import thaumcraft.common.items.consumables.ItemPhial;
 
+import thaumicenergistics.api.IThELangKey;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.container.ActionType;
 import thaumicenergistics.container.ContainerBaseTerminal;
-import thaumicenergistics.container.IPartContainer;
+import thaumicenergistics.integration.appeng.grid.ThEWirelessEssentiaGuiObject;
 import thaumicenergistics.integration.appeng.util.ThEActionSource;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.network.packets.PacketInvHeldUpdate;
 import thaumicenergistics.network.packets.PacketMEEssentiaUpdate;
 import thaumicenergistics.network.packets.PacketUIAction;
-import thaumicenergistics.part.PartBase;
-import thaumicenergistics.part.PartEssentiaTerminal;
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ForgeUtil;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * @author BrockWS
+ * Wireless (held-item) counterpart of {@link
+ * thaumicenergistics.container.part.ContainerEssentiaTerminal} - same fill/empty essentia behavior,
+ * but drains the terminal's power and re-checks wireless access point range every tick instead of
+ * tracking a placed part's liveness, mirroring AE2's own {@code ContainerMEPortableTerminal}.
+ *
+ * @author Alex811
  */
-public class ContainerEssentiaTerminal extends ContainerBaseTerminal
-        implements IMEMonitorHandlerReceiver<IAEEssentiaStack>,
-                IConfigurableObject,
-                IPartContainer {
+public class ContainerWirelessEssentiaTerminal extends ContainerBaseTerminal
+        implements IMEMonitorHandlerReceiver<IAEEssentiaStack>, IConfigurableObject {
 
-    private final PartEssentiaTerminal part;
+    private static final double POWER_DRAIN_PER_10_TICKS = 5.0;
+
+    private final ThEWirelessEssentiaGuiObject wirelessHost;
     private final IEssentiaStorageChannel channel;
     private final IActionSource playerSource;
     private IMEMonitor<IAEEssentiaStack> monitor;
     private boolean isValidContainer = true;
+    private int ticksSinceCheck = 0;
 
-    public ContainerEssentiaTerminal(EntityPlayer player, PartEssentiaTerminal part) {
-        super(player, part);
-        this.part = part;
+    public ContainerWirelessEssentiaTerminal(
+            EntityPlayer player, ThEWirelessEssentiaGuiObject host) {
+        super(player, host);
+        this.wirelessHost = host;
         this.playerSource = new ThEActionSource(player);
         this.channel = AEApi.instance().storage().getStorageChannel(IEssentiaStorageChannel.class);
 
         if (ForgeUtil.isServer()) {
-            this.monitor = this.part.getInventory(this.channel);
+            this.wirelessHost.rangeCheck();
+            this.monitor = this.wirelessHost.getInventory(this.channel);
             if (this.monitor != null) {
                 this.monitor.addListener(this, null);
             }
@@ -76,12 +84,8 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
     }
 
     @Override
-    public PartBase getPart() {
-        return this.part;
-    }
-
-    @Override
     public void onAction(EntityPlayerMP player, PacketUIAction packet) {
+        if (this.monitor == null) return;
         InventoryPlayer inv = player.inventory;
         IAEEssentiaStack requestedStack = (IAEEssentiaStack) packet.getStack(this.channel);
         if (packet.action == ActionType.FILL_ESSENTIA_ITEM && requestedStack != null) {
@@ -203,15 +207,34 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
 
     @Override
     public void detectAndSendChanges() {
-        if (ForgeUtil.isServer() && this.monitor != this.part.getInventory(this.channel)) {
-            // Mirrors AE2's own ContainerMEMonitorable: if the grid handed us back a different
-            // monitor instance than the one we're subscribed to (or none at all), don't try to
-            // hot-swap the subscription - just invalidate the container so canInteractWith()
-            // makes vanilla close the GUI. Reopening constructs a fresh container against
-            // whatever the current monitor is.
-            this.setValidContainer(false);
+        if (ForgeUtil.isServer() && this.isValidContainer()) {
+            if (this.monitor != this.wirelessHost.getInventory(this.channel)) {
+                this.setValidContainer(false);
+            }
+
+            this.ticksSinceCheck++;
+            if (this.ticksSinceCheck >= 10) {
+                this.ticksSinceCheck = 0;
+                if (!this.wirelessHost.hasPower(POWER_DRAIN_PER_10_TICKS)) {
+                    this.closeWithMessage(ThEApi.instance().lang().deviceNotPowered());
+                } else {
+                    this.wirelessHost.usePower(POWER_DRAIN_PER_10_TICKS);
+                }
+            }
+
+            if (this.isValidContainer() && !this.wirelessHost.rangeCheck()) {
+                this.closeWithMessage(ThEApi.instance().lang().deviceOutOfRange());
+            }
         }
         super.detectAndSendChanges();
+    }
+
+    private void closeWithMessage(IThELangKey message) {
+        this.setValidContainer(false);
+        if (this.player instanceof EntityPlayerMP) {
+            ((EntityPlayerMP) this.player)
+                    .sendMessage(new TextComponentTranslation(message.getUnlocalizedKey()));
+        }
     }
 
     @Override

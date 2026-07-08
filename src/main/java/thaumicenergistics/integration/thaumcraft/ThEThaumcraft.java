@@ -500,6 +500,33 @@ public class ThEThaumcraft implements IThEIntegration {
                         });
         ThEApi.instance()
                 .items()
+                .wirelessEssentiaTerminal()
+                .maybeItem()
+                .ifPresent(
+                        wireless ->
+                                ThaumcraftApi.addArcaneCraftingRecipe(
+                                        new ResourceLocation(
+                                                Reference.MOD_ID, "wireless_essentia_terminal"),
+                                        new ShapelessArcaneRecipe(
+                                                recipeGroup,
+                                                "WIRELESSESSENTIATERMINAL@1",
+                                                40,
+                                                new AspectList(),
+                                                wireless,
+                                                ThEApi.instance()
+                                                        .items()
+                                                        .essentiaTerminal()
+                                                        .maybeStack(1)
+                                                        .orElse(ItemStack.EMPTY),
+                                                AEApi.instance()
+                                                        .definitions()
+                                                        .items()
+                                                        .wirelessTerminal()
+                                                        .maybeStack(1)
+                                                        .orElse(ItemStack.EMPTY),
+                                                ItemsTC.salisMundus)));
+        ThEApi.instance()
+                .items()
                 .arcaneTerminal()
                 .maybeItem()
                 .ifPresent(
