@@ -49,6 +49,7 @@ import thaumicenergistics.container.ActionType;
 import thaumicenergistics.container.ContainerBaseTerminal;
 import thaumicenergistics.container.DummyContainer;
 import thaumicenergistics.container.ICraftingContainer;
+import thaumicenergistics.container.IPartContainer;
 import thaumicenergistics.container.crafting.ContainerCraftAmountBridge;
 import thaumicenergistics.container.slot.SlotArcaneMatrix;
 import thaumicenergistics.container.slot.SlotArcaneResult;
@@ -75,7 +76,7 @@ import java.util.Objects;
  * @author Alex811
  */
 public class ContainerArcaneTerminal extends ContainerBaseTerminal
-        implements IMEMonitorHandlerReceiver<IAEItemStack>, ICraftingContainer {
+        implements IMEMonitorHandlerReceiver<IAEItemStack>, ICraftingContainer, IPartContainer {
 
     public IRecipe recipe;
 

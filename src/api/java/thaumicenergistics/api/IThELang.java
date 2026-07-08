@@ -46,6 +46,8 @@ public interface IThELang {
 
     IThELangKey itemArcaneTerminal();
 
+    IThELangKey itemWirelessEssentiaTerminal();
+
     IThELangKey itemArcaneChargingUpgrade();
 
     IThELangKey itemKnowledgeCore();
@@ -59,6 +61,18 @@ public interface IThELang {
     IThELangKey deviceOffline();
 
     IThELangKey deviceMissingChannel();
+
+    IThELangKey deviceNotLinked();
+
+    IThELangKey deviceStationNotFound();
+
+    IThELangKey deviceNotPowered();
+
+    IThELangKey deviceOutOfRange();
+
+    IThELangKey deviceLinked();
+
+    IThELangKey deviceUnlinked();
 
     IThELangKey arcaneAssemblerIdle();
 

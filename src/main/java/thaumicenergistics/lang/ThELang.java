@@ -27,6 +27,7 @@ public class ThELang implements IThELang {
     private final IThELangKey itemEssentiaLevelEmitter;
     private final IThELangKey itemEssentiaTerminal;
     private final IThELangKey itemArcaneTerminal;
+    private final IThELangKey itemWirelessEssentiaTerminal;
     private final IThELangKey itemArcaneChargingUpgrade;
     private final IThELangKey itemKnowledgeCore;
     private final IThELangKey itemBlankKnowledgeCore;
@@ -34,6 +35,12 @@ public class ThELang implements IThELang {
     private final IThELangKey deviceOnline;
     private final IThELangKey deviceOffline;
     private final IThELangKey deviceMissingChannel;
+    private final IThELangKey deviceNotLinked;
+    private final IThELangKey deviceStationNotFound;
+    private final IThELangKey deviceNotPowered;
+    private final IThELangKey deviceOutOfRange;
+    private final IThELangKey deviceLinked;
+    private final IThELangKey deviceUnlinked;
     private final IThELangKey arcaneAssemblerIdle;
     private final IThELangKey arcaneAssemblerPrep;
     private final IThELangKey arcaneAssemblerBusy;
@@ -93,6 +100,8 @@ public class ThELang implements IThELang {
         this.itemEssentiaTerminal =
                 new ThELangKey("item.thaumicenergistics.essentia_terminal.name");
         this.itemArcaneTerminal = new ThELangKey("item.thaumicenergistics.arcane_terminal.name");
+        this.itemWirelessEssentiaTerminal =
+                new ThELangKey("item.thaumicenergistics.wireless_essentia_terminal.name");
 
         this.itemArcaneChargingUpgrade =
                 new ThELangKey("item.thaumicenergistics.upgrade_arcane.name");
@@ -105,6 +114,13 @@ public class ThELang implements IThELang {
         this.deviceOffline = new ThELangKey("tooltip.thaumicenergistics.device_offline");
         this.deviceMissingChannel =
                 new ThELangKey("tooltip.thaumicenergistics.device_missing_channel");
+        this.deviceNotLinked = new ThELangKey("tooltip.thaumicenergistics.device_not_linked");
+        this.deviceStationNotFound =
+                new ThELangKey("tooltip.thaumicenergistics.device_station_not_found");
+        this.deviceNotPowered = new ThELangKey("tooltip.thaumicenergistics.device_not_powered");
+        this.deviceOutOfRange = new ThELangKey("tooltip.thaumicenergistics.device_out_of_range");
+        this.deviceLinked = new ThELangKey("tooltip.thaumicenergistics.device_linked");
+        this.deviceUnlinked = new ThELangKey("tooltip.thaumicenergistics.device_unlinked");
         this.arcaneAssemblerIdle =
                 new ThELangKey("tooltip.thaumicenergistics.arcane_assembler.idle");
         this.arcaneAssemblerPrep =
@@ -243,6 +259,11 @@ public class ThELang implements IThELang {
     }
 
     @Override
+    public IThELangKey itemWirelessEssentiaTerminal() {
+        return this.itemWirelessEssentiaTerminal;
+    }
+
+    @Override
     public IThELangKey itemArcaneChargingUpgrade() {
         return this.itemArcaneChargingUpgrade;
     }
@@ -275,6 +296,36 @@ public class ThELang implements IThELang {
     @Override
     public IThELangKey deviceMissingChannel() {
         return this.deviceMissingChannel;
+    }
+
+    @Override
+    public IThELangKey deviceNotLinked() {
+        return this.deviceNotLinked;
+    }
+
+    @Override
+    public IThELangKey deviceStationNotFound() {
+        return this.deviceStationNotFound;
+    }
+
+    @Override
+    public IThELangKey deviceNotPowered() {
+        return this.deviceNotPowered;
+    }
+
+    @Override
+    public IThELangKey deviceOutOfRange() {
+        return this.deviceOutOfRange;
+    }
+
+    @Override
+    public IThELangKey deviceLinked() {
+        return this.deviceLinked;
+    }
+
+    @Override
+    public IThELangKey deviceUnlinked() {
+        return this.deviceUnlinked;
     }
 
     @Override
