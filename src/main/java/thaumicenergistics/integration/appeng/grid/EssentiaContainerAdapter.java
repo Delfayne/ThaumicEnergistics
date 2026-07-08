@@ -11,12 +11,19 @@ import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.data.IItemList;
 
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.EssentiaFilter;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Wraps a IAspectContainer for use by a ME system
@@ -37,6 +44,13 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
     private boolean reportInaccessible;
     private int priority;
 
+    // Snapshot of the container's contents as of our own last committed inject/extract (or
+    // construction). Only ever compared against in pollForExternalChanges() -- kept in sync with
+    // every MODULATE operation we perform, so the poll only ever surfaces changes that happened
+    // through some other means (a player's hand, another mod, another part touching the same
+    // container directly), never our own already-accounted-for transactions.
+    private AspectList lastKnownAspects;
+
     public EssentiaContainerAdapter(
             IAspectContainer container,
             EssentiaFilter config,
@@ -50,6 +64,7 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
         this.setBaseAccess(access);
         this.setReportInaccessible(filter);
         this.priority = priority;
+        this.lastKnownAspects = container.getAspects().copy();
     }
 
     public boolean isWhitelist() {
@@ -71,14 +86,16 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
 
         // Add to container to see how much it can store
         int notAdded = this.container.addToContainer(input.getAspect(), (int) input.getStackSize());
-        if (type
-                == Actionable
-                        .SIMULATE) // Annoying hack, maybe talk with Azanor about getting some type
-            // of simulation instead
+        if (type == Actionable.SIMULATE) {
             this.container.takeFromContainer(
                     input.getAspect(), (int) input.getStackSize() - notAdded);
-        if (notAdded > 0) // Didn't add it all
-        return input.setStackSize(notAdded);
+        } else {
+            this.resyncSnapshot(); // MODULATE actually committed a change
+        }
+        // Didn't add it all
+        if (notAdded > 0) {
+            return input.setStackSize(notAdded);
+        }
         return null;
     }
 
@@ -87,9 +104,10 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
             IAEEssentiaStack request, Actionable mode, IActionSource src) {
         if (request == null || !request.isMeaningful()) return null;
         if (!this.hasReadAccess) return null;
-        if (this.container.containerContains(request.getAspect())
-                <= 0) // Make sure the container actually contains it
-        return null;
+        // Make sure the container actually contains it
+        if (this.container.containerContains(request.getAspect()) <= 0) {
+            return null;
+        }
 
         Aspect aspect = request.getAspect();
         int max = (int) Math.min(this.container.containerContains(aspect), request.getStackSize());
@@ -98,6 +116,7 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
 
         boolean worked = this.container.takeFromContainer(aspect, max);
         if (!worked) return null;
+        this.resyncSnapshot(); // MODULATE actually committed a change
 
         return request.setStackSize(max);
     }
@@ -108,6 +127,34 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
         for (Aspect aspect : this.container.getAspects().getAspects())
             out.add(AEUtil.getAEStackFromAspect(aspect, this.container.containerContains(aspect)));
         return out;
+    }
+
+    /** Resyncs the change-detection snapshot to the container's actual current contents. */
+    private void resyncSnapshot() {
+        this.lastKnownAspects = this.container.getAspects().copy();
+    }
+
+    /**
+     * Diffs the container's current contents against the last-known snapshot (kept in sync with our
+     * own committed inject/extract calls) and returns the deltas for anything that changed through
+     * some other means. Resyncs the snapshot to the current state before returning.
+     */
+    public List<IAEEssentiaStack> pollForExternalChanges() {
+        if (this.container == null) return Collections.emptyList();
+
+        AspectList current = this.container.getAspects();
+        Set<Aspect> touchedAspects = new HashSet<>();
+        Collections.addAll(touchedAspects, this.lastKnownAspects.getAspects());
+        Collections.addAll(touchedAspects, current.getAspects());
+
+        List<IAEEssentiaStack> deltas = new ArrayList<>();
+        for (Aspect aspect : touchedAspects) {
+            int delta = current.getAmount(aspect) - this.lastKnownAspects.getAmount(aspect);
+            if (delta != 0) deltas.add(AEUtil.getAEStackFromAspect(aspect, delta));
+        }
+
+        this.lastKnownAspects = current.copy();
+        return deltas;
     }
 
     public void setBaseAccess(AccessRestriction access) {
@@ -136,8 +183,10 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
             if (inFilter) return false;
             return containerCanAccept;
         }
-        if (!this.config.hasAspects()) // on empty whitelist, allow any
-        return containerCanAccept;
+        // on empty whitelist, allow any
+        if (!this.config.hasAspects()) {
+            return containerCanAccept;
+        }
         return inFilter && containerCanAccept;
     }
 

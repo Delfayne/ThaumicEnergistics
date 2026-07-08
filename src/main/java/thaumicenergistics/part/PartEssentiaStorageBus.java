@@ -11,6 +11,7 @@ import appeng.api.networking.events.MENetworkEventSubscribe;
 import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IBaseMonitor;
+import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.parts.IPartCollisionHelper;
@@ -126,7 +127,7 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
         return new TickingRequest(
                 ThEApi.instance().config().tickTimeEssentiaStorageBusMin(),
                 ThEApi.instance().config().tickTimeEssentiaStorageBusMax(),
-                false,
+                this.getHandler() == null,
                 false);
     }
 
@@ -140,14 +141,39 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
         return TickRateModulation.SLOWER;
     }
 
+    @Nonnull
+    @Override
+    public TickRateModulation tickingRequest(@Nonnull IGridNode node, int ticksSinceLastCall) {
+        // Detect essentia added to/removed from the connected container by anything other than
+        // our own inject/extract calls (a player's hand, another mod, another part touching the
+        // same container) and inform the network, mirroring AE2's own PartStorageBus, which polls
+        // its wrapped inventory the same way rather than relying on canWork()/doWork().
+        EssentiaContainerAdapter handler = this.getHandler();
+        if (handler == null) return TickRateModulation.SLEEP;
+
+        List<IAEEssentiaStack> changes = handler.pollForExternalChanges();
+        if (changes.isEmpty()) return TickRateModulation.SLOWER;
+
+        if (this.gridNode == null) return TickRateModulation.SLOWER;
+        IGrid grid = this.gridNode.getGrid();
+        //noinspection ConstantConditions
+        if (grid != null) {
+            IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
+            if (storageGrid != null) {
+                storageGrid.postAlterationOfStoredItems(this.getChannel(), changes, this.source);
+            }
+        }
+        return TickRateModulation.URGENT;
+    }
+
     @Override
     public void postChange(
             IBaseMonitor<IAEEssentiaStack> monitor,
             Iterable<IAEEssentiaStack> change,
             IActionSource actionSource) {
-        // TODO: Probably should send off an update like PartStorageBus?
-        // Won't get anything here util Platform#postChanges is fixed #3644
-        // https://github.com/AppliedEnergistics/Applied-Energistics-2/pull/3644
+        // Nothing registers us as a listener on anything, so this is never called; external
+        // changes to the connected container are instead detected and reported directly from
+        // tickingRequest() via EssentiaContainerAdapter#pollForExternalChanges().
     }
 
     @Override
