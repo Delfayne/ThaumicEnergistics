@@ -60,7 +60,7 @@ public class ContainerArcaneInscriber extends ContainerArcaneTerminal
                 this.getInventory("crafting")
                         .insertItem(
                                 packet.index,
-                                packet.requestedStack.asItemStackRepresentation(),
+                                packet.getStack(this.channel).asItemStackRepresentation(),
                                 false);
             } else if (packet.action == ActionType.KNOWLEDGE_CORE_ADD
                     && !result.isEmpty()

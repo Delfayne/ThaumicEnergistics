@@ -45,18 +45,17 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
         implements IMEMonitorHandlerReceiver<IAEEssentiaStack>, IConfigurableObject {
 
     private final PartEssentiaTerminal part;
+    private final IEssentiaStorageChannel channel;
     private IMEMonitor<IAEEssentiaStack> monitor;
+    private boolean isValidContainer = true;
 
     public ContainerEssentiaTerminal(EntityPlayer player, PartEssentiaTerminal part) {
         super(player, part);
         this.part = part;
+        this.channel = AEApi.instance().storage().getStorageChannel(IEssentiaStorageChannel.class);
 
         if (ForgeUtil.isServer()) {
-            this.monitor =
-                    this.part.getInventory(
-                            AEApi.instance()
-                                    .storage()
-                                    .getStorageChannel(IEssentiaStorageChannel.class));
+            this.monitor = this.part.getInventory(this.channel);
             if (this.monitor != null) {
                 this.monitor.addListener(this, null);
             }
@@ -78,9 +77,8 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
     @Override
     public void onAction(EntityPlayerMP player, PacketUIAction packet) {
         InventoryPlayer inv = player.inventory;
-        if (packet.action == ActionType.FILL_ESSENTIA_ITEM
-                && packet.requestedStack instanceof IAEEssentiaStack) {
-            IAEEssentiaStack requestedStack = (IAEEssentiaStack) packet.requestedStack;
+        IAEEssentiaStack requestedStack = (IAEEssentiaStack) packet.getStack(this.channel);
+        if (packet.action == ActionType.FILL_ESSENTIA_ITEM && requestedStack != null) {
             ItemStack toFill = inv.getItemStack().copy();
             ResourceLocation registryName = toFill.getItem().getRegistryName();
             if (toFill.isEmpty()
@@ -194,6 +192,32 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
         for (IContainerListener c : this.listeners) {
             this.sendInventory(c);
         }
+    }
+
+    @Override
+    public void detectAndSendChanges() {
+        if (ForgeUtil.isServer() && this.monitor != this.part.getInventory(this.channel)) {
+            // Mirrors AE2's own ContainerMEMonitorable: if the grid handed us back a different
+            // monitor instance than the one we're subscribed to (or none at all), don't try to
+            // hot-swap the subscription - just invalidate the container so canInteractWith()
+            // makes vanilla close the GUI. Reopening constructs a fresh container against
+            // whatever the current monitor is.
+            this.setValidContainer(false);
+        }
+        super.detectAndSendChanges();
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer player) {
+        return this.isValidContainer();
+    }
+
+    public boolean isValidContainer() {
+        return this.isValidContainer;
+    }
+
+    public void setValidContainer(boolean validContainer) {
+        this.isValidContainer = validContainer;
     }
 
     @Override
