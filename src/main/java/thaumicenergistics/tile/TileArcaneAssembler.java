@@ -245,12 +245,18 @@ public class TileArcaneAssembler extends TileNetwork
                     new HashMap<>(); // we have what we need, clear this, since we're not trying to
         // find the aspects anymore
         if (prevHasEnoughVis != this.hasEnoughVis
-                || prevMissingAspect != this.missingAspect.get()) // update client if needed
-        this.markDirty();
-        if (prevHasEnoughVis != this.hasEnoughVis
-                || !prevAspectExists.equals(this.aspectExists)) // update client if needed
-        this.notifySubs();
-        if (!canCraft) return false; // we don't have the ingredients, tell AE2 we can't craft
+                || prevMissingAspect != this.missingAspect.get()) {
+            // update client if needed
+            this.markDirty();
+        }
+        if (prevHasEnoughVis != this.hasEnoughVis || !prevAspectExists.equals(this.aspectExists)) {
+            // update client if needed
+            this.notifySubs();
+        }
+        // we don't have the ingredients, tell AE2 we can't craft
+        if (!canCraft) {
+            return false;
+        }
         // Craft
         aspects.forEach(
                 aspect ->
@@ -370,8 +376,10 @@ public class TileArcaneAssembler extends TileNetwork
                         this.getInventory(this.channel),
                         this.src);
                 this.craftingInv.removeStackFromSlot(0);
-                if (this.craftingInv.getStackInSlot(0).isEmpty()) // done crafting everything
-                this.hasJob = false;
+                if (this.craftingInv.getStackInSlot(0).isEmpty()) {
+                    // done crafting everything
+                    this.hasJob = false;
+                }
             }
             this.markDirty();
             return TickRateModulation.URGENT;
