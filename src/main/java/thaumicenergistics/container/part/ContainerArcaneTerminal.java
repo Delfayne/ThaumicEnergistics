@@ -349,36 +349,47 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
         NBTTagList subs = (NBTTagList) ingredientGroup;
         for (int i = 0; i < subs.tagCount(); i++) {
             int slot = startAtSlot + i;
-            NBTTagCompound ingredient = ((NBTTagList) subs.get(i)).getCompoundTagAt(0);
-            ItemStack stack = new ItemStack(ingredient);
-            if (stack.isEmpty()) continue;
+            NBTTagList alternatives = (NBTTagList) subs.get(i);
 
-            ThELog.debug("Adding {} for {}", stack.getDisplayName(), slot);
-            IAEItemStack aeStack = this.channel.createStack(stack);
-            if (aeStack == null) {
-                ThELog.warn(
-                        "Failed to create IAEItemStack for {}, report to developer!",
-                        stack.toString());
-                continue;
+            // Try each OreDict-equivalent alternative in turn until one actually pulls something
+            for (int alt = 0; alt < alternatives.tagCount(); alt++) {
+                NBTTagCompound ingredient = alternatives.getCompoundTagAt(alt);
+                ItemStack stack = new ItemStack(ingredient);
+                if (stack.isEmpty()) continue;
+
+                ThELog.debug("Adding {} for {}", stack.getDisplayName(), slot);
+                IAEItemStack aeStack = this.channel.createStack(stack);
+                if (aeStack == null) {
+                    ThELog.warn(
+                            "Failed to create IAEItemStack for {}, report to developer!",
+                            stack.toString());
+                    continue;
+                }
+                IAEItemStack aeExtract =
+                        AEUtil.inventoryExtract(aeStack, this.monitor, this.part.source);
+                if (aeExtract != null && aeExtract.getStackSize() > 0)
+                    crafting.insertItem(slot, aeExtract.createItemStack(), false);
+
+                // We managed to pull everything from the system
+                if (crafting.getStackInSlot(slot).getCount() >= stack.getCount()) {
+                    break;
+                }
+
+                // Try pull from player
+                ThELog.debug("Failed to pull item from ae inv, trying player inventory");
+                ItemStack remainder = stack.copy();
+                remainder.shrink(crafting.getStackInSlot(slot).getCount());
+
+                ItemStack invExtract = ItemHandlerUtil.extract(playerInv, remainder, false);
+                if (!invExtract.isEmpty()) crafting.insertItem(slot, invExtract, false);
+
+                // Got at least some of this alternative, stop trying the rest.
+                // Otherwise, nothing was available for it - fall through to the next alternative.
+                if (!crafting.getStackInSlot(slot).isEmpty()) {
+                    break;
+                }
             }
-            IAEItemStack aeExtract =
-                    AEUtil.inventoryExtract(aeStack, this.monitor, this.part.source);
-            if (aeExtract != null && aeExtract.getStackSize() > 0)
-                crafting.insertItem(slot, aeExtract.createItemStack(), false);
-
-            // We managed to pull everything from the system
-            if (crafting.getStackInSlot(slot).getCount() >= stack.getCount()) {
-                continue;
-            }
-
-            // Try pull from player
-            ThELog.debug("Failed to pull item from ae inv, trying player inventory");
-            stack.shrink(crafting.getStackInSlot(slot).getCount());
-
-            ItemStack invExtract = ItemHandlerUtil.extract(playerInv, stack, false);
-            if (!invExtract.isEmpty()) crafting.insertItem(slot, invExtract, false);
         }
-        ThELog.debug("Failed to find valid item");
     }
 
     @Override
@@ -635,14 +646,17 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
                     remaining.set(i, existing);
                 }
             } else {
-                if (crystals == null
-                        || crystals.size() < 1) // We don't require crystals in this recipe
-                break;
+                // We don't require crystals in this recipe
+                if (crystals == null || crystals.size() < 1) {
+                    break;
+                }
                 ItemStack crystalStack = inv.getStackInSlot(i);
                 if (crystalStack.isEmpty()) continue;
                 Aspect crystalAspect = TCUtil.getCrystalAspect(crystalStack);
-                if (crystals.getAmount(crystalAspect) > 0) // We require X aspects in this recipe
-                crystalStack.shrink(crystals.getAmount(crystalAspect));
+                // We require X aspects in this recipe
+                if (crystals.getAmount(crystalAspect) > 0) {
+                    crystalStack.shrink(crystals.getAmount(crystalAspect));
+                }
                 if (crystalStack.getCount() > 0) remaining.set(i, crystalStack);
             }
         }
