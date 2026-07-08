@@ -3,12 +3,12 @@ package thaumicenergistics.part;
 import appeng.api.parts.IPartCollisionHelper;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.IStorageChannel;
-import appeng.api.storage.ITerminalHost;
 import appeng.api.storage.data.IAEStack;
 import appeng.me.GridAccessException;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import thaumicenergistics.container.IThETerminalHost;
 import thaumicenergistics.init.ModGUIs;
 import thaumicenergistics.integration.appeng.grid.GridUtil;
 import thaumicenergistics.item.ItemPartBase;
@@ -16,7 +16,7 @@ import thaumicenergistics.item.ItemPartBase;
 /**
  * @author BrockWS
  */
-public abstract class PartSharedTerminal extends PartBase implements ITerminalHost {
+public abstract class PartSharedTerminal extends PartBase implements IThETerminalHost {
 
     protected final ModGUIs
             gui; // the GUI that corresponds to this terminal, mainly used to know where to return

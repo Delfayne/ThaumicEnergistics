@@ -32,6 +32,10 @@ public class ThEConfig implements IThEConfig {
             "Specifies how much a item that holds essentia can hold\nFor filling with Essentia Terminal\nBest to set it to how much the item can actually store")
     public static Map<String, Integer> essentiaContainerCapacity = new HashMap<>();
 
+    @Name("Wireless Essentia Terminal Max Power")
+    @Comment("Maximum AE power (in AE units) the wireless essentia terminal can store")
+    public static double wirelessEssentiaTerminalMaxPower = 1_600_000.0;
+
     @Name("Tick Rates")
     public static TickRates tickRates = new TickRates();
 
@@ -178,6 +182,11 @@ public class ThEConfig implements IThEConfig {
     @Override
     public double arcaneAssemblerParticleMultiplier() {
         return client.arcaneAssemblerParticleMultiplier;
+    }
+
+    @Override
+    public double wirelessEssentiaTerminalMaxPower() {
+        return wirelessEssentiaTerminalMaxPower;
     }
 
     public static void save() {
