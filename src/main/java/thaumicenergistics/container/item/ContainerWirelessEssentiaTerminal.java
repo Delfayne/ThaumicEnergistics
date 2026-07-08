@@ -29,6 +29,7 @@ import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.container.ActionType;
 import thaumicenergistics.container.ContainerBaseTerminal;
+import thaumicenergistics.container.ThETerminalNetworkSync;
 import thaumicenergistics.integration.appeng.grid.ThEWirelessEssentiaGuiObject;
 import thaumicenergistics.integration.appeng.util.ThEActionSource;
 import thaumicenergistics.network.PacketHandler;
@@ -37,10 +38,7 @@ import thaumicenergistics.network.packets.PacketMEEssentiaUpdate;
 import thaumicenergistics.network.packets.PacketUIAction;
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ForgeUtil;
-import thaumicenergistics.util.ThELog;
 
-import java.io.IOException;
-import java.nio.BufferOverflowException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -64,6 +62,8 @@ public class ContainerWirelessEssentiaTerminal extends ContainerBaseTerminal
                     .storage()
                     .getStorageChannel(IEssentiaStorageChannel.class)
                     .createList();
+    private final ThETerminalNetworkSync<IAEEssentiaStack, PacketMEEssentiaUpdate> networkSync =
+            new ThETerminalNetworkSync<>(PacketMEEssentiaUpdate::new);
     private IMEMonitor<IAEEssentiaStack> monitor;
     private boolean isValidContainer = true;
     private int ticksSinceCheck = 0;
@@ -220,36 +220,7 @@ public class ContainerWirelessEssentiaTerminal extends ContainerBaseTerminal
                 this.setValidContainer(false);
             }
 
-            // Mirrors ContainerEssentiaTerminal/ContainerArcaneTerminal/AE2's own
-            // ContainerMEMonitorable: postChange only accumulates what changed into this.items,
-            // and the actual packet is built and sent here, once per tick, containing only those
-            // changed stacks - not the whole network's essentia list on every change notification.
-            if (!this.items.isEmpty()) {
-                try {
-                    IItemList<IAEEssentiaStack> monitorCache = this.monitor.getStorageList();
-                    PacketMEEssentiaUpdate packet = new PacketMEEssentiaUpdate();
-
-                    for (IAEEssentiaStack is : this.items) {
-                        IAEEssentiaStack send = monitorCache.findPrecise(is);
-                        if (send == null) {
-                            is.setStackSize(0);
-                            packet.appendStack(is);
-                        } else {
-                            packet.appendStack(send);
-                        }
-                    }
-
-                    this.items.resetStatus();
-
-                    for (IContainerListener c : this.listeners) {
-                        if (c instanceof EntityPlayer) {
-                            PacketHandler.sendToPlayer((EntityPlayerMP) c, packet);
-                        }
-                    }
-                } catch (IOException e) {
-                    ThELog.error("detectAndSendChanges", e);
-                }
-            }
+            this.networkSync.sendDelta(this.items, this.monitor, this.listeners);
 
             this.ticksSinceCheck++;
             if (this.ticksSinceCheck >= 10) {
@@ -304,26 +275,7 @@ public class ContainerWirelessEssentiaTerminal extends ContainerBaseTerminal
     }
 
     private void sendInventory(IContainerListener listener) {
-        if (ForgeUtil.isClient() || !(listener instanceof EntityPlayer) || this.monitor == null)
-            return;
-
-        try {
-            PacketMEEssentiaUpdate packet = new PacketMEEssentiaUpdate();
-            IItemList<IAEEssentiaStack> storage = this.monitor.getStorageList();
-
-            for (IAEEssentiaStack stack : storage) {
-                try {
-                    packet.appendStack(stack);
-                } catch (BufferOverflowException e) {
-                    PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
-
-                    packet = new PacketMEEssentiaUpdate();
-                    packet.appendStack(stack);
-                }
-            }
-            PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
-        } catch (IOException e) {
-            ThELog.error("sendInventory", e);
-        }
+        if (ForgeUtil.isClient() || this.monitor == null) return;
+        this.networkSync.sendFull(listener, this.monitor);
     }
 }
