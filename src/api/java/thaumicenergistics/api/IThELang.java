@@ -74,6 +74,8 @@ public interface IThELang {
 
     IThELangKey deviceUnlinked();
 
+    IThELangKey storedEnergy();
+
     IThELangKey arcaneAssemblerIdle();
 
     IThELangKey arcaneAssemblerPrep();
