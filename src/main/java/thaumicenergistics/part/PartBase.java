@@ -215,7 +215,6 @@ public abstract class PartBase
         this.gridNode = AEApi.instance().grid().createGridNode(this.gridBlock);
         this.initGridNodeOwner();
         this.gridNode.updateState();
-        // this.setPower(null); TODO
         BlockPos pos = this.gridBlock.getLocation().getPos();
         this.onNeighborChanged(null, pos, pos.offset(this.side.getFacing()));
     }
@@ -230,7 +229,6 @@ public abstract class PartBase
         this.side = side;
         this.host = host;
         this.hostTile = te;
-        // TODO this.setPower(null);
     }
 
     @Override
