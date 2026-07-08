@@ -1,6 +1,7 @@
 package thaumicenergistics.network.packets;
 
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -15,8 +16,7 @@ public class PacketInvHeldUpdate implements IMessage {
 
     public ItemStack stack;
 
-    public PacketInvHeldUpdate() {
-    }
+    public PacketInvHeldUpdate() {}
 
     public PacketInvHeldUpdate(ItemStack stack) {
         this.stack = stack;
@@ -36,7 +36,10 @@ public class PacketInvHeldUpdate implements IMessage {
 
         @Override
         public IMessage onMessage(PacketInvHeldUpdate message, MessageContext ctx) {
-            Minecraft.getMinecraft().player.inventory.setItemStack(message.stack != null ? message.stack : ItemStack.EMPTY);
+            Minecraft.getMinecraft()
+                    .player
+                    .inventory
+                    .setItemStack(message.stack != null ? message.stack : ItemStack.EMPTY);
             return null;
         }
     }

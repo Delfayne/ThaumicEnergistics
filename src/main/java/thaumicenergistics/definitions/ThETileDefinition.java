@@ -1,6 +1,7 @@
 package thaumicenergistics.definitions;
 
 import appeng.api.definitions.ITileDefinition;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;

@@ -19,6 +19,7 @@ import appeng.api.storage.*;
 import appeng.api.util.AECableType;
 import appeng.core.sync.GuiBridge;
 import appeng.helpers.IPriorityHost;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,8 +28,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
+
 import thaumcraft.api.aspects.IAspectContainer;
+
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.client.gui.GuiHandler;
@@ -40,23 +44,26 @@ import thaumicenergistics.item.part.ItemEssentiaStorageBus;
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ForgeUtil;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * @author BrockWS
  * @author Alex811
  */
-public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICellContainer, IMEMonitorHandlerReceiver<IAEEssentiaStack>, IPriorityHost {
+public class PartEssentiaStorageBus extends PartSharedEssentiaBus
+        implements ICellContainer, IMEMonitorHandlerReceiver<IAEEssentiaStack>, IPriorityHost {
 
-    public static ResourceLocation[] MODELS = new ResourceLocation[]{
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_storage_bus/base"),
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_storage_bus/on"),
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_storage_bus/off"),
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_storage_bus/has_channel")
-    };
+    public static ResourceLocation[] MODELS =
+            new ResourceLocation[] {
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_storage_bus/base"),
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_storage_bus/on"),
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_storage_bus/off"),
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_storage_bus/has_channel")
+            };
 
     private static final IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1]);
     private static final IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2]);
@@ -82,19 +89,20 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
         EssentiaContainerAdapter handler = this.handler;
         if (handler != null) {
             if (setting == Settings.ACCESS)
-                handler.setBaseAccess((AccessRestriction) this.getConfigManager().getSetting(Settings.ACCESS));
+                handler.setBaseAccess(
+                        (AccessRestriction) this.getConfigManager().getSetting(Settings.ACCESS));
             else if (setting == Settings.STORAGE_FILTER)
-                handler.setReportInaccessible((StorageFilter) this.getConfigManager().getSetting(Settings.STORAGE_FILTER));
-            else
-                return;
+                handler.setReportInaccessible(
+                        (StorageFilter)
+                                this.getConfigManager().getSetting(Settings.STORAGE_FILTER));
+            else return;
             this.triggerUpdate();
         }
     }
 
     protected void upgradesChanged() {
         EssentiaContainerAdapter handler = this.getHandler();
-        if (handler != null)
-            handler.setWhitelist(!this.hasInverterCard());
+        if (handler != null) handler.setWhitelist(!this.hasInverterCard());
         this.triggerUpdate();
     }
 
@@ -115,7 +123,11 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
     @Nonnull
     @Override
     public TickingRequest getTickingRequest(@Nonnull IGridNode node) {
-        return new TickingRequest(ThEApi.instance().config().tickTimeEssentiaStorageBusMin(), ThEApi.instance().config().tickTimeEssentiaStorageBusMax(), false, false);
+        return new TickingRequest(
+                ThEApi.instance().config().tickTimeEssentiaStorageBusMin(),
+                ThEApi.instance().config().tickTimeEssentiaStorageBusMax(),
+                false,
+                false);
     }
 
     @Override
@@ -129,7 +141,10 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
     }
 
     @Override
-    public void postChange(IBaseMonitor<IAEEssentiaStack> monitor, Iterable<IAEEssentiaStack> change, IActionSource actionSource) {
+    public void postChange(
+            IBaseMonitor<IAEEssentiaStack> monitor,
+            Iterable<IAEEssentiaStack> change,
+            IActionSource actionSource) {
         // TODO: Probably should send off an update like PartStorageBus?
         // Won't get anything here util Platform#postChanges is fixed #3644
         // https://github.com/AppliedEnergistics/Applied-Energistics-2/pull/3644
@@ -147,30 +162,31 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
 
     @Override
     public void onNeighborChanged(IBlockAccess access, BlockPos pos, BlockPos neighbor) {
-        if (pos == null || neighbor == null)
-            return;
+        if (pos == null || neighbor == null) return;
         if (pos.offset(this.side.getFacing()).equals(neighbor) && this.getGridNode() != null) {
             IGrid grid = this.getGridNode().getGrid();
             if (grid != null) { // Might want to check if something was changed
-                //ThELog.info("MENetworkCellArrayUpdate");
+                // ThELog.info("MENetworkCellArrayUpdate");
                 grid.postEvent(new MENetworkCellArrayUpdate());
             }
         }
         IAspectContainer connectedContainer = this.getConnectedContainer();
         if (this.lastConnectedContainer != connectedContainer) {
             this.lastConnectedContainer = connectedContainer;
-            this.handler = null;   // wipe cached handler, so it gets reconstructed
+            this.handler = null; // wipe cached handler, so it gets reconstructed
         }
         super.onNeighborChanged(access, pos, neighbor);
     }
 
     @Override
     public boolean onActivate(EntityPlayer player, EnumHand hand, Vec3d vec3d) {
-        if ((player.isSneaking() && AEUtil.isWrench(player.getHeldItem(hand), player, this.getTile().getPos())))
+        if ((player.isSneaking()
+                && AEUtil.isWrench(player.getHeldItem(hand), player, this.getTile().getPos())))
             return false;
 
         if (ForgeUtil.isServer())
-            GuiHandler.openGUI(ModGUIs.ESSENTIA_STORAGE_BUS, player, this.hostTile.getPos(), this.side);
+            GuiHandler.openGUI(
+                    ModGUIs.ESSENTIA_STORAGE_BUS, player, this.hostTile.getPos(), this.side);
 
         return true;
     }
@@ -182,7 +198,7 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
 
     @Override
     public List<IMEInventoryHandler> getCellArray(IStorageChannel<?> channel) {
-        //ThELog.info("getCellArray");
+        // ThELog.info("getCellArray");
         if (channel != this.getChannel() || this.getHandler() == null)
             return Collections.emptyList();
         // We need to "open" the connected IAspectContainer as a "cell" (IMEInventoryHandler)
@@ -197,8 +213,7 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
     @Override
     public void setPriority(int i) {
         this.priority = i;
-        if (this.handler != null)
-            this.handler.setPriority(i);
+        if (this.handler != null) this.handler.setPriority(i);
         this.host.markForSave();
     }
 
@@ -221,10 +236,8 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
     @Override
     public IPartModel getStaticModels() {
         if (this.isPowered())
-            if (this.isActive())
-                return MODEL_HAS_CHANNEL;
-            else
-                return MODEL_ON;
+            if (this.isActive()) return MODEL_HAS_CHANNEL;
+            else return MODEL_ON;
         return MODEL_OFF;
     }
 
@@ -233,19 +246,25 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus implements ICe
         if (this.handler == null) {
             IAspectContainer connectedContainer = this.getConnectedContainer();
             if (connectedContainer != null)
-                return this.handler = new EssentiaContainerAdapter(connectedContainer, this.config,
-                        !this.hasInverterCard(),
-                        (AccessRestriction) this.getConfigManager().getSetting(Settings.ACCESS),
-                        (StorageFilter) this.getConfigManager().getSetting(Settings.STORAGE_FILTER),
-                        this.priority
-                ); // init and cache handler
+                return this.handler =
+                        new EssentiaContainerAdapter(
+                                connectedContainer,
+                                this.config,
+                                !this.hasInverterCard(),
+                                (AccessRestriction)
+                                        this.getConfigManager().getSetting(Settings.ACCESS),
+                                (StorageFilter)
+                                        this.getConfigManager().getSetting(Settings.STORAGE_FILTER),
+                                this.priority); // init and cache handler
             return null;
         }
-        return this.handler;    // return cached handler
+        return this.handler; // return cached handler
     }
 
     private IAspectContainer getConnectedContainer() {
-        return this.getConnectedTE() instanceof IAspectContainer ? (IAspectContainer) this.getConnectedTE() : null;
+        return this.getConnectedTE() instanceof IAspectContainer
+                ? (IAspectContainer) this.getConnectedTE()
+                : null;
     }
 
     @Override

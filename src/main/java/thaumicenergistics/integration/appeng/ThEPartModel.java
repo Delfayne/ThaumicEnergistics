@@ -1,11 +1,13 @@
 package thaumicenergistics.integration.appeng;
 
 import appeng.api.parts.IPartModel;
+
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author BrockWS

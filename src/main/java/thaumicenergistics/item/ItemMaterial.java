@@ -1,20 +1,24 @@
 package thaumicenergistics.item;
 
 import com.google.common.base.Preconditions;
+
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
+
 import thaumicenergistics.api.IThEUpgrade;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.client.render.IThEModel;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
 
 /**
  * @author BrockWS
@@ -31,12 +35,17 @@ public class ItemMaterial extends ItemBase implements IThEModel {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(
+            ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         Optional<IThEUpgrade> optional = ThEApi.instance().upgrades().getUpgrade(stack);
-        optional.ifPresent(upgrade -> {
-            String supported = upgrade.getSupported().keySet().stream().map(ItemStack::getDisplayName).collect(Collectors.joining(", "));
-            if (!supported.isEmpty()) tooltip.add("Used in: " + supported);
-        });
+        optional.ifPresent(
+                upgrade -> {
+                    String supported =
+                            upgrade.getSupported().keySet().stream()
+                                    .map(ItemStack::getDisplayName)
+                                    .collect(Collectors.joining(", "));
+                    if (!supported.isEmpty()) tooltip.add("Used in: " + supported);
+                });
 
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
@@ -46,6 +55,11 @@ public class ItemMaterial extends ItemBase implements IThEModel {
         Preconditions.checkNotNull(this.getRegistryName());
         Preconditions.checkNotNull(this.getRegistryName().getPath());
 
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(Reference.MOD_ID + ":material/" + this.getRegistryName().getPath(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(
+                this,
+                0,
+                new ModelResourceLocation(
+                        Reference.MOD_ID + ":material/" + this.getRegistryName().getPath(),
+                        "inventory"));
     }
 }

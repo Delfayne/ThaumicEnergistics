@@ -8,14 +8,18 @@ import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.parts.IPartCollisionHelper;
 import appeng.api.parts.IPartModel;
 import appeng.api.storage.IMEMonitor;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
+
 import thaumicenergistics.api.EssentiaStack;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
@@ -28,21 +32,23 @@ import thaumicenergistics.item.part.ItemEssentiaImportBus;
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ForgeUtil;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 /**
  * @author BrockWS
  */
 public class PartEssentiaImportBus extends PartSharedEssentiaBus {
 
-    public static ResourceLocation[] MODELS = new ResourceLocation[]{
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_import_bus/base"),
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_import_bus/on"),
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_import_bus/off"),
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_import_bus/has_channel")
-    };
+    public static ResourceLocation[] MODELS =
+            new ResourceLocation[] {
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_import_bus/base"),
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_import_bus/on"),
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_import_bus/off"),
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_import_bus/has_channel")
+            };
 
     private static final IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1]);
     private static final IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2]);
@@ -60,7 +66,11 @@ public class PartEssentiaImportBus extends PartSharedEssentiaBus {
     @Nonnull
     @Override
     public TickingRequest getTickingRequest(@Nonnull IGridNode node) {
-        return new TickingRequest(ThEApi.instance().config().tickTimeEssentiaImportBusMin(), ThEApi.instance().config().tickTimeEssentiaImportBusMax(), false, false);
+        return new TickingRequest(
+                ThEApi.instance().config().tickTimeEssentiaImportBusMin(),
+                ThEApi.instance().config().tickTimeEssentiaImportBusMax(),
+                false,
+                false);
     }
 
     @Override
@@ -71,18 +81,18 @@ public class PartEssentiaImportBus extends PartSharedEssentiaBus {
     @Override
     protected TickRateModulation doWork() {
 
-        @Nullable
-        IAspectContainer container = toAspectContainer(getConnectedTE());
+        @Nullable IAspectContainer container = toAspectContainer(getConnectedTE());
 
         if (container == null) {
             return TickRateModulation.IDLE;
         }
 
         @Nullable
-        Aspect[] aspects = Optional.of(container)
-                .map(IAspectContainer::getAspects)
-                .map(AspectList::getAspects)
-                .orElse(null);
+        Aspect[] aspects =
+                Optional.of(container)
+                        .map(IAspectContainer::getAspects)
+                        .map(AspectList::getAspects)
+                        .orElse(null);
 
         if (aspects == null) {
             return TickRateModulation.IDLE;
@@ -90,15 +100,21 @@ public class PartEssentiaImportBus extends PartSharedEssentiaBus {
 
         for (Aspect aspect : aspects) {
             if (this.config.hasAspects() && !this.config.isInFilter(aspect)) // Check filter
-                continue;
-            EssentiaStack inContainer = new EssentiaStack(aspect, Math.min(container.containerContains(aspect), this.calculateAmountToSend()));
+            continue;
+            EssentiaStack inContainer =
+                    new EssentiaStack(
+                            aspect,
+                            Math.min(
+                                    container.containerContains(aspect),
+                                    this.calculateAmountToSend()));
 
             IStorageGrid storageGrid = this.getGridNode().getGrid().getCache(IStorageGrid.class);
             IMEMonitor<IAEEssentiaStack> storage = storageGrid.getInventory(this.getChannel());
 
             AEEssentiaStack toInsert = AEEssentiaStack.fromEssentiaStack(inContainer);
             if (storage.canAccept(toInsert)) {
-                IAEEssentiaStack notInserted = storage.injectItems(toInsert, Actionable.SIMULATE, this.source);
+                IAEEssentiaStack notInserted =
+                        storage.injectItems(toInsert, Actionable.SIMULATE, this.source);
                 if (notInserted != null && notInserted.getStackSize() > 0) {
                     toInsert.decStackSize(notInserted.getStackSize());
                 }
@@ -114,20 +130,20 @@ public class PartEssentiaImportBus extends PartSharedEssentiaBus {
     @Override
     public IPartModel getStaticModels() {
         if (this.isPowered())
-            if (this.isActive())
-                return MODEL_HAS_CHANNEL;
-            else
-                return MODEL_ON;
+            if (this.isActive()) return MODEL_HAS_CHANNEL;
+            else return MODEL_ON;
         return MODEL_OFF;
     }
 
     @Override
     public boolean onActivate(EntityPlayer player, EnumHand hand, Vec3d vec3d) {
-        if ((player.isSneaking() && AEUtil.isWrench(player.getHeldItem(hand), player, this.getTile().getPos())))
+        if ((player.isSneaking()
+                && AEUtil.isWrench(player.getHeldItem(hand), player, this.getTile().getPos())))
             return false;
 
         if (ForgeUtil.isServer())
-            GuiHandler.openGUI(ModGUIs.ESSENTIA_IMPORT_BUS, player, this.hostTile.getPos(), this.side);
+            GuiHandler.openGUI(
+                    ModGUIs.ESSENTIA_IMPORT_BUS, player, this.hostTile.getPos(), this.side);
 
         this.host.markForUpdate();
         return true;

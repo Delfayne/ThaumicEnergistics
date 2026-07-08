@@ -1,7 +1,9 @@
 package thaumicenergistics.container.part;
 
 import appeng.container.implementations.ContainerPriority;
+
 import net.minecraft.entity.player.InventoryPlayer;
+
 import thaumicenergistics.part.PartEssentiaStorageBus;
 
 /**

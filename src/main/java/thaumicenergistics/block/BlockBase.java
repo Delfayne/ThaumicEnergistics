@@ -8,7 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
+
 import thaumicenergistics.init.ModGlobals;
 import thaumicenergistics.tile.TileBase;
 import thaumicenergistics.util.ForgeUtil;
@@ -36,8 +38,7 @@ public abstract class BlockBase extends Block {
         this.setHardness(1f);
     }
 
-    public void registerTileEntity() {
-    }
+    public void registerTileEntity() {}
 
     private static double randCoordOffset(int coord) {
         return (rand.nextInt() % 32 - 16) / 82.0 + 0.5 + coord;
@@ -47,7 +48,15 @@ public abstract class BlockBase extends Block {
         if (ForgeUtil.isClient()) return;
         drops.parallelStream()
                 .filter(is -> !is.isEmpty())
-                .forEach(is -> world.spawnEntity(new EntityItem(world, randCoordOffset(pos.getX()), randCoordOffset(pos.getY()), randCoordOffset(pos.getZ()), is)));
+                .forEach(
+                        is ->
+                                world.spawnEntity(
+                                        new EntityItem(
+                                                world,
+                                                randCoordOffset(pos.getX()),
+                                                randCoordOffset(pos.getY()),
+                                                randCoordOffset(pos.getZ()),
+                                                is)));
     }
 
     @Override

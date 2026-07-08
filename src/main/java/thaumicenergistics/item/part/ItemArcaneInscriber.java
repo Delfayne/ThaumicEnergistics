@@ -2,10 +2,13 @@ package thaumicenergistics.item.part;
 
 import appeng.api.AEApi;
 import appeng.api.parts.IPart;
+
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.model.ModelLoader;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
+
 import thaumicenergistics.part.PartArcaneInscriber;
 
 import javax.annotation.Nullable;
@@ -27,6 +30,7 @@ public class ItemArcaneInscriber extends ItemArcaneTerminal {
     @Override
     public void initModel() {
         AEApi.instance().registries().partModels().registerModels(PartArcaneInscriber.MODELS);
-        ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(Reference.MOD_ID + ":part/arcane_inscriber"));
+        ModelLoader.setCustomModelResourceLocation(
+                this, 0, new ModelResourceLocation(Reference.MOD_ID + ":part/arcane_inscriber"));
     }
 }

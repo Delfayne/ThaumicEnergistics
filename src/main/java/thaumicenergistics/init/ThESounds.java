@@ -6,7 +6,9 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
+
 import thaumicenergistics.api.IThESounds;
 
 import java.util.HashMap;
@@ -22,11 +24,12 @@ public class ThESounds implements IThESounds {
     @SubscribeEvent
     public static void registerSoundEvents(RegistryEvent.Register<SoundEvent> event) {
         IForgeRegistry<SoundEvent> registry = event.getRegistry();
-        SOUNDS.forEach((name, loc) -> {
-            SoundEvent soundEvent = new SoundEvent(loc);
-            soundEvent.setRegistryName(name);
-            registry.register(soundEvent);
-        });
+        SOUNDS.forEach(
+                (name, loc) -> {
+                    SoundEvent soundEvent = new SoundEvent(loc);
+                    soundEvent.setRegistryName(name);
+                    registry.register(soundEvent);
+                });
     }
 
     private static ResourceLocation addSound(String sound) {

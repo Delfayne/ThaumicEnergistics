@@ -1,4 +1,6 @@
 [versions]
+spotless = "8.8.0"
+ktlint = "1.3.1"
 
 [libraries]
 mixinBooter = { module = "zone.rong:mixinbooter", version = "8.2" }
@@ -22,3 +24,6 @@ curse-ae2 = { module = "curse.maven:ae2-extended-life-570458", version = "537816
 
 # Misc
 curse-inventoryTweaks = { module = "curse.maven:inventory-tweaks-223094", version = "2482482" }
+
+[plugins]
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

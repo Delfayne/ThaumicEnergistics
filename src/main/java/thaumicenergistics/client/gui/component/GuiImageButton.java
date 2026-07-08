@@ -3,16 +3,17 @@ package thaumicenergistics.client.gui.component;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButtonImage;
 import net.minecraft.util.ResourceLocation;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
- * A button class that supports both images and text,
- * and can also change them on hover or set their transparency!
+ * A button class that supports both images and text, and can also change them on hover or set their
+ * transparency!
  *
  * @author Alex811
  */
@@ -42,7 +43,14 @@ public class GuiImageButton extends GuiButtonImage {
     }
 
     public GuiImageButton(int x, int y, int indexX, int indexY, String resource) {
-        this(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, indexX * DEFAULT_WIDTH, indexY * DEFAULT_HEIGHT, resource);
+        this(
+                x,
+                y,
+                DEFAULT_WIDTH,
+                DEFAULT_HEIGHT,
+                indexX * DEFAULT_WIDTH,
+                indexY * DEFAULT_HEIGHT,
+                resource);
     }
 
     public GuiImageButton(int x, int y, int w, int h, int offsetX, int offsetY, String resource) {
@@ -54,10 +62,18 @@ public class GuiImageButton extends GuiButtonImage {
     }
 
     public GuiImageButton(int x, int y, int indexX, int indexY, ResourceLocation resource) {
-        this(x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, indexX * DEFAULT_WIDTH, indexY * DEFAULT_HEIGHT, resource);
+        this(
+                x,
+                y,
+                DEFAULT_WIDTH,
+                DEFAULT_HEIGHT,
+                indexX * DEFAULT_WIDTH,
+                indexY * DEFAULT_HEIGHT,
+                resource);
     }
 
-    public GuiImageButton(int x, int y, int w, int h, int offsetX, int offsetY, ResourceLocation resource) {
+    public GuiImageButton(
+            int x, int y, int w, int h, int offsetX, int offsetY, ResourceLocation resource) {
         super(ID.getAndIncrement(), x, y, w, h, offsetX, offsetY, YDIFFTEXT, resource);
         this.image = this.hoverImage = resource;
         this.offsetX = this.hoverOffsetX = offsetX;
@@ -73,16 +89,40 @@ public class GuiImageButton extends GuiButtonImage {
     @ParametersAreNonnullByDefault
     public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
         if (this.visible) {
-            this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+            this.hovered =
+                    mouseX >= this.x
+                            && mouseY >= this.y
+                            && mouseX < this.x + this.width
+                            && mouseY < this.y + this.height;
             int i = this.getHoverState(this.hovered);
 
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, this.hovered ? this.buttonHoverAlpha : this.buttonAlpha);
+            GL11.glColor4f(
+                    1.0F, 1.0F, 1.0F, this.hovered ? this.buttonHoverAlpha : this.buttonAlpha);
             // Draw responsive button
             mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
-            this.drawTexturedModalRect(this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height / 2);
-            this.drawTexturedModalRect(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height / 2);
-            this.drawTexturedModalRect(this.x, this.y + this.height / 2, 0, 58 + i * 20, this.width / 2, this.height / 2);
-            this.drawTexturedModalRect(this.x + this.width / 2, this.y + this.height / 2, 200 - this.width / 2, 58 + i * 20, this.width / 2, this.height / 2);
+            this.drawTexturedModalRect(
+                    this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height / 2);
+            this.drawTexturedModalRect(
+                    this.x + this.width / 2,
+                    this.y,
+                    200 - this.width / 2,
+                    46 + i * 20,
+                    this.width / 2,
+                    this.height / 2);
+            this.drawTexturedModalRect(
+                    this.x,
+                    this.y + this.height / 2,
+                    0,
+                    58 + i * 20,
+                    this.width / 2,
+                    this.height / 2);
+            this.drawTexturedModalRect(
+                    this.x + this.width / 2,
+                    this.y + this.height / 2,
+                    200 - this.width / 2,
+                    58 + i * 20,
+                    this.width / 2,
+                    this.height / 2);
 
             // Draw overlay
             if (this.hovered) {
@@ -90,27 +130,44 @@ public class GuiImageButton extends GuiButtonImage {
                 if (this.hoverImage != null) {
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, this.imageHoverAlpha);
                     mc.getTextureManager().bindTexture(this.hoverImage);
-                    this.drawTexturedModalRect(this.x, this.y, this.hoverOffsetX, this.hoverOffsetY, this.width, this.height);
+                    this.drawTexturedModalRect(
+                            this.x,
+                            this.y,
+                            this.hoverOffsetX,
+                            this.hoverOffsetY,
+                            this.width,
+                            this.height);
                 }
                 if (this.hoverText != null) {
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, this.textHoverAlpha);
                     int j = 16777120;
                     if (this.packedFGColour != 0) j = this.packedFGColour;
                     else if (!this.enabled) j = 10526880;
-                    this.drawCenteredString(mc.fontRenderer, this.hoverText, this.x + this.width / 2, this.y + (this.height - 8) / 2, j);
+                    this.drawCenteredString(
+                            mc.fontRenderer,
+                            this.hoverText,
+                            this.x + this.width / 2,
+                            this.y + (this.height - 8) / 2,
+                            j);
                 }
             } else {
                 if (this.image != null) {
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, this.imageAlpha);
                     mc.getTextureManager().bindTexture(this.image);
-                    this.drawTexturedModalRect(this.x, this.y, this.offsetX, this.offsetY, this.width, this.height);
+                    this.drawTexturedModalRect(
+                            this.x, this.y, this.offsetX, this.offsetY, this.width, this.height);
                 }
                 if (this.text != null) {
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, this.textAlpha);
                     int j = 14737632;
                     if (this.packedFGColour != 0) j = this.packedFGColour;
                     else if (!this.enabled) j = 10526880;
-                    this.drawCenteredString(mc.fontRenderer, this.text, this.x + this.width / 2, this.y + (this.height - 8) / 2, j);
+                    this.drawCenteredString(
+                            mc.fontRenderer,
+                            this.text,
+                            this.x + this.width / 2,
+                            this.y + (this.height - 8) / 2,
+                            j);
                 }
             }
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

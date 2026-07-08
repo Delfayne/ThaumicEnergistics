@@ -1,6 +1,7 @@
 package thaumicenergistics.integration.jei;
 
 import com.google.common.base.Strings;
+
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -9,15 +10,16 @@ import mezz.jei.api.ingredients.IIngredientBlacklist;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
+
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+
 import thaumicenergistics.api.IThEItems;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.client.gui.part.GuiArcaneInscriber;
 import thaumicenergistics.client.gui.part.GuiSharedEssentiaBus;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-
 
 /**
  * @author BrockWS
@@ -47,25 +49,43 @@ public class ThEJEI implements IModPlugin {
         IIngredientBlacklist blacklist = registry.getJeiHelpers().getIngredientBlacklist();
         IThEItems items = ThEApi.instance().items();
 
-        items.arcaneTerminal().maybeStack(1).ifPresent(stack -> registerWorkbenchCatalyst(registry, new ACTRecipeTransferHandler<>(rthh), stack));
-        items.arcaneInscriber().maybeStack(1).ifPresent(stack -> registerWorkbenchCatalyst(registry, new ACIRecipeTransferHandler<>(rthh), stack));
+        items.arcaneTerminal()
+                .maybeStack(1)
+                .ifPresent(
+                        stack ->
+                                registerWorkbenchCatalyst(
+                                        registry, new ACTRecipeTransferHandler<>(rthh), stack));
+        items.arcaneInscriber()
+                .maybeStack(1)
+                .ifPresent(
+                        stack ->
+                                registerWorkbenchCatalyst(
+                                        registry, new ACIRecipeTransferHandler<>(rthh), stack));
 
-        items.essentiaExportBus().maybeStack(1)
-                .ifPresent(stack -> registry.addGhostIngredientHandler(
-                        GuiSharedEssentiaBus.class,
-                        new GhostEssentiaHandler()));
-        items.arcaneInscriber().maybeStack(1)
-                .ifPresent(stack -> registry.addGhostIngredientHandler(
-                        GuiArcaneInscriber.class,
-                        new GhostInscriberHandler()));
+        items.essentiaExportBus()
+                .maybeStack(1)
+                .ifPresent(
+                        stack ->
+                                registry.addGhostIngredientHandler(
+                                        GuiSharedEssentiaBus.class, new GhostEssentiaHandler()));
+        items.arcaneInscriber()
+                .maybeStack(1)
+                .ifPresent(
+                        stack ->
+                                registry.addGhostIngredientHandler(
+                                        GuiArcaneInscriber.class, new GhostInscriberHandler()));
 
         items.dummyAspect().maybeStack(1).ifPresent(blacklist::addIngredientToBlacklist);
     }
 
-    public void registerWorkbenchCatalyst(IModRegistry registry, IRecipeTransferHandler<? extends Container> handler, ItemStack stack) {
-        registry.getRecipeTransferRegistry().addRecipeTransferHandler(handler, VanillaRecipeCategoryUid.CRAFTING);
-        registry.getRecipeTransferRegistry().addRecipeTransferHandler(handler, "THAUMCRAFT_ARCANE_WORKBENCH");
+    public void registerWorkbenchCatalyst(
+            IModRegistry registry,
+            IRecipeTransferHandler<? extends Container> handler,
+            ItemStack stack) {
+        registry.getRecipeTransferRegistry()
+                .addRecipeTransferHandler(handler, VanillaRecipeCategoryUid.CRAFTING);
+        registry.getRecipeTransferRegistry()
+                .addRecipeTransferHandler(handler, "THAUMCRAFT_ARCANE_WORKBENCH");
         registry.addRecipeCatalyst(stack, "THAUMCRAFT_ARCANE_WORKBENCH");
     }
-
 }

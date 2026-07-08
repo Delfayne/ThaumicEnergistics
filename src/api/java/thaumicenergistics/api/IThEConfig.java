@@ -2,6 +2,7 @@ package thaumicenergistics.api;
 
 import appeng.api.config.SearchBoxMode;
 import appeng.api.config.TerminalStyle;
+
 import thaumicenergistics.api.config.PrefixSetting;
 
 import java.util.Map;

@@ -5,6 +5,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+
 import thaumcraft.api.aura.AuraHelper;
 
 /**
@@ -23,14 +24,15 @@ public class CommandDrainVis extends CommandBase {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
-        if (args.length < 1)
-            return;
+        if (args.length < 1) return;
         try {
             float vis = Float.parseFloat(args[0]);
             AuraHelper.drainVis(sender.getEntityWorld(), sender.getPosition(), vis, false);
-            sender.sendMessage(new TextComponentString(TextFormatting.GREEN + "Vis drained: " + vis));
+            sender.sendMessage(
+                    new TextComponentString(TextFormatting.GREEN + "Vis drained: " + vis));
         } catch (NumberFormatException e) {
-            sender.sendMessage(new TextComponentString(TextFormatting.RED + "Error, invalid float"));
+            sender.sendMessage(
+                    new TextComponentString(TextFormatting.RED + "Error, invalid float"));
         }
     }
 

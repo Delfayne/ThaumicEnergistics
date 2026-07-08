@@ -1,6 +1,7 @@
 package thaumicenergistics.api;
 
 import net.minecraft.nbt.NBTTagCompound;
+
 import thaumcraft.api.aspects.Aspect;
 
 /**
@@ -29,9 +30,7 @@ public class EssentiaStack {
         this.amount = old.getAmount();
     }
 
-    private EssentiaStack() {
-
-    }
+    private EssentiaStack() {}
 
     public String getAspectTag() {
         return this.aspect;

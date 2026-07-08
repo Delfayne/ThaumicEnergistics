@@ -7,18 +7,19 @@ plugins {
     id("java")
     id("java-library")
     id("maven-publish")
-    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.4.1"
     id("eclipse")
-    id("com.gtnewhorizons.retrofuturagradle") version "1.4.5"
-    id("com.matthewprenger.cursegradle") version "1.4.0"
+    id("com.gtnewhorizons.retrofuturagradle") version "2.0.2"
+    id("net.darkhax.curseforgegradle") version "1.3.33"
+    alias(libs.plugins.spotless)
 }
 
-val minecraftVersion: String by project
-val modVersion: String by project
-val mavenGroup: String by project
-val modName: String by project
-val archiveBase: String by project
-val modArchiveName: String by project
+val minecraftVersion = project.property("minecraftVersion") as String
+val modVersion = project.property("modVersion") as String
+val mavenGroup = project.property("mavenGroup") as String
+val modName = project.property("modName") as String
+val archiveBase = project.property("archiveBase") as String
+val modArchiveName = project.property("modArchiveName") as String
 
 version = modVersion + (System.getenv("CI_SHA_SHORT") ?: "")
 group = mavenGroup
@@ -66,7 +67,7 @@ minecraft {
     // Add various JVM arguments here for runtime
     val args = mutableListOf("-ea:${project.group}")
     if (projectProperty("useCoreMod")) {
-        val coreModPluginClassName: String by project
+        val coreModPluginClassName = project.property("coreModPluginClassName") as String
         args += "-Dfml.coreMods.load=$coreModPluginClassName"
     }
     if (projectProperty("useMixins")) {
@@ -128,15 +129,63 @@ dependencies {
     implementation(libs.curse.top)
 
     compileOnly(libs.curse.inventoryTweaks)
-    api(rfg.deobf(libs.curse.baubles.get().toString()))
-    api(rfg.deobf(libs.curse.extraCells.get().toString()))
-    api(rfg.deobf(libs.curse.mekanism.get().toString()))
-    api(rfg.deobf(libs.curse.thaumcraft.get().toString()))
-    api(rfg.deobf(libs.curse.thaumicAug.get().toString()))
-    api(rfg.deobf(libs.curse.thaumicWon.get().toString()))
-    api(rfg.deobf(libs.curse.aaf.get().toString()))
+    api(
+        rfg.deobf(
+            libs.curse.baubles
+                .get()
+                .toString(),
+        ),
+    )
+    api(
+        rfg.deobf(
+            libs.curse.extraCells
+                .get()
+                .toString(),
+        ),
+    )
+    api(
+        rfg.deobf(
+            libs.curse.mekanism
+                .get()
+                .toString(),
+        ),
+    )
+    api(
+        rfg.deobf(
+            libs.curse.thaumcraft
+                .get()
+                .toString(),
+        ),
+    )
+    api(
+        rfg.deobf(
+            libs.curse.thaumicAug
+                .get()
+                .toString(),
+        ),
+    )
+    api(
+        rfg.deobf(
+            libs.curse.thaumicWon
+                .get()
+                .toString(),
+        ),
+    )
+    api(
+        rfg.deobf(
+            libs.curse.aaf
+                .get()
+                .toString(),
+        ),
+    )
     api(libs.curse.thaumicJei)
-    api(rfg.deobf(libs.curse.ae2.get().toString()))
+    api(
+        rfg.deobf(
+            libs.curse.ae2
+                .get()
+                .toString(),
+        ),
+    )
 
     // Testing mods
     // Unsure if needed in future
@@ -153,10 +202,11 @@ dependencies {
     if (useMixins) {
         // Change your mixin refmap name here:
         val mixin: String =
-            modUtils.enableMixins(
-                libs.mixinBooter.get().toString(),
-                "mixins.${archiveBase}.refmap.json"
-            ).toString()
+            modUtils
+                .enableMixins(
+                    libs.mixinBooter.get().toString(),
+                    "mixins.$archiveBase.refmap.json",
+                ).toString()
         api(mixin) {
             isTransitive = false
         }
@@ -173,23 +223,32 @@ dependencies {
 if (projectProperty("useAccessTransformer")) {
     sourceSets.main.get().resources.files.forEach {
         if (it.name.lowercase().endsWith("_at.cfg")) {
-            tasks.deobfuscateMergedJarToSrg.get().accessTransformerFiles.from(it)
-            tasks.srgifyBinpatchedJar.get().accessTransformerFiles.from(it)
+            tasks.deobfuscateMergedJarToSrg
+                .get()
+                .accessTransformerFiles
+                .from(it)
+            tasks.srgifyBinpatchedJar
+                .get()
+                .accessTransformerFiles
+                .from(it)
         }
     }
 }
 
 tasks.withType<ProcessResources> {
+    val modVersionValue = project.version
+    val mcVersionValue = project.minecraft.mcVersion
+
     // This will ensure that this task is redone when the versions change
-    inputs.property("modversion", project.version)
-    inputs.property("mcversion", project.minecraft.mcVersion)
+    inputs.property("modversion", modVersionValue)
+    inputs.property("mcversion", mcVersionValue)
 
     // Replace various properties in mcmod.info and pack.mcmeta if applicable
     filesMatching(listOf("mcmod.info", "pack.mcmeta")) {
         // Replace version and mcversion
         expand(
-            "modversion" to project.version,
-            "mcversion" to project.minecraft.mcVersion
+            "modversion" to modVersionValue,
+            "mcversion" to mcVersionValue,
         )
     }
 
@@ -209,7 +268,7 @@ tasks.withType<Jar> {
     manifest {
         val attributes = mutableMapOf<String, Any>()
         if (projectProperty("useCoreMod")) {
-            val coreModPluginClassName: String by project
+            val coreModPluginClassName = project.property("coreModPluginClassName") as String
             attributes["FMLCorePlugin"] = coreModPluginClassName
             if (projectProperty("includeMod")) {
                 attributes["FMLCorePluginContainsFMLMod"] = true
@@ -251,9 +310,10 @@ idea {
                     javacAdditionalOptions = "-encoding utf8"
                     tasks.withType<JavaCompile> {
                         val args = options.compilerArgs.joinToString(separator = " ") { "\"$it\"" }
-                        moduleJavacAdditionalOptions = mapOf(
-                            project.name + ".main" to args
-                        )
+                        moduleJavacAdditionalOptions =
+                            mapOf(
+                                project.name + ".main" to args,
+                            )
                     }
                 }
             }
@@ -275,9 +335,10 @@ tasks.named<ReobfuscatedJar>("reobfJar") {
     inputJar.set(tasks.named<Jar>("jar").flatMap { it.archiveFile })
 }
 
-val javadocTask = tasks.withType<Javadoc> {
-    isFailOnError = false
-}
+val javadocTask =
+    tasks.withType<Javadoc> {
+        isFailOnError = false
+    }
 
 tasks.register<Jar>("javadocJar") {
     from("build/docs/javadoc")
@@ -285,8 +346,32 @@ tasks.register<Jar>("javadocJar") {
     dependsOn(javadocTask)
 }
 
+spotless {
+    java {
+        googleJavaFormat("1.35.0")
+            .aosp()
+            .reorderImports(true)
+        trimTrailingWhitespace()
+        endWithNewline()
+        targetExclude("src/generated/**", "build/**")
+    }
+
+    kotlin {
+        ktlint(libs.versions.ktlint.get())
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    kotlinGradle {
+        ktlint(libs.versions.ktlint.get())
+        target("*.gradle.kts")
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
 inline fun <reified T : Any> projectProperty(propertyKey: String): T {
-    val value = project.properties[propertyKey].let { it.toString() }
+    val value = project.findProperty(propertyKey).let { it.toString() }
     return when (T::class) {
         Boolean::class -> value.toBoolean() as T
         else -> throw IllegalArgumentException()

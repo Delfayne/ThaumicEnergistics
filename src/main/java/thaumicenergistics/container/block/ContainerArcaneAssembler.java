@@ -2,6 +2,7 @@ package thaumicenergistics.container.block;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkCraftingPatternChange;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -15,6 +16,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
+
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.container.ContainerBase;
 import thaumicenergistics.container.slot.SlotKnowledgeCore;
@@ -40,11 +42,11 @@ public class ContainerArcaneAssembler extends ContainerBase {
         this.TE = TE;
         this.addSlotToContainer(new SlotKnowledgeCore(this.getInventory("cores"), 0, 81, 66));
         for (int i = 0; i < this.getInventory("upgrades").getSlots(); i++)
-            this.addSlotToContainer(new SlotUpgrade(this.getInventory("upgrades"), i, 186, 8 + i * 18));
+            this.addSlotToContainer(
+                    new SlotUpgrade(this.getInventory("upgrades"), i, 186, 8 + i * 18));
         this.bindPlayerInventory(new PlayerMainInvWrapper(player.inventory), 0, 147);
         this.addListener(new KnowledgeCoreSlotListener());
-        if (ForgeUtil.isServer())
-            TE.subscribe(player);   // subscribe to aspect availability updates
+        if (ForgeUtil.isServer()) TE.subscribe(player); // subscribe to aspect availability updates
     }
 
     public IItemHandler getInventory(String name) {
@@ -55,13 +57,41 @@ public class ContainerArcaneAssembler extends ContainerBase {
         return TE;
     }
 
-    public void playCoreSound(EntityPlayer player) { // plays the right sound, when the Knowledge Core gets removed or placed in the slot
+    public void playCoreSound(
+            EntityPlayer player) { // plays the right sound, when the Knowledge Core gets removed or
+        // placed in the slot
         if (this.getInventory("cores").getStackInSlot(0).isEmpty()) {
-            player.world.playSound(player, TE.getPos(), new SoundEvent(ThEApi.instance().sounds().knowledgeCorePowerDown()), SoundCategory.BLOCKS, 1, 1);
-            PacketHandler.sendToPlayer((EntityPlayerMP) player, new PacketPlaySound(TE.getPos(), ThEApi.instance().sounds().knowledgeCorePowerDown(), SoundCategory.BLOCKS, 1, 1));
+            player.world.playSound(
+                    player,
+                    TE.getPos(),
+                    new SoundEvent(ThEApi.instance().sounds().knowledgeCorePowerDown()),
+                    SoundCategory.BLOCKS,
+                    1,
+                    1);
+            PacketHandler.sendToPlayer(
+                    (EntityPlayerMP) player,
+                    new PacketPlaySound(
+                            TE.getPos(),
+                            ThEApi.instance().sounds().knowledgeCorePowerDown(),
+                            SoundCategory.BLOCKS,
+                            1,
+                            1));
         } else {
-            player.world.playSound(player, TE.getPos(), new SoundEvent(ThEApi.instance().sounds().knowledgeCorePowerUp()), SoundCategory.BLOCKS, 1, 1);
-            PacketHandler.sendToPlayer((EntityPlayerMP) player, new PacketPlaySound(TE.getPos(), ThEApi.instance().sounds().knowledgeCorePowerUp(), SoundCategory.BLOCKS, 1, 1));
+            player.world.playSound(
+                    player,
+                    TE.getPos(),
+                    new SoundEvent(ThEApi.instance().sounds().knowledgeCorePowerUp()),
+                    SoundCategory.BLOCKS,
+                    1,
+                    1);
+            PacketHandler.sendToPlayer(
+                    (EntityPlayerMP) player,
+                    new PacketPlaySound(
+                            TE.getPos(),
+                            ThEApi.instance().sounds().knowledgeCorePowerUp(),
+                            SoundCategory.BLOCKS,
+                            1,
+                            1));
         }
     }
 
@@ -74,7 +104,11 @@ public class ContainerArcaneAssembler extends ContainerBase {
             if (slotInd == 0 && opened && ForgeUtil.isServer()) {
                 IGridNode node = ContainerArcaneAssembler.this.TE.getActionableNode();
                 ContainerArcaneAssembler.this.playCoreSound(ContainerArcaneAssembler.this.player);
-                node.getGrid().postEvent(new MENetworkCraftingPatternChange(ContainerArcaneAssembler.this.TE, node)); // update ME system available patterns
+                node.getGrid()
+                        .postEvent(
+                                new MENetworkCraftingPatternChange(
+                                        ContainerArcaneAssembler.this.TE,
+                                        node)); // update ME system available patterns
             }
             opened = true;
         }
@@ -82,18 +116,15 @@ public class ContainerArcaneAssembler extends ContainerBase {
         // ignored //
         @Override
         @ParametersAreNonnullByDefault
-        public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList) {
-        }
+        public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList) {}
 
         @Override
         @ParametersAreNonnullByDefault
-        public void sendWindowProperty(Container containerIn, int varToUpdate, int newValue) {
-        }
+        public void sendWindowProperty(Container containerIn, int varToUpdate, int newValue) {}
 
         @Override
         @ParametersAreNonnullByDefault
-        public void sendAllWindowProperties(Container containerIn, IInventory inventory) {
-        }
+        public void sendAllWindowProperties(Container containerIn, IInventory inventory) {}
     }
 
     @Override
@@ -101,7 +132,8 @@ public class ContainerArcaneAssembler extends ContainerBase {
         Item item = itemStack.getItem();
         if (item instanceof ItemKnowledgeCore)
             ItemHandlerUtil.quickMoveSlot(this.getInventory("cores"), slot);
-        else if (item instanceof ItemMaterial || item instanceof appeng.items.materials.ItemMaterial)
+        else if (item instanceof ItemMaterial
+                || item instanceof appeng.items.materials.ItemMaterial)
             ItemHandlerUtil.quickMoveSlot(this.getInventory("upgrades"), slot);
     }
 }

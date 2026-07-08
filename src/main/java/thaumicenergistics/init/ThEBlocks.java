@@ -1,7 +1,10 @@
 package thaumicenergistics.init;
 
+import static thaumicenergistics.ThaumicEnergistics.LOGGER;
+
 import appeng.api.definitions.IBlockDefinition;
 import appeng.api.definitions.ITileDefinition;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -10,6 +13,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
 import thaumicenergistics.api.IThEBlocks;
 import thaumicenergistics.block.BlockArcaneAssembler;
 import thaumicenergistics.block.BlockBase;
@@ -23,8 +27,6 @@ import thaumicenergistics.tile.TileInfusionProvider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static thaumicenergistics.ThaumicEnergistics.LOGGER;
 
 /**
  * @author BrockWS
@@ -50,15 +52,22 @@ public class ThEBlocks implements IThEBlocks {
     public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
         LOGGER.info("Registering ItemBlocks");
 
-        ThEBlocks.BLOCKS.forEach(block -> event.getRegistry().register(new ItemBlock(block).setRegistryName(Objects.requireNonNull(block.getRegistryName()))));
+        ThEBlocks.BLOCKS.forEach(
+                block ->
+                        event.getRegistry()
+                                .register(
+                                        new ItemBlock(block)
+                                                .setRegistryName(
+                                                        Objects.requireNonNull(
+                                                                block.getRegistryName()))));
     }
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        ThEBlocks.BLOCKS.forEach(block -> {
-            if (block instanceof IThEModel)
-                ((IThEModel) block).initModel();
-        });
+        ThEBlocks.BLOCKS.forEach(
+                block -> {
+                    if (block instanceof IThEModel) ((IThEModel) block).initModel();
+                });
     }
 
     private static IBlockDefinition createBlock(BlockBase block) {
@@ -72,8 +81,12 @@ public class ThEBlocks implements IThEBlocks {
     }
 
     public ThEBlocks() {
-        this.infusionProvider = ThEBlocks.createTile(new BlockInfusionProvider("infusion_provider"), TileInfusionProvider.class);
-        this.arcaneAssembler = ThEBlocks.createTile(new BlockArcaneAssembler("arcane_assembler"), TileArcaneAssembler.class);
+        this.infusionProvider =
+                ThEBlocks.createTile(
+                        new BlockInfusionProvider("infusion_provider"), TileInfusionProvider.class);
+        this.arcaneAssembler =
+                ThEBlocks.createTile(
+                        new BlockArcaneAssembler("arcane_assembler"), TileArcaneAssembler.class);
     }
 
     @Override
