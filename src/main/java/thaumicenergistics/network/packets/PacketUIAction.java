@@ -1,9 +1,6 @@
 package thaumicenergistics.network.packets;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 import appeng.api.storage.IStorageChannel;
-import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEStack;
 
 import io.netty.buffer.ByteBuf;
@@ -17,14 +14,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.container.ActionType;
 import thaumicenergistics.container.ContainerBase;
-import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ThELog;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author BrockWS
@@ -32,13 +26,18 @@ import java.util.List;
 public class PacketUIAction implements IMessage {
 
     public ActionType action;
-    public IAEStack requestedStack;
     public int index = -1;
-    private static final List<IStorageChannel<? extends IAEStack<? extends IAEStack<?>>>>
-            validChannels =
-                    newArrayList(
-                            AEUtil.getStorageChannel(IItemStorageChannel.class),
-                            AEUtil.getStorageChannel(IEssentiaStorageChannel.class));
+
+    /**
+     * On the sending side (client), this is the concrete stack to serialize - the sender always
+     * knows its real type, same as AE2's PacketInventoryAction always deals in a single concrete
+     * stack type. On the receiving side it starts null and is resolved lazily by {@link
+     * #getStack(IStorageChannel)}: the handling container already knows which channel it deals in
+     * (item, essentia, ...), so that channel - not the packet - decides how the raw NBT is decoded.
+     */
+    public IAEStack requestedStack;
+
+    private NBTTagCompound stackNbt;
 
     public PacketUIAction() {}
 
@@ -78,21 +77,30 @@ public class PacketUIAction implements IMessage {
         if (nbt.hasKey("index")) {
             this.index = nbt.getInteger("index");
         }
-        // AE2 items etc use Cnt, Essentia uses Count
-        if (nbt.hasKey("Cnt") || nbt.hasKey("Count")) {
+        if (nbt.hasKey("stack")) {
+            this.stackNbt = nbt.getCompoundTag("stack");
+        }
+    }
 
-            validChannels.forEach(
-                    channel -> {
-                        if (requestedStack == null) {
-                            try {
-                                requestedStack = channel.createFromNBT(nbt);
-                            } catch (Throwable ignored) {
-                                ThELog.error(
-                                        "Failed to read stack from packet, {}",
-                                        channel.getClass().getSimpleName());
-                            }
-                        }
-                    });
+    /**
+     * Decodes the stack this packet carries using the given channel. The caller (a container)
+     * always already knows which channel it deals in, so this never has to guess between item,
+     * essentia, etc. Returns null if no stack was sent, or if it fails to decode against the given
+     * channel (e.g. the wrong channel was passed in).
+     *
+     * <p>Deliberately not cached: this packet is only ever decoded a handful of times per receipt,
+     * and caching by the first channel asked would silently hand back the wrong stack type to a
+     * second caller asking with a different channel.
+     */
+    public IAEStack getStack(IStorageChannel<?> channel) {
+        if (this.requestedStack != null) return this.requestedStack;
+        if (channel == null || this.stackNbt == null) return null;
+        try {
+            return channel.createFromNBT(this.stackNbt);
+        } catch (Throwable e) {
+            ThELog.error(
+                    "Failed to read stack from packet, {}", channel.getClass().getSimpleName());
+            return null;
         }
     }
 
@@ -103,7 +111,9 @@ public class PacketUIAction implements IMessage {
 
         NBTTagCompound nbt = new NBTTagCompound();
         if (requestedStack != null) {
-            requestedStack.writeToNBT(nbt);
+            NBTTagCompound stackTag = new NBTTagCompound();
+            requestedStack.writeToNBT(stackTag);
+            nbt.setTag("stack", stackTag);
         }
         if (this.index > -1) {
             nbt.setInteger("index", index);
