@@ -634,14 +634,17 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
                     remaining.set(i, existing);
                 }
             } else {
-                if (crystals == null
-                        || crystals.size() < 1) // We don't require crystals in this recipe
-                break;
+                // We don't require crystals in this recipe
+                if (crystals == null || crystals.size() < 1) {
+                    break;
+                }
                 ItemStack crystalStack = inv.getStackInSlot(i);
                 if (crystalStack.isEmpty()) continue;
                 Aspect crystalAspect = TCUtil.getCrystalAspect(crystalStack);
-                if (crystals.getAmount(crystalAspect) > 0) // We require X aspects in this recipe
-                crystalStack.shrink(crystals.getAmount(crystalAspect));
+                // We require X aspects in this recipe
+                if (crystals.getAmount(crystalAspect) > 0) {
+                    crystalStack.shrink(crystals.getAmount(crystalAspect));
+                }
                 if (crystalStack.getCount() > 0) remaining.set(i, crystalStack);
             }
         }
