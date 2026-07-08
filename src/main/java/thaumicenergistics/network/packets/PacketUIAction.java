@@ -87,17 +87,21 @@ public class PacketUIAction implements IMessage {
      * always already knows which channel it deals in, so this never has to guess between item,
      * essentia, etc. Returns null if no stack was sent, or if it fails to decode against the given
      * channel (e.g. the wrong channel was passed in).
+     *
+     * <p>Deliberately not cached: this packet is only ever decoded a handful of times per receipt,
+     * and caching by the first channel asked would silently hand back the wrong stack type to a
+     * second caller asking with a different channel.
      */
     public IAEStack getStack(IStorageChannel<?> channel) {
         if (this.requestedStack != null) return this.requestedStack;
         if (channel == null || this.stackNbt == null) return null;
         try {
-            this.requestedStack = channel.createFromNBT(this.stackNbt);
+            return channel.createFromNBT(this.stackNbt);
         } catch (Throwable e) {
             ThELog.error(
                     "Failed to read stack from packet, {}", channel.getClass().getSimpleName());
+            return null;
         }
-        return this.requestedStack;
     }
 
     @Override
