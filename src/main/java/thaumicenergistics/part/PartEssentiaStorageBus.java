@@ -163,19 +163,13 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
     @Override
     public void onNeighborChanged(IBlockAccess access, BlockPos pos, BlockPos neighbor) {
         if (pos == null || neighbor == null) return;
-        if (pos.offset(this.side.getFacing()).equals(neighbor) && this.getGridNode() != null) {
-            IGrid grid = this.getGridNode().getGrid();
-            // IGridNode#getGrid() is declared @Nonnull, but AE2's own AENetworkProxy#getGrid()
-            // treats it as nullable and guards it too; mirror that here.
-            //noinspection ConstantConditions
-            if (grid != null) {
-                grid.postEvent(new MENetworkCellArrayUpdate());
+        if (pos.offset(this.side.getFacing()).equals(neighbor)) {
+            IAspectContainer connectedContainer = this.getConnectedContainer();
+            if (this.lastConnectedContainer != connectedContainer) {
+                this.lastConnectedContainer = connectedContainer;
+                this.handler = null; // wipe cached handler, so it gets reconstructed
+                this.triggerUpdate();
             }
-        }
-        IAspectContainer connectedContainer = this.getConnectedContainer();
-        if (this.lastConnectedContainer != connectedContainer) {
-            this.lastConnectedContainer = connectedContainer;
-            this.handler = null; // wipe cached handler, so it gets reconstructed
         }
         super.onNeighborChanged(access, pos, neighbor);
     }
