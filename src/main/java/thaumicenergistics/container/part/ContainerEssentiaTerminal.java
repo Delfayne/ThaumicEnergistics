@@ -77,9 +77,8 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
     @Override
     public void onAction(EntityPlayerMP player, PacketUIAction packet) {
         InventoryPlayer inv = player.inventory;
-        if (packet.action == ActionType.FILL_ESSENTIA_ITEM
-                && packet.requestedStack instanceof IAEEssentiaStack) {
-            IAEEssentiaStack requestedStack = (IAEEssentiaStack) packet.requestedStack;
+        IAEEssentiaStack requestedStack = (IAEEssentiaStack) packet.getStack(this.channel);
+        if (packet.action == ActionType.FILL_ESSENTIA_ITEM && requestedStack != null) {
             ItemStack toFill = inv.getItemStack().copy();
             ResourceLocation registryName = toFill.getItem().getRegistryName();
             if (toFill.isEmpty()
