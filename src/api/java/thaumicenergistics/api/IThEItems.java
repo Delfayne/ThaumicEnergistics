@@ -39,6 +39,8 @@ public interface IThEItems {
 
     IItemDefinition arcaneInscriber();
 
+    IItemDefinition wirelessEssentiaTerminal();
+
     // Materials
 
     IItemDefinition diffusionCore();

@@ -44,4 +44,6 @@ public interface IThEConfig {
     PrefixSetting aspectSearchSetting();
 
     double arcaneAssemblerParticleMultiplier();
+
+    double wirelessEssentiaTerminalMaxPower();
 }

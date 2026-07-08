@@ -2,17 +2,20 @@ package thaumicenergistics.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-import thaumicenergistics.part.PartBase;
+public abstract class ContainerBaseTerminal extends ContainerBaseConfigurable {
 
-/**
- * @author Alex811
- */
-public abstract class ContainerBaseTerminal extends ContainerBaseConfigurable
-        implements IPartContainer {
+    protected final IThETerminalHost host;
 
-    public ContainerBaseTerminal(EntityPlayer player, PartBase part) {
-        super(player, part.getConfigManager());
+    public ContainerBaseTerminal(EntityPlayer player, IThETerminalHost host) {
+        super(player, host.getConfigManager());
+        this.host = host;
     }
 
-    public abstract PartBase getPart();
+    public boolean isPowered() {
+        return this.host.isPowered();
+    }
+
+    public boolean isActive() {
+        return this.host.isActive();
+    }
 }

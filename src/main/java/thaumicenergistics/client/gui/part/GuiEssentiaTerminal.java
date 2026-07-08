@@ -24,7 +24,7 @@ import thaumicenergistics.client.gui.helpers.GuiScrollBar;
 import thaumicenergistics.client.gui.helpers.MERepo;
 import thaumicenergistics.config.ThEConfig;
 import thaumicenergistics.container.ActionType;
-import thaumicenergistics.container.part.ContainerEssentiaTerminal;
+import thaumicenergistics.container.ContainerBaseTerminal;
 import thaumicenergistics.container.slot.SlotME;
 import thaumicenergistics.container.slot.ThESlot;
 import thaumicenergistics.init.ModGlobals;
@@ -47,7 +47,7 @@ public class GuiEssentiaTerminal
     private GuiImgButton terminalSizeButton;
     private int rows = 6;
 
-    public GuiEssentiaTerminal(ContainerEssentiaTerminal container) {
+    public GuiEssentiaTerminal(ContainerBaseTerminal container) {
         super(container);
         this.repo = new MERepo<>(IEssentiaStorageChannel.class);
     }

@@ -5,7 +5,9 @@ import appeng.api.parts.IPartHost;
 import appeng.api.util.AEPartLocation;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -22,8 +24,11 @@ import thaumicenergistics.container.crafting.ContainerCraftAmountBridge;
 import thaumicenergistics.container.crafting.ContainerCraftConfirmBridge;
 import thaumicenergistics.container.crafting.ContainerCraftingStatusBridge;
 import thaumicenergistics.container.item.ContainerKnowledgeCore;
+import thaumicenergistics.container.item.ContainerWirelessEssentiaTerminal;
 import thaumicenergistics.container.part.*;
 import thaumicenergistics.init.ModGUIs;
+import thaumicenergistics.integration.appeng.grid.ThEWirelessEssentiaGuiObject;
+import thaumicenergistics.item.ItemWirelessEssentiaTerminal;
 import thaumicenergistics.part.*;
 import thaumicenergistics.tile.TileArcaneAssembler;
 
@@ -86,6 +91,14 @@ public class GuiHandler implements IGuiHandler {
         return null;
     }
 
+    private static ItemStack getHeldWirelessEssentiaTerminal(EntityPlayer player) {
+        for (EnumHand hand : EnumHand.values()) {
+            ItemStack stack = player.getHeldItem(hand);
+            if (stack.getItem() instanceof ItemWirelessEssentiaTerminal) return stack;
+        }
+        return ItemStack.EMPTY;
+    }
+
     @Nullable
     @Override
     public Object getServerGuiElement(
@@ -110,6 +123,17 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerEssentiaLevelEmitter(player, (PartEssentiaLevelEmitter) part);
             case ESSENTIA_TERMINAL:
                 return new ContainerEssentiaTerminal(player, (PartEssentiaTerminal) part);
+            case WIRELESS_ESSENTIA_TERMINAL:
+                {
+                    ItemStack heldStack = GuiHandler.getHeldWirelessEssentiaTerminal(player);
+                    if (heldStack.isEmpty()) return null;
+                    return new ContainerWirelessEssentiaTerminal(
+                            player,
+                            new ThEWirelessEssentiaGuiObject(
+                                    (ItemWirelessEssentiaTerminal) heldStack.getItem(),
+                                    heldStack,
+                                    player));
+                }
             case ARCANE_TERMINAL:
                 return new ContainerArcaneTerminal(player, (PartArcaneTerminal) part);
             case ARCANE_INSCRIBER:
@@ -162,6 +186,18 @@ public class GuiHandler implements IGuiHandler {
             case ESSENTIA_TERMINAL:
                 return new GuiEssentiaTerminal(
                         new ContainerEssentiaTerminal(player, (PartEssentiaTerminal) part));
+            case WIRELESS_ESSENTIA_TERMINAL:
+                {
+                    ItemStack heldStack = GuiHandler.getHeldWirelessEssentiaTerminal(player);
+                    if (heldStack.isEmpty()) return null;
+                    return new GuiEssentiaTerminal(
+                            new ContainerWirelessEssentiaTerminal(
+                                    player,
+                                    new ThEWirelessEssentiaGuiObject(
+                                            (ItemWirelessEssentiaTerminal) heldStack.getItem(),
+                                            heldStack,
+                                            player)));
+                }
             case ARCANE_TERMINAL:
                 return new GuiArcaneTerminal(
                         new ContainerArcaneTerminal(player, (PartArcaneTerminal) part));

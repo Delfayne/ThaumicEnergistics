@@ -169,16 +169,17 @@ public class ContainerArcaneInscriber extends ContainerArcaneTerminal
             }
             IAEItemStack aeExtract =
                     AEUtil.inventoryExtract(
-                            aeStack, this.monitor, this.part.source, null, Actionable.SIMULATE);
+                            aeStack, this.monitor, this.playerSource, null, Actionable.SIMULATE);
             if (aeExtract != null && aeExtract.getStackSize() > 0) {
                 ItemStack aeExtractStack = aeExtract.createItemStack();
                 if (mustBeSingle) aeExtractStack.setCount(1);
                 crafting.insertItem(slot, aeExtractStack, false);
             }
 
-            if (!crafting.getStackInSlot(slot)
-                    .isEmpty()) // We managed to pull everything from the system
-            continue;
+            if (!crafting.getStackInSlot(slot).isEmpty()) {
+                // We managed to pull everything from the system
+                continue;
+            }
 
             // Try pull from player
             ThELog.debug("Failed to pull item from ae inv, trying player inventory");

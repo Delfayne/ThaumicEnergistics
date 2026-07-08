@@ -32,12 +32,12 @@ public abstract class GuiAbstractTerminal<T extends IAEStack<T>, C extends IStor
 
     @Override
     public boolean isPowered() {
-        return this.container.getPart().isPowered();
+        return this.container.isPowered();
     }
 
     @Override
     public boolean isActive() {
-        return this.container.getPart().isActive();
+        return this.container.isActive();
     }
 
     @Override

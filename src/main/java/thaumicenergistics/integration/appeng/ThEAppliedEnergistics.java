@@ -2,6 +2,7 @@ package thaumicenergistics.integration.appeng;
 
 import appeng.api.AEApi;
 import appeng.api.config.Upgrades;
+import appeng.api.features.IWirelessTermHandler;
 import appeng.api.storage.data.IItemList;
 
 import io.netty.buffer.ByteBuf;
@@ -39,6 +40,17 @@ public class ThEAppliedEnergistics implements IThEIntegration {
     @Override
     public void init() {
         AEApi.instance().registries().cell().addCellHandler(new CreativeEssentiaCellHandler());
+
+        ThEApi.instance()
+                .items()
+                .wirelessEssentiaTerminal()
+                .maybeItem()
+                .ifPresent(
+                        item ->
+                                AEApi.instance()
+                                        .registries()
+                                        .wireless()
+                                        .registerWirelessHandler((IWirelessTermHandler) item));
 
         ThEApi.instance()
                 .items()
