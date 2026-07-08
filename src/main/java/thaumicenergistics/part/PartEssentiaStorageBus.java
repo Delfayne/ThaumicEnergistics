@@ -168,7 +168,9 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
             if (this.lastConnectedContainer != connectedContainer) {
                 this.lastConnectedContainer = connectedContainer;
                 this.handler = null; // wipe cached handler, so it gets reconstructed
-                this.triggerUpdate();
+                // markForUpdate() is skipped here: super.onNeighborChanged(...) below re-checks
+                // this same pos/neighbor/side match and will call it for us.
+                this.triggerUpdate(false);
             }
         }
         super.onNeighborChanged(access, pos, neighbor);
@@ -298,6 +300,10 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
     }
 
     public void triggerUpdate() {
+        this.triggerUpdate(true);
+    }
+
+    private void triggerUpdate(boolean alsoMarkForUpdate) {
         if (this.gridNode == null) {
             return;
         }
@@ -308,7 +314,9 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
         if (grid != null) {
             grid.postEvent(new MENetworkCellArrayUpdate());
         }
-        this.host.markForUpdate();
+        if (alsoMarkForUpdate) {
+            this.host.markForUpdate();
+        }
     }
 
     @Override
