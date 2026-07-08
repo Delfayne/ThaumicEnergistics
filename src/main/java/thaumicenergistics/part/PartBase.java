@@ -169,7 +169,10 @@ public abstract class PartBase
     @Override
     public void onNeighborChanged(
             IBlockAccess iBlockAccess, BlockPos blockPos, BlockPos blockPos1) {
-        this.host.markForUpdate();
+        if (blockPos == null || blockPos1 == null) return;
+        if (blockPos.offset(this.side.getFacing()).equals(blockPos1)) {
+            this.host.markForUpdate();
+        }
     }
 
     @Override
