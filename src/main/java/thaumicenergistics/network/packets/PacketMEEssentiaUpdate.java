@@ -1,12 +1,15 @@
 package thaumicenergistics.network.packets;
 
 import appeng.api.storage.data.IItemList;
+
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.client.gui.part.GuiEssentiaTerminal;
 import thaumicenergistics.integration.appeng.AEEssentiaStack;
@@ -51,12 +54,18 @@ public class PacketMEEssentiaUpdate implements IMessage {
 
         @Override
         public IMessage onMessage(PacketMEEssentiaUpdate message, MessageContext ctx) {
-            FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> {
-                if (Minecraft.getMinecraft().currentScreen instanceof GuiEssentiaTerminal) {
-                    GuiEssentiaTerminal gui = (GuiEssentiaTerminal) Minecraft.getMinecraft().currentScreen;
-                    gui.onMEStorageUpdate(message.list);
-                }
-            });
+            FMLCommonHandler.instance()
+                    .getWorldThread(ctx.netHandler)
+                    .addScheduledTask(
+                            () -> {
+                                if (Minecraft.getMinecraft().currentScreen
+                                        instanceof GuiEssentiaTerminal) {
+                                    GuiEssentiaTerminal gui =
+                                            (GuiEssentiaTerminal)
+                                                    Minecraft.getMinecraft().currentScreen;
+                                    gui.onMEStorageUpdate(message.list);
+                                }
+                            });
             return null;
         }
     }

@@ -1,7 +1,9 @@
 package thaumicenergistics.mixin.core;
 
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.launchwrapper.Launch;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dv.minecraft.thaumicenergistics.Reference;
@@ -28,11 +30,14 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
 
     private static final String PACKAGE_PREFIX = "thaumicenergistics.";
 
-    private static final ImmutableMap<String, Consumer<PotentialMixin>> MIXIN_PROCESSING_MAP = ImmutableMap.<String, Consumer<PotentialMixin>>builder()
-            .put("Lorg/spongepowered/asm/mixin/Mixin;", p -> p.valid = true)
-            .put("Lthaumicenergistics/annotation/ClientOnlyMixin;", p -> p.isClientOnly = true)
-            .put("Lthaumicenergistics/annotation/LateMixin;", p -> p.isLate = true)
-            .build();
+    private static final ImmutableMap<String, Consumer<PotentialMixin>> MIXIN_PROCESSING_MAP =
+            ImmutableMap.<String, Consumer<PotentialMixin>>builder()
+                    .put("Lorg/spongepowered/asm/mixin/Mixin;", p -> p.valid = true)
+                    .put(
+                            "Lthaumicenergistics/annotation/ClientOnlyMixin;",
+                            p -> p.isClientOnly = true)
+                    .put("Lthaumicenergistics/annotation/LateMixin;", p -> p.isLate = true)
+                    .build();
 
     static class PotentialMixin {
         String className;
@@ -44,23 +49,23 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
     private static final List<PotentialMixin> allMixins = new ArrayList<>();
 
     private void considerClass(String pathString) throws IOException {
-        try (InputStream stream = MixinConfigPlugin.class.getClassLoader().getResourceAsStream("thaumicenergistics/mixin/" + pathString)) {
-            if (stream == null)
-                return;
+        try (InputStream stream =
+                MixinConfigPlugin.class
+                        .getClassLoader()
+                        .getResourceAsStream("thaumicenergistics/mixin/" + pathString)) {
+            if (stream == null) return;
             ClassReader reader = new ClassReader(stream);
             ClassNode node = new ClassNode();
-            reader.accept(node, ClassReader.SKIP_CODE | ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG);
-            if (node.invisibleAnnotations == null)
-                return;
+            reader.accept(
+                    node, ClassReader.SKIP_CODE | ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG);
+            if (node.invisibleAnnotations == null) return;
             PotentialMixin mixin = new PotentialMixin();
             mixin.className = node.name.replace('/', '.');
             for (AnnotationNode annotation : node.invisibleAnnotations) {
                 Consumer<PotentialMixin> consumer = MIXIN_PROCESSING_MAP.get(annotation.desc);
-                if (consumer != null)
-                    consumer.accept(mixin);
+                if (consumer != null) consumer.accept(mixin);
             }
-            if (mixin.valid)
-                allMixins.add(mixin);
+            if (mixin.valid) allMixins.add(mixin);
         }
     }
 
@@ -72,7 +77,8 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
     }
 
     @SuppressWarnings("unchecked")
-    private static void writeOrderedProperties(Properties props, OutputStream stream) throws IOException {
+    private static void writeOrderedProperties(Properties props, OutputStream stream)
+            throws IOException {
         try (PrintWriter writer = new PrintWriter(stream)) {
             writer.println("# Thaumic Energistics config file");
             writer.println();
@@ -88,7 +94,11 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
     public void onLoad(String s) {
         if (allMixins.size() == 0) {
             try {
-                URI uri = Objects.requireNonNull(MixinConfigPlugin.class.getResource("/mixins.thaumicenergistics.json")).toURI();
+                URI uri =
+                        Objects.requireNonNull(
+                                        MixinConfigPlugin.class.getResource(
+                                                "/mixins.thaumicenergistics.json"))
+                                .toURI();
                 FileSystem fs;
                 try {
                     fs = FileSystems.getFileSystem(uri);
@@ -101,8 +111,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
                     list = stream.collect(Collectors.toList());
                 }
                 for (Path p : list) {
-                    if (p == null)
-                        continue;
+                    if (p == null) continue;
                     p = basePath.relativize(p.toAbsolutePath());
                     String pathString = p.toString();
                     if (pathString.endsWith(".class")) {
@@ -114,7 +123,10 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
             }
             LOGGER.info("Found {} mixins", allMixins.size());
             config = new Properties();
-            File targetConfig = new File(Launch.minecraftHome, "config" + File.separator + "thaumicenergistics.properties");
+            File targetConfig =
+                    new File(
+                            Launch.minecraftHome,
+                            "config" + File.separator + "thaumicenergistics.properties");
             try {
                 if (targetConfig.exists()) {
                     try (InputStream stream = Files.newInputStream(targetConfig.toPath())) {
@@ -150,8 +162,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
     }
 
     @Override
-    public void acceptTargets(Set<String> set, Set<String> set1) {
-    }
+    public void acceptTargets(Set<String> set, Set<String> set1) {}
 
     public static boolean isMixinClassApplied(String name) {
         String baseName = mixinClassNameToBaseName(name);
@@ -167,13 +178,14 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
         MixinEnvironment.Phase phase = MixinEnvironment.getCurrentEnvironment().getPhase();
         if (phase == MixinEnvironment.Phase.DEFAULT) {
             MixinEnvironment.Side side = MixinEnvironment.getCurrentEnvironment().getSide();
-            List<String> list = allMixins.stream()
-                    .filter(p -> !p.isClientOnly || side == MixinEnvironment.Side.CLIENT)
-                    .filter(p -> p.isLate == LateMixins.atLateStage)
-                    .map(p -> p.className)
-                    .filter(MixinConfigPlugin::isMixinClassApplied)
-                    .map(clz -> clz.replace("thaumicenergistics.mixin.", ""))
-                    .collect(Collectors.toList());
+            List<String> list =
+                    allMixins.stream()
+                            .filter(p -> !p.isClientOnly || side == MixinEnvironment.Side.CLIENT)
+                            .filter(p -> p.isLate == LateMixins.atLateStage)
+                            .map(p -> p.className)
+                            .filter(MixinConfigPlugin::isMixinClassApplied)
+                            .map(clz -> clz.replace("thaumicenergistics.mixin.", ""))
+                            .collect(Collectors.toList());
             for (String mixin : list) {
                 LOGGER.debug("loading {}", mixin);
             }
@@ -183,12 +195,8 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
     }
 
     @Override
-    public void preApply(String s, ClassNode classNode, String s1, IMixinInfo iMixinInfo) {
-
-    }
+    public void preApply(String s, ClassNode classNode, String s1, IMixinInfo iMixinInfo) {}
 
     @Override
-    public void postApply(String s, ClassNode classNode, String s1, IMixinInfo iMixinInfo) {
-
-    }
+    public void postApply(String s, ClassNode classNode, String s1, IMixinInfo iMixinInfo) {}
 }

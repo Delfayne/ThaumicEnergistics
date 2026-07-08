@@ -3,7 +3,9 @@ package thaumicenergistics.network.packets;
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
 import appeng.api.util.AEPartLocation;
+
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -12,7 +14,9 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
 import thaumcraft.api.aspects.IAspectContainer;
+
 import thaumicenergistics.part.PartBase;
 import thaumicenergistics.part.PartSharedEssentiaBus;
 
@@ -56,8 +60,7 @@ public class PacketEssentiaFilterAction implements IMessage {
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof IPartHost) {
             IPart part = ((IPartHost) tile).getPart(AEPartLocation.values()[buf.readInt()]);
-            if (part instanceof PartBase)
-                this.part = (PartBase) part;
+            if (part instanceof PartBase) this.part = (PartBase) part;
         }
         this.action = ACTION.values()[buf.readInt()];
     }
@@ -66,18 +69,22 @@ public class PacketEssentiaFilterAction implements IMessage {
 
         @Override
         public IMessage onMessage(PacketEssentiaFilterAction message, MessageContext ctx) {
-            FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> {
-                if (message.part instanceof PartSharedEssentiaBus) {
-                    PartSharedEssentiaBus part = (PartSharedEssentiaBus) message.part;
-                    if (message.action == ACTION.CLEAR)
-                        part.getConfig().clear();
-                    else if (message.action == ACTION.PARTITION) {
-                        TileEntity connectedTE = part.getConnectedTE();
-                        if (connectedTE instanceof IAspectContainer)
-                            part.getConfig().partition((IAspectContainer) connectedTE);
-                    }
-                }
-            });
+            FMLCommonHandler.instance()
+                    .getWorldThread(ctx.netHandler)
+                    .addScheduledTask(
+                            () -> {
+                                if (message.part instanceof PartSharedEssentiaBus) {
+                                    PartSharedEssentiaBus part =
+                                            (PartSharedEssentiaBus) message.part;
+                                    if (message.action == ACTION.CLEAR) part.getConfig().clear();
+                                    else if (message.action == ACTION.PARTITION) {
+                                        TileEntity connectedTE = part.getConnectedTE();
+                                        if (connectedTE instanceof IAspectContainer)
+                                            part.getConfig()
+                                                    .partition((IAspectContainer) connectedTE);
+                                    }
+                                }
+                            });
             return null;
         }
     }

@@ -9,8 +9,11 @@ import appeng.api.storage.ICellInventoryHandler;
 import appeng.api.storage.ISaveProvider;
 import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.data.IItemList;
+
 import net.minecraft.item.ItemStack;
+
 import thaumcraft.api.aspects.Aspect;
+
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.integration.appeng.EssentiaList;
@@ -26,7 +29,9 @@ public class CreativeEssentiaCellInventory implements ICellInventoryHandler<IAEE
     private IItemList<IAEEssentiaStack> storedAspects = new EssentiaList();
 
     private CreativeEssentiaCellInventory() {
-        Aspect.aspects.forEach((s, aspect) -> storedAspects.add(AEUtil.getAEStackFromAspect(aspect, Integer.MAX_VALUE)));
+        Aspect.aspects.forEach(
+                (s, aspect) ->
+                        storedAspects.add(AEUtil.getAEStackFromAspect(aspect, Integer.MAX_VALUE)));
     }
 
     public static ICellInventoryHandler getCell(ItemStack s, ISaveProvider c) {
@@ -85,12 +90,14 @@ public class CreativeEssentiaCellInventory implements ICellInventoryHandler<IAEE
     }
 
     @Override
-    public IAEEssentiaStack injectItems(IAEEssentiaStack stack, Actionable actionable, IActionSource src) {
+    public IAEEssentiaStack injectItems(
+            IAEEssentiaStack stack, Actionable actionable, IActionSource src) {
         return null;
     }
 
     @Override
-    public IAEEssentiaStack extractItems(IAEEssentiaStack stack, Actionable actionable, IActionSource src) {
+    public IAEEssentiaStack extractItems(
+            IAEEssentiaStack stack, Actionable actionable, IActionSource src) {
         return stack.copy();
     }
 

@@ -1,6 +1,7 @@
 package thaumicenergistics.init;
 
 import appeng.api.definitions.IItemDefinition;
+
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -8,6 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import thaumicenergistics.api.IThEItems;
 import thaumicenergistics.client.render.IThEModel;
 import thaumicenergistics.definitions.ThEItemDefinition;
@@ -35,11 +37,12 @@ public class ThEItems implements IThEItems {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void registerModels(ModelRegistryEvent event) {
-        ThEItems.ITEMS.forEach(item -> {
-            if (item instanceof IThEModel) {
-                ((IThEModel) item).initModel();
-            }
-        });
+        ThEItems.ITEMS.forEach(
+                item -> {
+                    if (item instanceof IThEModel) {
+                        ((IThEModel) item).initModel();
+                    }
+                });
     }
 
     private static IItemDefinition createItem(ItemBase item) {
@@ -75,21 +78,31 @@ public class ThEItems implements IThEItems {
         this.itemEssentiaCell16k = ThEItems.createItem(new ItemEssentiaCell("16k", 1024 * 16, 12));
         this.itemEssentiaCell64k = ThEItems.createItem(new ItemEssentiaCell("64k", 1024 * 64, 12));
         this.itemEssentiaCellCreative = ThEItems.createItem(new ItemCreativeEssentiaCell());
-        this.itemEssentiaImportBus = ThEItems.createItem(new ItemEssentiaImportBus("essentia_import"));
-        this.itemEssentiaExportBus = ThEItems.createItem(new ItemEssentiaExportBus("essentia_export"));
-        this.itemEssentiaStorageBus = ThEItems.createItem(new ItemEssentiaStorageBus("essentia_storage"));
-        this.itemEssentiaTerminal = ThEItems.createItem(new ItemEssentiaTerminal("essentia_terminal"));
+        this.itemEssentiaImportBus =
+                ThEItems.createItem(new ItemEssentiaImportBus("essentia_import"));
+        this.itemEssentiaExportBus =
+                ThEItems.createItem(new ItemEssentiaExportBus("essentia_export"));
+        this.itemEssentiaStorageBus =
+                ThEItems.createItem(new ItemEssentiaStorageBus("essentia_storage"));
+        this.itemEssentiaTerminal =
+                ThEItems.createItem(new ItemEssentiaTerminal("essentia_terminal"));
         this.itemArcaneTerminal = ThEItems.createItem(new ItemArcaneTerminal("arcane_terminal"));
         this.itemArcaneInscriber = ThEItems.createItem(new ItemArcaneInscriber("arcane_inscriber"));
         this.itemDiffusionCore = ThEItems.createItem(new ItemMaterial("diffusion_core"));
         this.itemCoalescenceCore = ThEItems.createItem(new ItemMaterial("coalescence_core"));
-        this.itemEssentiaComponent1k = ThEItems.createItem(new ItemMaterial("essentia_component_1k"));
-        this.itemEssentiaComponent4k = ThEItems.createItem(new ItemMaterial("essentia_component_4k"));
-        this.itemEssentiaComponent16k = ThEItems.createItem(new ItemMaterial("essentia_component_16k"));
-        this.itemEssentiaComponent64k = ThEItems.createItem(new ItemMaterial("essentia_component_64k"));
+        this.itemEssentiaComponent1k =
+                ThEItems.createItem(new ItemMaterial("essentia_component_1k"));
+        this.itemEssentiaComponent4k =
+                ThEItems.createItem(new ItemMaterial("essentia_component_4k"));
+        this.itemEssentiaComponent16k =
+                ThEItems.createItem(new ItemMaterial("essentia_component_16k"));
+        this.itemEssentiaComponent64k =
+                ThEItems.createItem(new ItemMaterial("essentia_component_64k"));
         this.itemUpgradeArcane = ThEItems.createItem(new ItemMaterial("upgrade_arcane"));
-        this.itemKnowledgeCore = ThEItems.createItem(new ItemKnowledgeCore("knowledge_core", false));
-        this.itemBlankKnowledgeCore = ThEItems.createItem(new ItemKnowledgeCore("blank_knowledge_core", true));
+        this.itemKnowledgeCore =
+                ThEItems.createItem(new ItemKnowledgeCore("knowledge_core", false));
+        this.itemBlankKnowledgeCore =
+                ThEItems.createItem(new ItemKnowledgeCore("blank_knowledge_core", true));
         this.itemDummyAspect = ThEItems.createItem(new ItemDummyAspect());
     }
 

@@ -12,12 +12,14 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.client.render.IThEModel;
 import thaumicenergistics.tile.TileInfusionProvider;
 
-import javax.annotation.Nullable;
 import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 /**
  * @author BrockWS
@@ -31,13 +33,24 @@ public class BlockInfusionProvider extends BlockNetwork implements IThEModel {
     @Override
     public void registerTileEntity() {
         super.registerTileEntity();
-        GameRegistry.registerTileEntity(TileInfusionProvider.class, Objects.requireNonNull(this.getRegistryName()));
+        GameRegistry.registerTileEntity(
+                TileInfusionProvider.class, Objects.requireNonNull(this.getRegistryName()));
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(
+            World world,
+            BlockPos pos,
+            IBlockState state,
+            EntityPlayer player,
+            EnumHand hand,
+            EnumFacing facing,
+            float hitX,
+            float hitY,
+            float hitZ) {
         if (world.isRemote || hand != EnumHand.MAIN_HAND)
-            return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
+            return super.onBlockActivated(
+                    world, pos, state, player, hand, facing, hitX, hitY, hitZ);
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileInfusionProvider) {
             TileInfusionProvider inf = (TileInfusionProvider) te;
@@ -45,12 +58,17 @@ public class BlockInfusionProvider extends BlockNetwork implements IThEModel {
                 if (inf.getStoredAspects() != null && !inf.getStoredAspects().isEmpty()) {
                     player.sendMessage(new TextComponentString("Stored Aspects:"));
                     for (IAEEssentiaStack stack : inf.getStoredAspects())
-                        player.sendMessage(new TextComponentString(stack.getAspect().getName() + " = " + stack.getStackSize()));
+                        player.sendMessage(
+                                new TextComponentString(
+                                        stack.getAspect().getName()
+                                                + " = "
+                                                + stack.getStackSize()));
                 } else {
                     player.sendMessage(new TextComponentString("No aspects found"));
                 }
             }
-            // FIXME: Make sure it updates itself, can be removed if TileInfusionProvider monitors the me network for changes
+            // FIXME: Make sure it updates itself, can be removed if TileInfusionProvider monitors
+            // the me network for changes
             te.markDirty();
             return true;
         }
@@ -65,6 +83,10 @@ public class BlockInfusionProvider extends BlockNetwork implements IThEModel {
 
     @Override
     public void initModel() {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(Objects.requireNonNull(this.getRegistryName()), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(
+                Item.getItemFromBlock(this),
+                0,
+                new ModelResourceLocation(
+                        Objects.requireNonNull(this.getRegistryName()), "inventory"));
     }
 }

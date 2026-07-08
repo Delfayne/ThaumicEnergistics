@@ -1,20 +1,24 @@
 package thaumicenergistics.integration.appeng;
 
+import static java.lang.Math.min;
+
 import appeng.api.AEApi;
 import appeng.api.config.FuzzyMode;
 import appeng.api.storage.IStorageChannel;
+
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+
 import thaumcraft.api.aspects.Aspect;
+
 import thaumicenergistics.api.EssentiaStack;
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.item.ItemDummyAspect;
-
-import static java.lang.Math.min;
 
 /**
  * @author BrockWS
@@ -40,8 +44,7 @@ public class AEEssentiaStack implements IAEEssentiaStack, Comparable<AEEssentiaS
 
     private AEEssentiaStack(AEEssentiaStack stack) {
         this.aspect = stack.getAspect();
-        if (this.aspect == null)
-            throw new IllegalArgumentException("Aspect is null");
+        if (this.aspect == null) throw new IllegalArgumentException("Aspect is null");
         this.setStackSize(stack.getStackSize());
         this.setCraftable(false);
         this.setCountRequestable(0);
@@ -49,15 +52,13 @@ public class AEEssentiaStack implements IAEEssentiaStack, Comparable<AEEssentiaS
     }
 
     public static AEEssentiaStack fromEssentiaStack(EssentiaStack stack) {
-        if (stack == null)
-            return null;
+        if (stack == null) return null;
         return new AEEssentiaStack(stack.getAspect(), stack.getAmount());
     }
 
     public static IAEEssentiaStack fromNBT(NBTTagCompound t) {
         EssentiaStack stack = EssentiaStack.readFromNBT(t);
-        if (stack == null)
-            return null;
+        if (stack == null) return null;
         AEEssentiaStack ae = AEEssentiaStack.fromEssentiaStack(stack);
         ae.setStackSize(t.getLong("AspectAmount"));
         ae.setCountRequestable(t.getLong("Req"));
@@ -112,7 +113,9 @@ public class AEEssentiaStack implements IAEEssentiaStack, Comparable<AEEssentiaS
 
     @Override
     public boolean isMeaningful() {
-        return (this.getAspect() != null && this.getStackSize() != 0) || this.countRequestable > 0 || this.isCraftable;
+        return (this.getAspect() != null && this.getStackSize() != 0)
+                || this.countRequestable > 0
+                || this.isCraftable;
     }
 
     @Override
@@ -199,9 +202,9 @@ public class AEEssentiaStack implements IAEEssentiaStack, Comparable<AEEssentiaS
     @Override
     public ItemStack asItemStackRepresentation() {
         // TODO: Test
-        ItemStack stack = ThEApi.instance().items().dummyAspect().maybeStack(1).orElse(ItemStack.EMPTY);
-        if (!stack.isEmpty())
-            ((ItemDummyAspect) stack.getItem()).setAspect(stack, this.aspect);
+        ItemStack stack =
+                ThEApi.instance().items().dummyAspect().maybeStack(1).orElse(ItemStack.EMPTY);
+        if (!stack.isEmpty()) ((ItemDummyAspect) stack.getItem()).setAspect(stack, this.aspect);
         return stack;
     }
 
@@ -224,10 +227,16 @@ public class AEEssentiaStack implements IAEEssentiaStack, Comparable<AEEssentiaS
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof AEEssentiaStack) {
-            return ((AEEssentiaStack) obj).getAspect().getTag().equalsIgnoreCase(this.getAspect().getTag());
+            return ((AEEssentiaStack) obj)
+                    .getAspect()
+                    .getTag()
+                    .equalsIgnoreCase(this.getAspect().getTag());
         }
         if (obj instanceof EssentiaStack) {
-            return ((EssentiaStack) obj).getAspect().getTag().equalsIgnoreCase(this.getAspect().getTag());
+            return ((EssentiaStack) obj)
+                    .getAspect()
+                    .getTag()
+                    .equalsIgnoreCase(this.getAspect().getTag());
         }
         return false;
     }

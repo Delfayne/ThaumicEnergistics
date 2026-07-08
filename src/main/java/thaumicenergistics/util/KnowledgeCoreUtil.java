@@ -2,19 +2,22 @@ package thaumicenergistics.util;
 
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.helpers.PatternHelper;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
+
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.util.inventory.ThEInternalInventory;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.Stream;
+
+import javax.annotation.Nullable;
 
 /**
  * @author Alex811
@@ -40,7 +43,7 @@ public abstract class KnowledgeCoreUtil {
 
     /**
      * @param knowledgeCoreStack the Knowledge Core ItemStack
-     * @param slot               recipe index
+     * @param slot recipe index
      * @return Recipe or null if no recipe exists in the specified slot
      */
     public static Recipe getRecipe(ItemStack knowledgeCoreStack, int slot) {
@@ -52,7 +55,8 @@ public abstract class KnowledgeCoreUtil {
         return new Recipe(ingredients, result, nbtRecipe.getFloat("visCost"));
     }
 
-    public static HashMap<ItemStack, ThEInternalInventory> getRecipeMap(ItemStack knowledgeCoreStack) {
+    public static HashMap<ItemStack, ThEInternalInventory> getRecipeMap(
+            ItemStack knowledgeCoreStack) {
         HashMap<ItemStack, ThEInternalInventory> recipeMap = new HashMap<>();
         for (int i = 0; i < SLOT_NUM; i++) {
             Recipe recipe = getRecipe(knowledgeCoreStack, i);
@@ -77,8 +81,7 @@ public abstract class KnowledgeCoreUtil {
      */
     public static Stream<Recipe> recipeStreamOf(ItemStack knowledgeCore) {
         final ArrayList<Recipe> recipeArrayList = new ArrayList<>();
-        for (int i = 0; i < SLOT_NUM; i++)
-            recipeArrayList.add(getRecipe(knowledgeCore, i));
+        for (int i = 0; i < SLOT_NUM; i++) recipeArrayList.add(getRecipe(knowledgeCore, i));
         return recipeArrayList.stream().filter(Objects::nonNull);
     }
 
@@ -104,8 +107,9 @@ public abstract class KnowledgeCoreUtil {
 
     /**
      * @param knowledgeCoreStack The Knowledge Core ItemStack
-     * @param slot               The Knowledge Core's recipe slot index
-     * @return NBTTagCompound that represents the recipe, or null if no recipe exists in the specified slot
+     * @param slot The Knowledge Core's recipe slot index
+     * @return NBTTagCompound that represents the recipe, or null if no recipe exists in the
+     *     specified slot
      */
     private static NBTTagCompound getNBTRecipe(ItemStack knowledgeCoreStack, int slot) {
         String slotKey = String.valueOf(slot);
@@ -115,32 +119,39 @@ public abstract class KnowledgeCoreUtil {
     }
 
     /**
-     * Similar to {@link KnowledgeCoreUtil#getAEPattern(Recipe, World)},
-     * for when you don't have the actual recipe yet
-     * and you want to extract it from a Knowledge Core
+     * Similar to {@link KnowledgeCoreUtil#getAEPattern(Recipe, World)}, for when you don't have the
+     * actual recipe yet and you want to extract it from a Knowledge Core
      *
      * @param knowledgeCore Knowledge Core to extract from
-     * @param slot          The Knowledge Core slot to read from
-     * @param world         The world we'll craft it in
+     * @param slot The Knowledge Core slot to read from
+     * @param world The world we'll craft it in
      * @return ICraftingPatternDetails instance to send to AE2.
      */
-    public static ICraftingPatternDetails getAEPattern(ItemStack knowledgeCore, int slot, World world) {
+    public static ICraftingPatternDetails getAEPattern(
+            ItemStack knowledgeCore, int slot, World world) {
         Recipe recipe = getRecipe(knowledgeCore, slot);
         return getAEPattern(recipe, world);
     }
 
     /**
-     * Method to extract a ICraftingPatternDetails instance from a Knowledge Core recipe, to use with AE2
+     * Method to extract a ICraftingPatternDetails instance from a Knowledge Core recipe, to use
+     * with AE2
      *
      * @param recipe Recipe to extract from
-     * @param world  The world we'll craft it in
+     * @param world The world we'll craft it in
      * @return ICraftingPatternDetails instance to send to AE2.
-     * @throws IllegalArgumentException If the recipe slot is empty, it lets AE2 deal with it, which currently means you'll get an exception indirectly
+     * @throws IllegalArgumentException If the recipe slot is empty, it lets AE2 deal with it, which
+     *     currently means you'll get an exception indirectly
      */
     public static ICraftingPatternDetails getAEPattern(Recipe recipe, World world) {
         ItemStack AEPatternStack;
         if (recipe == null)
-            AEPatternStack = ThEApi.instance().items().knowledgeCore().maybeStack(1).orElseThrow(RuntimeException::new);
+            AEPatternStack =
+                    ThEApi.instance()
+                            .items()
+                            .knowledgeCore()
+                            .maybeStack(1)
+                            .orElseThrow(RuntimeException::new);
         else AEPatternStack = recipe.toAEPatternStack();
         return new PatternHelper(AEPatternStack, world);
     }
@@ -168,7 +179,8 @@ public abstract class KnowledgeCoreUtil {
         }
 
         /**
-         * Get the part of the ingredients that excludes aspects, or the part that only has the aspects
+         * Get the part of the ingredients that excludes aspects, or the part that only has the
+         * aspects
          *
          * @param aspect true to get the aspect part
          * @return the ingredients
@@ -179,11 +191,13 @@ public abstract class KnowledgeCoreUtil {
             if (aspect) {
                 ingredients = new ThEInternalInventory("ingredients", 6, 64);
                 for (int i = 0; i < 6; i++)
-                    ingredients.setInventorySlotContents(i, ingredientsWithAspect.getStackInSlot(i + 9));
+                    ingredients.setInventorySlotContents(
+                            i, ingredientsWithAspect.getStackInSlot(i + 9));
             } else {
                 ingredients = new ThEInternalInventory("ingredients", 9, 64);
                 for (int i = 0; i < 9; i++)
-                    ingredients.setInventorySlotContents(i, ingredientsWithAspect.getStackInSlot(i));
+                    ingredients.setInventorySlotContents(
+                            i, ingredientsWithAspect.getStackInSlot(i));
             }
             return ingredients;
         }
@@ -193,16 +207,22 @@ public abstract class KnowledgeCoreUtil {
         }
 
         /**
-         * Transforms the recipe to an ItemStack that includes tags like the ones a normal AE2 pattern would have.
-         * Mainly for internal use, you're probably looking for {@link KnowledgeCoreUtil#getAEPattern(ItemStack, int, World)}
+         * Transforms the recipe to an ItemStack that includes tags like the ones a normal AE2
+         * pattern would have. Mainly for internal use, you're probably looking for {@link
+         * KnowledgeCoreUtil#getAEPattern(ItemStack, int, World)}
          *
          * @return AE2 pattern ItemStack
          */
         public ItemStack toAEPatternStack() {
-            ItemStack stack = ThEApi.instance().items().knowledgeCore().maybeStack(1).orElseThrow(RuntimeException::new);
+            ItemStack stack =
+                    ThEApi.instance()
+                            .items()
+                            .knowledgeCore()
+                            .maybeStack(1)
+                            .orElseThrow(RuntimeException::new);
             NBTTagCompound nbt = new NBTTagCompound();
             nbt.setTag("in", this.getIngredientPart(false).serializeNBT(true));
-            //nbt.setTag("aspects", this.getIngredientPart(true).serializeNBT(true));
+            // nbt.setTag("aspects", this.getIngredientPart(true).serializeNBT(true));
             NBTTagList out = new NBTTagList();
             out.appendTag(this.getResult().serializeNBT());
             nbt.setTag("out", out);

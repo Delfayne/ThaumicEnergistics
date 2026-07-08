@@ -20,11 +20,13 @@ import javax.annotation.Nonnull;
 @SuppressWarnings("ConstantConditions")
 public class GridUtil {
 
-    public static ICraftingGrid getCraftingGrid(@Nonnull IGridHost host) throws GridAccessException {
+    public static ICraftingGrid getCraftingGrid(@Nonnull IGridHost host)
+            throws GridAccessException {
         return (ICraftingGrid) GridUtil.getCache(host, ICraftingGrid.class);
     }
 
-    public static ICraftingGrid getCraftingGrid(@Nonnull IGridNode node) throws GridAccessException {
+    public static ICraftingGrid getCraftingGrid(@Nonnull IGridNode node)
+            throws GridAccessException {
         return (ICraftingGrid) GridUtil.getCache(node, ICraftingGrid.class);
     }
 
@@ -52,32 +54,35 @@ public class GridUtil {
         return (IStorageGrid) GridUtil.getCache(node, IStorageGrid.class);
     }
 
-    public static IGridCache getCache(@Nonnull IGridHost host, @Nonnull Class<? extends IGridCache> clazz) throws GridAccessException {
+    public static IGridCache getCache(
+            @Nonnull IGridHost host, @Nonnull Class<? extends IGridCache> clazz)
+            throws GridAccessException {
         return GridUtil.getCache(GridUtil.getGrid(host), clazz);
     }
 
-    public static IGridCache getCache(@Nonnull IGridNode node, @Nonnull Class<? extends IGridCache> clazz) throws GridAccessException {
+    public static IGridCache getCache(
+            @Nonnull IGridNode node, @Nonnull Class<? extends IGridCache> clazz)
+            throws GridAccessException {
         return GridUtil.getCache(GridUtil.getGrid(node), clazz);
     }
 
-    public static IGridCache getCache(@Nonnull IGrid grid, @Nonnull Class<? extends IGridCache> clazz) throws GridAccessException {
+    public static IGridCache getCache(
+            @Nonnull IGrid grid, @Nonnull Class<? extends IGridCache> clazz)
+            throws GridAccessException {
         IGridCache cache = grid.getCache(clazz);
-        if (cache == null)
-            throw new GridAccessException();
+        if (cache == null) throw new GridAccessException();
         return cache;
     }
 
     public static IGrid getGrid(@Nonnull IGridHost host) throws GridAccessException {
         IGridNode node = host.getGridNode(AEPartLocation.UP);
-        if (node == null)
-            throw new GridAccessException();
+        if (node == null) throw new GridAccessException();
         return GridUtil.getGrid(node);
     }
 
     public static IGrid getGrid(@Nonnull IGridNode node) throws GridAccessException {
         IGrid grid = node.getGrid();
-        if (grid == null)
-            throw new GridAccessException();
+        if (grid == null) throw new GridAccessException();
         return grid;
     }
 }

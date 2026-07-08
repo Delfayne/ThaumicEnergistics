@@ -8,7 +8,8 @@ import thaumicenergistics.container.ICraftingContainer;
 public class SlotArcaneGhostMatrix extends ThEGhostSlot {
     private ICraftingContainer container;
 
-    public SlotArcaneGhostMatrix(ICraftingContainer container, int index, int xPosition, int yPosition) {
+    public SlotArcaneGhostMatrix(
+            ICraftingContainer container, int index, int xPosition, int yPosition) {
         super(container.getInventory("crafting"), index, xPosition, yPosition);
         this.container = container;
     }

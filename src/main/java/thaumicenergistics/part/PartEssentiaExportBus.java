@@ -8,14 +8,18 @@ import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.parts.IPartCollisionHelper;
 import appeng.api.parts.IPartModel;
 import appeng.api.storage.IMEMonitor;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IAspectContainer;
+
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.client.gui.GuiHandler;
@@ -35,12 +39,13 @@ import javax.annotation.Nullable;
  */
 public class PartEssentiaExportBus extends PartSharedEssentiaBus {
 
-    public static ResourceLocation[] MODELS = new ResourceLocation[]{
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/base"),
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/on"),
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/off"),
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/has_channel")
-    };
+    public static ResourceLocation[] MODELS =
+            new ResourceLocation[] {
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/base"),
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/on"),
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/off"),
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_export_bus/has_channel")
+            };
 
     private static final IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1]);
     private static final IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2]);
@@ -63,21 +68,23 @@ public class PartEssentiaExportBus extends PartSharedEssentiaBus {
     @Nonnull
     @Override
     public TickingRequest getTickingRequest(@Nonnull IGridNode node) {
-        return new TickingRequest(ThEApi.instance().config().tickTimeEssentiaExportBusMin(), ThEApi.instance().config().tickTimeEssentiaExportBusMax(), false, false);
+        return new TickingRequest(
+                ThEApi.instance().config().tickTimeEssentiaExportBusMin(),
+                ThEApi.instance().config().tickTimeEssentiaExportBusMax(),
+                false,
+                false);
     }
 
     @Override
     public boolean canWork() {
         // We only want to run if there is something in the filter
-        return toAspectContainer(getConnectedTE()) != null
-                && this.config.hasAspects();
+        return toAspectContainer(getConnectedTE()) != null && this.config.hasAspects();
     }
 
     @Override
     protected TickRateModulation doWork() {
 
-        @Nullable
-        TileEntity connectedTE = getConnectedTE();
+        @Nullable TileEntity connectedTE = getConnectedTE();
 
         IAspectContainer container = toAspectContainer(connectedTE);
 
@@ -88,27 +95,33 @@ public class PartEssentiaExportBus extends PartSharedEssentiaBus {
         IStorageGrid storageGrid = this.getGridNode().getGrid().getCache(IStorageGrid.class);
         IMEMonitor<IAEEssentiaStack> storage = storageGrid.getInventory(this.getChannel());
 
-        for (Aspect aspect : this.config) { // Gather a list of aspects that can be put into the container
-            if (aspect == null)
-                continue;
+        for (Aspect aspect :
+                this.config) { // Gather a list of aspects that can be put into the container
+            if (aspect == null) continue;
             // Can container hold the aspect + does ae2 hold the aspect
-            if (!container.doesContainerAccept(aspect))
-                continue;
-            if (!AEUtil.doesStorageContain(storage, aspect))
-                continue;
+            if (!container.doesContainerAccept(aspect)) continue;
+            if (!AEUtil.doesStorageContain(storage, aspect)) continue;
 
             // Simulate extract from ae2
-            IAEEssentiaStack extracted = storage.extractItems(AEUtil.getAEStackFromAspect(aspect, this.calculateAmountToSend()), Actionable.SIMULATE, this.source);
+            IAEEssentiaStack extracted =
+                    storage.extractItems(
+                            AEUtil.getAEStackFromAspect(aspect, this.calculateAmountToSend()),
+                            Actionable.SIMULATE,
+                            this.source);
             // Try to add to container, since we can't simulate it
             int notAdded;
             // FIXME: Remove after issue fixed in TC.
             // https://github.com/Nividica/ThaumicEnergistics/issues/361
             // https://github.com/Azanor/thaumcraft-beta/issues/1604
             try {
-                notAdded = container.addToContainer(extracted.getAspect(), (int) extracted.getStackSize());
+                notAdded =
+                        container.addToContainer(
+                                extracted.getAspect(), (int) extracted.getStackSize());
             } catch (NullPointerException ignored) {
                 if (!reportedWarning)
-                    ThELog.warn("container.addToContainer threw a NullPointerException. Thaumcraft Bug. Nividica/ThaumicEnergistics#361. Remove EssentiaExportBus from {}", this.hostTile != null ? this.hostTile.getPos() : connectedTE.getPos());
+                    ThELog.warn(
+                            "container.addToContainer threw a NullPointerException. Thaumcraft Bug. Nividica/ThaumicEnergistics#361. Remove EssentiaExportBus from {}",
+                            this.hostTile != null ? this.hostTile.getPos() : connectedTE.getPos());
                 reportedWarning = true;
                 return TickRateModulation.IDLE;
             }
@@ -132,20 +145,20 @@ public class PartEssentiaExportBus extends PartSharedEssentiaBus {
     @Override
     public IPartModel getStaticModels() {
         if (this.isPowered())
-            if (this.isActive())
-                return MODEL_HAS_CHANNEL;
-            else
-                return MODEL_ON;
+            if (this.isActive()) return MODEL_HAS_CHANNEL;
+            else return MODEL_ON;
         return MODEL_OFF;
     }
 
     @Override
     public boolean onActivate(EntityPlayer player, EnumHand hand, Vec3d vec3d) {
-        if ((player.isSneaking() && AEUtil.isWrench(player.getHeldItem(hand), player, this.getTile().getPos())))
+        if ((player.isSneaking()
+                && AEUtil.isWrench(player.getHeldItem(hand), player, this.getTile().getPos())))
             return false;
 
         if (ForgeUtil.isServer())
-            GuiHandler.openGUI(ModGUIs.ESSENTIA_EXPORT_BUS, player, this.hostTile.getPos(), this.side);
+            GuiHandler.openGUI(
+                    ModGUIs.ESSENTIA_EXPORT_BUS, player, this.hostTile.getPos(), this.side);
 
         this.host.markForUpdate();
         return true;

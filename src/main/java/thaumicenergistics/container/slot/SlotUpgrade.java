@@ -2,6 +2,7 @@ package thaumicenergistics.container.slot;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandler;
+
 import thaumicenergistics.init.ModGlobals;
 
 /**

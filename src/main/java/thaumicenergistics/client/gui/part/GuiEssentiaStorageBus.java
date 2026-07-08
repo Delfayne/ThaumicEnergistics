@@ -7,8 +7,10 @@ import appeng.api.config.StorageFilter;
 import appeng.client.gui.widgets.GuiImgButton;
 import appeng.client.gui.widgets.GuiTabButton;
 import appeng.core.localization.GuiText;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
+
 import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.container.part.ContainerEssentiaStorageBus;
 import thaumicenergistics.init.ModGUIs;
@@ -37,20 +39,47 @@ public class GuiEssentiaStorageBus extends GuiSharedEssentiaBus {
     @Override
     public void initGui() {
         super.initGui();
-        this.priorityButton = new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16, GuiText.Priority.getLocal(), this.itemRender);
-        this.clearButton = new GuiImgButton(this.getGuiLeft() - 18, this.getGuiTop() + 8, Settings.ACTIONS, ActionItems.CLOSE);
-        this.partitionButton = new GuiImgButton(this.getGuiLeft() - 18, this.getGuiTop() + 28, Settings.ACTIONS, ActionItems.WRENCH);
+        this.priorityButton =
+                new GuiTabButton(
+                        this.guiLeft + 154,
+                        this.guiTop,
+                        2 + 4 * 16,
+                        GuiText.Priority.getLocal(),
+                        this.itemRender);
+        this.clearButton =
+                new GuiImgButton(
+                        this.getGuiLeft() - 18,
+                        this.getGuiTop() + 8,
+                        Settings.ACTIONS,
+                        ActionItems.CLOSE);
+        this.partitionButton =
+                new GuiImgButton(
+                        this.getGuiLeft() - 18,
+                        this.getGuiTop() + 28,
+                        Settings.ACTIONS,
+                        ActionItems.WRENCH);
         this.addButton(this.priorityButton);
         this.addButton(this.clearButton);
         this.addButton(this.partitionButton);
-        this.addButton(new GuiImgButton(this.getGuiLeft() - 18, this.getGuiTop() + 48, Settings.ACCESS, AccessRestriction.READ_WRITE));
-        this.addButton(new GuiImgButton(this.getGuiLeft() - 18, this.getGuiTop() + 68, Settings.STORAGE_FILTER, StorageFilter.EXTRACTABLE_ONLY));
+        this.addButton(
+                new GuiImgButton(
+                        this.getGuiLeft() - 18,
+                        this.getGuiTop() + 48,
+                        Settings.ACCESS,
+                        AccessRestriction.READ_WRITE));
+        this.addButton(
+                new GuiImgButton(
+                        this.getGuiLeft() - 18,
+                        this.getGuiTop() + 68,
+                        Settings.STORAGE_FILTER,
+                        StorageFilter.EXTRACTABLE_ONLY));
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        this.fontRenderer.drawString(ThEApi.instance().lang().guiEssentiaStorageBus().getLocalizedKey(), 8, 6, 4210752);
+        this.fontRenderer.drawString(
+                ThEApi.instance().lang().guiEssentiaStorageBus().getLocalizedKey(), 8, 6, 4210752);
     }
 
     @Override
@@ -71,11 +100,19 @@ public class GuiEssentiaStorageBus extends GuiSharedEssentiaBus {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button == this.priorityButton)
-            PacketHandler.sendToServer(new PacketOpenGUI(ModGUIs.AE2_PRIORITY, this.container.getPart().getLocation().getPos(), this.container.getPart().side));
+            PacketHandler.sendToServer(
+                    new PacketOpenGUI(
+                            ModGUIs.AE2_PRIORITY,
+                            this.container.getPart().getLocation().getPos(),
+                            this.container.getPart().side));
         else if (button == this.clearButton)
-            PacketHandler.sendToServer(new PacketEssentiaFilterAction(this.container.getPart(), PacketEssentiaFilterAction.ACTION.CLEAR));
+            PacketHandler.sendToServer(
+                    new PacketEssentiaFilterAction(
+                            this.container.getPart(), PacketEssentiaFilterAction.ACTION.CLEAR));
         else if (button == this.partitionButton)
-            PacketHandler.sendToServer(new PacketEssentiaFilterAction(this.container.getPart(), PacketEssentiaFilterAction.ACTION.PARTITION));
+            PacketHandler.sendToServer(
+                    new PacketEssentiaFilterAction(
+                            this.container.getPart(), PacketEssentiaFilterAction.ACTION.PARTITION));
         else super.actionPerformed(button);
     }
 }

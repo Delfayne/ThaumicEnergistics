@@ -2,13 +2,16 @@ package thaumicenergistics.integration.appeng.util;
 
 import appeng.api.config.Settings;
 import appeng.api.util.IConfigManager;
+
 import net.minecraft.nbt.NBTTagCompound;
+
 import thaumicenergistics.config.AESettings;
 
-import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.Nullable;
 
 /**
  * @author BrockWS
@@ -17,8 +20,7 @@ public class ThEConfigManager implements IConfigManager {
 
     private Map<Settings, Enum> settings = new EnumMap<>(Settings.class);
 
-    public ThEConfigManager() {
-    }
+    public ThEConfigManager() {}
 
     @Override
     public void registerSetting(Settings setting, Enum<?> defaultValue) {
@@ -52,19 +54,19 @@ public class ThEConfigManager implements IConfigManager {
     @SuppressWarnings("unchecked")
     @Override
     public void readFromNBT(NBTTagCompound tag) {
-        this.settings.forEach((key, old) -> {
-            if (!tag.hasKey(key.name()))
-                return;
-            String value = tag.getString(key.name());
-            Enum newValue;
-            try {
-                newValue = Enum.valueOf(old.getDeclaringClass(), value);
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-                return;
-            }
-            this.putSetting(key, newValue);
-        });
+        this.settings.forEach(
+                (key, old) -> {
+                    if (!tag.hasKey(key.name())) return;
+                    String value = tag.getString(key.name());
+                    Enum newValue;
+                    try {
+                        newValue = Enum.valueOf(old.getDeclaringClass(), value);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    this.putSetting(key, newValue);
+                });
     }
 
     @Override

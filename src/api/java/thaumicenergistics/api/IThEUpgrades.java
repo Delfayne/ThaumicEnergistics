@@ -1,6 +1,7 @@
 package thaumicenergistics.api;
 
 import appeng.api.definitions.IItemDefinition;
+
 import net.minecraft.item.ItemStack;
 
 import java.util.List;

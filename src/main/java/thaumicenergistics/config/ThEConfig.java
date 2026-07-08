@@ -1,18 +1,21 @@
 package thaumicenergistics.config;
 
+import static net.minecraftforge.common.config.Config.Comment;
+import static net.minecraftforge.common.config.Config.Name;
+
 import appeng.api.config.SearchBoxMode;
 import appeng.api.config.TerminalStyle;
+
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
+
 import thaumicenergistics.api.IThEConfig;
 import thaumicenergistics.api.config.PrefixSetting;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static net.minecraftforge.common.config.Config.Comment;
-import static net.minecraftforge.common.config.Config.Name;
 
 /**
  * TODO: Allow config being changed from api
@@ -25,7 +28,8 @@ import static net.minecraftforge.common.config.Config.Name;
 public class ThEConfig implements IThEConfig {
 
     @Name("Essentia Container Capacity")
-    @Comment("Specifies how much a item that holds essentia can hold\nFor filling with Essentia Terminal\nBest to set it to how much the item can actually store")
+    @Comment(
+            "Specifies how much a item that holds essentia can hold\nFor filling with Essentia Terminal\nBest to set it to how much the item can actually store")
     public static Map<String, Integer> essentiaContainerCapacity = new HashMap<>();
 
     @Name("Tick Rates")
@@ -57,35 +61,35 @@ public class ThEConfig implements IThEConfig {
         @Name("Arcane Assembler Particle Multiplier")
         public double arcaneAssemblerParticleMultiplier = 1.0;
 
-        private Client() {
-
-        }
+        private Client() {}
     }
 
     public static class TickRates {
         @Name("Essentia Import Bus Min")
         public int tickTimeEssentiaImportBusMin = 5;
+
         @Name("Essentia Import Bus Max")
         public int tickTimeEssentiaImportBusMax = 40;
 
         @Name("Essentia Export Bus Min")
         public int tickTimeEssentiaExportBusMin = 5;
+
         @Name("Essentia Export Bus Max")
         public int tickTimeEssentiaExportBusMax = 60;
 
         @Name("Essentia Storage Bus Min")
         public int tickTimeEssentiaStorageBusMin = 5;
+
         @Name("Essentia Storage Bus Max")
         public int tickTimeEssentiaStorageBusMax = 60;
 
         @Name("Arcane Assembler Min")
         public int tickTimeArcaneAssemblerMin = 2;
+
         @Name("Arcane Assembler Max")
         public int tickTimeArcaneAssemblerMax = 40;
 
-        private TickRates() {
-
-        }
+        private TickRates() {}
     }
 
     static {
@@ -94,9 +98,7 @@ public class ThEConfig implements IThEConfig {
         essentiaContainerCapacity.put("thaumcraft:jar_void", 250);
     }
 
-    public ThEConfig() {
-
-    }
+    public ThEConfig() {}
 
     @Override
     public Map<String, Integer> essentiaContainerCapacity() {

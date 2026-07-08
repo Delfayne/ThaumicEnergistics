@@ -2,6 +2,7 @@ package thaumicenergistics.integration.appeng;
 
 import appeng.api.config.FuzzyMode;
 import appeng.api.storage.data.IItemList;
+
 import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.util.MeaningfulEssentiaIterator;
 
@@ -16,8 +17,7 @@ public class EssentiaList implements IItemList<IAEEssentiaStack> {
 
     @Override
     public void addStorage(IAEEssentiaStack option) {
-        if (option == null)
-            return;
+        if (option == null) return;
 
         IAEEssentiaStack st = this.getEssentiaRecord(option);
         if (st != null) {
@@ -31,8 +31,7 @@ public class EssentiaList implements IItemList<IAEEssentiaStack> {
 
     @Override
     public void addCrafting(IAEEssentiaStack option) {
-        if (option == null)
-            return;
+        if (option == null) return;
 
         IAEEssentiaStack st = this.getEssentiaRecord(option);
         if (st != null) {
@@ -48,8 +47,7 @@ public class EssentiaList implements IItemList<IAEEssentiaStack> {
 
     @Override
     public void addRequestable(IAEEssentiaStack option) {
-        if (option == null)
-            return;
+        if (option == null) return;
 
         IAEEssentiaStack st = this.getEssentiaRecord(option);
         if (st != null) {
@@ -66,8 +64,7 @@ public class EssentiaList implements IItemList<IAEEssentiaStack> {
 
     @Override
     public IAEEssentiaStack getFirstItem() {
-        for (IAEEssentiaStack stack : this)
-            return stack;
+        for (IAEEssentiaStack stack : this) return stack;
         return null;
     }
 
@@ -83,14 +80,12 @@ public class EssentiaList implements IItemList<IAEEssentiaStack> {
 
     @Override
     public void resetStatus() {
-        for (IAEEssentiaStack s : this)
-            s.reset();
+        for (IAEEssentiaStack s : this) s.reset();
     }
 
     @Override
     public void add(IAEEssentiaStack option) {
-        if (option == null)
-            return;
+        if (option == null) return;
 
         IAEEssentiaStack stack = this.getEssentiaRecord(option);
         if (stack != null) {
@@ -109,7 +104,9 @@ public class EssentiaList implements IItemList<IAEEssentiaStack> {
 
     @Override
     public Collection<IAEEssentiaStack> findFuzzy(IAEEssentiaStack stack, FuzzyMode mode) {
-        return stack == null ? Collections.emptyList() : Collections.singletonList(this.findPrecise(stack));
+        return stack == null
+                ? Collections.emptyList()
+                : Collections.singletonList(this.findPrecise(stack));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package thaumicenergistics.client.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
+
 import thaumicenergistics.init.ModGUIs;
 
 /**

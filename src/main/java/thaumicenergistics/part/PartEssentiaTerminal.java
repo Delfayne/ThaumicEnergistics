@@ -1,11 +1,14 @@
 package thaumicenergistics.part;
 
 import appeng.api.parts.IPartModel;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+
 import org.dv.minecraft.thaumicenergistics.Reference;
+
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.init.ModGUIs;
@@ -22,18 +25,20 @@ import javax.annotation.Nonnull;
  */
 public class PartEssentiaTerminal extends PartSharedTerminal {
 
-    public static ResourceLocation[] MODELS = new ResourceLocation[]{
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_terminal/base"), // 0
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_terminal/on"), // 1
-            new ResourceLocation(Reference.MOD_ID, "part/essentia_terminal/off"), // 2
-            new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_has_channel"), // 3
-            new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_on"), // 4
-            new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_off") // 5
-    };
+    public static ResourceLocation[] MODELS =
+            new ResourceLocation[] {
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_terminal/base"), // 0
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_terminal/on"), // 1
+                new ResourceLocation(Reference.MOD_ID, "part/essentia_terminal/off"), // 2
+                new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_has_channel"), // 3
+                new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_on"), // 4
+                new ResourceLocation(ModGlobals.MOD_ID_AE2, "part/display_status_off") // 5
+            };
 
     private static final IPartModel MODEL_ON = new ThEPartModel(MODELS[0], MODELS[1], MODELS[4]);
     private static final IPartModel MODEL_OFF = new ThEPartModel(MODELS[0], MODELS[2], MODELS[5]);
-    private static final IPartModel MODEL_HAS_CHANNEL = new ThEPartModel(MODELS[0], MODELS[1], MODELS[3]);
+    private static final IPartModel MODEL_HAS_CHANNEL =
+            new ThEPartModel(MODELS[0], MODELS[1], MODELS[3]);
 
     public PartEssentiaTerminal(ItemEssentiaTerminal itemEssentiaTerminal) {
         this(itemEssentiaTerminal, ModGUIs.ESSENTIA_TERMINAL);
@@ -50,11 +55,13 @@ public class PartEssentiaTerminal extends PartSharedTerminal {
 
     @Override
     public boolean onActivate(EntityPlayer player, EnumHand hand, Vec3d pos) {
-        if ((player.isSneaking() && AEUtil.isWrench(player.getHeldItem(hand), player, this.getTile().getPos())))
+        if ((player.isSneaking()
+                && AEUtil.isWrench(player.getHeldItem(hand), player, this.getTile().getPos())))
             return false;
 
         if (ForgeUtil.isServer())
-            GuiHandler.openGUI(ModGUIs.ESSENTIA_TERMINAL, player, this.hostTile.getPos(), this.side);
+            GuiHandler.openGUI(
+                    ModGUIs.ESSENTIA_TERMINAL, player, this.hostTile.getPos(), this.side);
 
         this.host.markForUpdate();
         return true;
@@ -64,10 +71,8 @@ public class PartEssentiaTerminal extends PartSharedTerminal {
     @Override
     public IPartModel getStaticModels() {
         if (this.isPowered())
-            if (this.isActive())
-                return MODEL_HAS_CHANNEL;
-            else
-                return MODEL_ON;
+            if (this.isActive()) return MODEL_HAS_CHANNEL;
+            else return MODEL_ON;
         return MODEL_OFF;
     }
 

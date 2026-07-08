@@ -2,9 +2,11 @@ package thaumicenergistics.container;
 
 import appeng.api.config.Settings;
 import appeng.api.util.IConfigurableObject;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IContainerListener;
+
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.integration.appeng.util.ThEConfigManager;
 import thaumicenergistics.network.PacketHandler;
@@ -12,12 +14,13 @@ import thaumicenergistics.network.packets.PacketSettingChange;
 import thaumicenergistics.util.ForgeUtil;
 
 /**
- * Container that implements {@link IConfigurableObject} and syncs the client with the server.
- * If you're looking to register new settings, see {@link AESettings}.
+ * Container that implements {@link IConfigurableObject} and syncs the client with the server. If
+ * you're looking to register new settings, see {@link AESettings}.
  *
  * @author Alex811
  */
-public abstract class ContainerBaseConfigurable extends ContainerBase implements IConfigurableObject {
+public abstract class ContainerBaseConfigurable extends ContainerBase
+        implements IConfigurableObject {
     protected ThEConfigManager serverConfigManager;
     protected ThEConfigManager clientConfigManager;
 
@@ -25,8 +28,7 @@ public abstract class ContainerBaseConfigurable extends ContainerBase implements
         super(player);
         this.clientConfigManager = new ThEConfigManager();
         this.clientConfigManager.registerSettings(this.getAESettingSubject());
-        if (ForgeUtil.isServer())
-            this.serverConfigManager = serverConfigManager;
+        if (ForgeUtil.isServer()) this.serverConfigManager = serverConfigManager;
     }
 
     protected abstract AESettings.SUBJECT getAESettingSubject();
@@ -45,7 +47,9 @@ public abstract class ContainerBaseConfigurable extends ContainerBase implements
                     this.clientConfigManager.putSetting(setting, server);
                     for (IContainerListener player : this.listeners)
                         if (player instanceof EntityPlayerMP) {
-                            PacketHandler.sendToPlayer((EntityPlayerMP) player, new PacketSettingChange(setting, server));
+                            PacketHandler.sendToPlayer(
+                                    (EntityPlayerMP) player,
+                                    new PacketSettingChange(setting, server));
                         }
                 }
             }

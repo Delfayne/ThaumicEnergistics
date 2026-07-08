@@ -16,11 +16,18 @@ public class SlotArmor extends ThESlot {
 
     private final EntityPlayer player;
 
-    public SlotArmor(EntityPlayer player, IItemHandler handler, int index, int xPosition, int yPosition) {
+    public SlotArmor(
+            EntityPlayer player, IItemHandler handler, int index, int xPosition, int yPosition) {
         this(player, handler, index, xPosition, yPosition, true);
     }
 
-    public SlotArmor(EntityPlayer player, IItemHandler handler, int index, int xPosition, int yPosition, boolean affectedBySlotCount) {
+    public SlotArmor(
+            EntityPlayer player,
+            IItemHandler handler,
+            int index,
+            int xPosition,
+            int yPosition,
+            boolean affectedBySlotCount) {
         super(handler, index, xPosition, yPosition, affectedBySlotCount);
         this.player = player;
     }
@@ -54,7 +61,10 @@ public class SlotArmor extends ThESlot {
 
     @Override
     public boolean canTakeStack(EntityPlayer player) {
-        return (this.getStack().isEmpty() || player.isCreative() || !EnchantmentHelper.hasBindingCurse(this.getStack())) && super.canTakeStack(player);
+        return (this.getStack().isEmpty()
+                        || player.isCreative()
+                        || !EnchantmentHelper.hasBindingCurse(this.getStack()))
+                && super.canTakeStack(player);
     }
 
     @Nullable

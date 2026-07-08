@@ -1,6 +1,7 @@
 package thaumicenergistics.block;
 
 import mcp.MethodsReturnNonnullByDefault;
+
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -16,12 +17,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
 import thaumicenergistics.client.render.IThEModel;
 import thaumicenergistics.tile.TileArcaneAssembler;
 
+import java.util.Objects;
+
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Objects;
 
 /**
  * @author Alex811
@@ -41,14 +44,23 @@ public class BlockArcaneAssembler extends BlockNetwork implements IThEModel {
     @Override
     public void registerTileEntity() {
         super.registerTileEntity();
-        GameRegistry.registerTileEntity(TileArcaneAssembler.class, Objects.requireNonNull(getRegistryName()));
+        GameRegistry.registerTileEntity(
+                TileArcaneAssembler.class, Objects.requireNonNull(getRegistryName()));
     }
 
     @Override
     @ParametersAreNonnullByDefault
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (world.isRemote || hand != EnumHand.MAIN_HAND)
-            return !player.isSneaking();
+    public boolean onBlockActivated(
+            World world,
+            BlockPos pos,
+            IBlockState state,
+            EntityPlayer player,
+            EnumHand hand,
+            EnumFacing facing,
+            float hitX,
+            float hitY,
+            float hitZ) {
+        if (world.isRemote || hand != EnumHand.MAIN_HAND) return !player.isSneaking();
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileArcaneAssembler) {
             TileArcaneAssembler arcAssembTE = (TileArcaneAssembler) te;
@@ -73,7 +85,10 @@ public class BlockArcaneAssembler extends BlockNetwork implements IThEModel {
 
     @Override
     public void initModel() {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(Objects.requireNonNull(getRegistryName()), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(
+                Item.getItemFromBlock(this),
+                0,
+                new ModelResourceLocation(Objects.requireNonNull(getRegistryName()), "inventory"));
     }
 
     @Override

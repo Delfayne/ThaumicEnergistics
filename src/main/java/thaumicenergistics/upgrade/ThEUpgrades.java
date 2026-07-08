@@ -2,7 +2,9 @@ package thaumicenergistics.upgrade;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IItemDefinition;
+
 import net.minecraft.item.ItemStack;
+
 import thaumicenergistics.api.IThEItems;
 import thaumicenergistics.api.IThEUpgrade;
 import thaumicenergistics.api.IThEUpgrades;
@@ -28,7 +30,9 @@ public class ThEUpgrades implements IThEUpgrades {
         this.upgrades.add(this.arcaneCharger = new ThEUpgrade(items.upgradeArcane()));
         this.upgrades.add(this.knowledgeCore = new ThEUpgrade(items.knowledgeCore()));
         this.upgrades.add(this.blankKnowledgeCore = new ThEUpgrade(items.blankKnowledgeCore()));
-        this.upgrades.add(this.cardSpeed = new ThEUpgrade(AEApi.instance().definitions().materials().cardSpeed()));
+        this.upgrades.add(
+                this.cardSpeed =
+                        new ThEUpgrade(AEApi.instance().definitions().materials().cardSpeed()));
     }
 
     @Override
@@ -53,7 +57,9 @@ public class ThEUpgrades implements IThEUpgrades {
 
     @Override
     public Optional<IThEUpgrade> getUpgrade(ItemStack stack) {
-        return this.getUpgrades().stream().filter(upgrade -> upgrade.getDefinition().isSameAs(stack)).findFirst();
+        return this.getUpgrades().stream()
+                .filter(upgrade -> upgrade.getDefinition().isSameAs(stack))
+                .findFirst();
     }
 
     @Override

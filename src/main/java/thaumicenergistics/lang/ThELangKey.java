@@ -1,7 +1,7 @@
 package thaumicenergistics.lang;
 
-
 import net.minecraft.client.resources.I18n;
+
 import thaumicenergistics.api.IThELangKey;
 
 /**

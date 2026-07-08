@@ -1,6 +1,7 @@
 package thaumicenergistics.container.slot;
 
 import appeng.util.helpers.ItemHandlerUtil;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
@@ -26,7 +27,12 @@ public class ThEGhostSlot extends SlotGhost {
         this(handler, index, xPosition, yPosition, true);
     }
 
-    public ThEGhostSlot(IItemHandler handler, int index, int xPosition, int yPosition, boolean affectedBySlotCount) {
+    public ThEGhostSlot(
+            IItemHandler handler,
+            int index,
+            int xPosition,
+            int yPosition,
+            boolean affectedBySlotCount) {
         super(ThEGhostSlot.EMPTY, index, xPosition, yPosition);
         this.itemHandler = handler;
         this.x = xPosition;
@@ -41,23 +47,20 @@ public class ThEGhostSlot extends SlotGhost {
 
     @Override
     public void putStack(ItemStack stack) {
-        if (this.itemHandler == null)
-            return;
+        if (this.itemHandler == null) return;
         ItemHandlerUtil.setStackInSlot(this.itemHandler, this.getSlotIndex(), stack);
         this.onSlotChanged();
     }
 
     @Override
     public ItemStack getStack() {
-        if (this.itemHandler == null)
-            return ItemStack.EMPTY;
+        if (this.itemHandler == null) return ItemStack.EMPTY;
         return this.itemHandler.getStackInSlot(this.getSlotIndex());
     }
 
     @Override
     public ItemStack decrStackSize(int amount) {
-        if (this.itemHandler == null)
-            return ItemStack.EMPTY;
+        if (this.itemHandler == null) return ItemStack.EMPTY;
         return this.itemHandler.extractItem(this.getSlotIndex(), amount, false);
     }
 
@@ -78,8 +81,7 @@ public class ThEGhostSlot extends SlotGhost {
 
     public void recalculateY(int slots) {
         this.yPos = this.y;
-        if (!this.affectedBySlotCount)
-            return;
+        if (!this.affectedBySlotCount) return;
         this.yPos += slots * 18;
     }
 }

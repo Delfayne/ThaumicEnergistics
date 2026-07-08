@@ -2,10 +2,12 @@ package thaumicenergistics.integration.appeng.util;
 
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
+
 import net.minecraft.entity.player.EntityPlayer;
 
-import javax.annotation.Nonnull;
 import java.util.Optional;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author BrockWS
@@ -26,16 +28,14 @@ public class ThEActionSource implements IActionSource {
     @Nonnull
     @Override
     public Optional<EntityPlayer> player() {
-        if (this.player != null)
-            return Optional.of(this.player);
+        if (this.player != null) return Optional.of(this.player);
         return Optional.empty();
     }
 
     @Nonnull
     @Override
     public Optional<IActionHost> machine() {
-        if (this.host != null)
-            return Optional.of(this.host);
+        if (this.host != null) return Optional.of(this.host);
         return Optional.empty();
     }
 
