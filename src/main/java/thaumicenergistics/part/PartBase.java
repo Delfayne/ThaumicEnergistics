@@ -151,6 +151,10 @@ public abstract class PartBase
                 255 - te.getWorld().getBlockLightOpacity(te.getPos().offset(this.side.getFacing()));
     }
 
+    protected boolean emitsLight() {
+        return false;
+    }
+
     @Override
     public ThEConfigManager getConfigManager() {
         return this.configManager;
@@ -169,10 +173,19 @@ public abstract class PartBase
     @Override
     public void onNeighborChanged(
             IBlockAccess iBlockAccess, BlockPos blockPos, BlockPos blockPos1) {
-        if (blockPos == null || blockPos1 == null) return;
+        if (blockPos == null || blockPos1 == null) {
+            return;
+        }
+        if (!this.emitsLight()) {
+            return;
+        }
         if (blockPos.offset(this.side.getFacing()).equals(blockPos1)) {
-            this.lightOpacity = -1;
-            this.host.markForUpdate();
+            TileEntity te = this.getTile();
+            int newOpacity = 255 - te.getWorld().getBlockLightOpacity(blockPos1);
+            if (this.lightOpacity != newOpacity) {
+                this.lightOpacity = newOpacity;
+                this.host.markForUpdate();
+            }
         }
     }
 
