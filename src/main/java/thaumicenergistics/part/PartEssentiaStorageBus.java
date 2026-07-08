@@ -165,8 +165,10 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
         if (pos == null || neighbor == null) return;
         if (pos.offset(this.side.getFacing()).equals(neighbor) && this.getGridNode() != null) {
             IGrid grid = this.getGridNode().getGrid();
-            if (grid != null) { // Might want to check if something was changed
-                // ThELog.info("MENetworkCellArrayUpdate");
+            // IGridNode#getGrid() is declared @Nonnull, but AE2's own AENetworkProxy#getGrid()
+            // treats it as nullable and guards it too; mirror that here.
+            //noinspection ConstantConditions
+            if (grid != null) {
                 grid.postEvent(new MENetworkCellArrayUpdate());
             }
         }
@@ -302,7 +304,16 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
     }
 
     public void triggerUpdate() {
-        this.gridNode.getGrid().postEvent(new MENetworkCellArrayUpdate());
+        if (this.gridNode == null) {
+            return;
+        }
+        IGrid grid = this.gridNode.getGrid();
+        // IGridNode#getGrid() is declared @Nonnull, but AE2's own internal code (e.g.
+        // CraftingCPUCluster#getGrid()) doesn't trust that contract either; guard defensively.
+        //noinspection ConstantConditions
+        if (grid != null) {
+            grid.postEvent(new MENetworkCellArrayUpdate());
+        }
         this.host.markForUpdate();
     }
 
