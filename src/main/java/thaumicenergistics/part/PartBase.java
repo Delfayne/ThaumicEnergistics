@@ -171,6 +171,7 @@ public abstract class PartBase
             IBlockAccess iBlockAccess, BlockPos blockPos, BlockPos blockPos1) {
         if (blockPos == null || blockPos1 == null) return;
         if (blockPos.offset(this.side.getFacing()).equals(blockPos1)) {
+            this.lightOpacity = -1;
             this.host.markForUpdate();
         }
     }
