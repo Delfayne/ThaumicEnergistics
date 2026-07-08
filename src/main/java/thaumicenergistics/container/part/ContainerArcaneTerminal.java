@@ -118,7 +118,6 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
 
     @Override
     public void onAction(EntityPlayerMP player, PacketUIAction packet) {
-        // TODO: Give inventoryInsert/inventoryExtract IEnergyGrid to extract power
         if (this.monitor == null) return;
         IAEItemStack requestedStack = (IAEItemStack) packet.getStack(this.channel);
         if (packet.action == ActionType.PICKUP_OR_SETDOWN) { // Normal lmb
@@ -671,11 +670,6 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
         if (aeStack != null
                 && aeStack.getStackSize()
                         == stack.getCount()) { // Make sure we actually have enough to pull
-            /* try {
-                GridUtil.getEnergyGrid(this.part.getGridNode()).extractAEPower(1, Actionable.MODULATE, PowerMultiplier.CONFIG);
-            } catch (GridAccessException ignored) {
-
-            }*/
             return this.monitor
                     .extractItems(aeStack, Actionable.MODULATE, this.part.source)
                     .createItemStack();

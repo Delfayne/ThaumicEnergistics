@@ -6,6 +6,7 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.networking.crafting.ICraftingProvider;
 import appeng.api.networking.crafting.ICraftingProviderHelper;
+import appeng.api.networking.energy.IEnergySource;
 import appeng.api.networking.events.MENetworkChannelsChanged;
 import appeng.api.networking.events.MENetworkCraftingPatternChange;
 import appeng.api.networking.events.MENetworkEventSubscribe;
@@ -62,6 +63,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
@@ -215,6 +217,7 @@ public class TileArcaneAssembler extends TileNetwork
         // Simulate removing aspects
         this.aspectExists = new HashMap<>();
         IMEMonitor<IAEItemStack> inventory = this.getInventory(this.channel);
+        IEnergySource energy = this.getEnergy();
         ArrayList<ItemStack> aspects = new ArrayList<>();
         this.missingAspect.set(false);
         recipe.getIngredientPart(true)
@@ -226,6 +229,7 @@ public class TileArcaneAssembler extends TileNetwork
                                                 this.channel.createStack(aspect),
                                                 inventory,
                                                 this.src,
+                                                energy,
                                                 Actionable.SIMULATE);
                                 String aspectName =
                                         Objects.requireNonNull(TCUtil.getCrystalAspect(aspect))
@@ -245,17 +249,23 @@ public class TileArcaneAssembler extends TileNetwork
                     new HashMap<>(); // we have what we need, clear this, since we're not trying to
         // find the aspects anymore
         if (prevHasEnoughVis != this.hasEnoughVis
-                || prevMissingAspect != this.missingAspect.get()) // update client if needed
-        this.markDirty();
-        if (prevHasEnoughVis != this.hasEnoughVis
-                || !prevAspectExists.equals(this.aspectExists)) // update client if needed
-        this.notifySubs();
-        if (!canCraft) return false; // we don't have the ingredients, tell AE2 we can't craft
+                || prevMissingAspect != this.missingAspect.get()) {
+            // update client if needed
+            this.markDirty();
+        }
+        if (prevHasEnoughVis != this.hasEnoughVis || !prevAspectExists.equals(this.aspectExists)) {
+            // update client if needed
+            this.notifySubs();
+        }
+        // we don't have the ingredients, tell AE2 we can't craft
+        if (!canCraft) {
+            return false;
+        }
         // Craft
         aspects.forEach(
                 aspect ->
                         AEUtil.inventoryExtract(
-                                this.channel.createStack(aspect), inventory, this.src));
+                                this.channel.createStack(aspect), inventory, this.src, energy));
         if (recipe.getVisCost() > 0) {
             final ItemStack visRangeUpgrade =
                     ThEApi.instance()
@@ -315,6 +325,15 @@ public class TileArcaneAssembler extends TileNetwork
         return null;
     }
 
+    @Nullable
+    private IEnergySource getEnergy() {
+        try {
+            return GridUtil.getEnergyGrid(this.gridNode);
+        } catch (GridAccessException e) {
+            return null;
+        }
+    }
+
     @Nonnull
     @Override
     public TickingRequest getTickingRequest(@Nonnull IGridNode node) {
@@ -368,10 +387,13 @@ public class TileArcaneAssembler extends TileNetwork
                 AEUtil.inventoryInsert(
                         this.channel.createStack(this.craftingInv.getStackInSlot(0)),
                         this.getInventory(this.channel),
-                        this.src);
+                        this.src,
+                        this.getEnergy());
                 this.craftingInv.removeStackFromSlot(0);
-                if (this.craftingInv.getStackInSlot(0).isEmpty()) // done crafting everything
-                this.hasJob = false;
+                if (this.craftingInv.getStackInSlot(0).isEmpty()) {
+                    // done crafting everything
+                    this.hasJob = false;
+                }
             }
             this.markDirty();
             return TickRateModulation.URGENT;
