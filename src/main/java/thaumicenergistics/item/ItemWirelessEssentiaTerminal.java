@@ -50,7 +50,6 @@ import javax.annotation.Nullable;
 public class ItemWirelessEssentiaTerminal extends ItemBase
         implements IAEItemPowerStorage, IWirelessTermHandler, IThEModel, IBauble {
 
-    public static final double MAX_POWER = 200_000.0;
     private static final String TAG_POWER = "internalCurrentPower";
     private static final String TAG_ENCRYPTION_KEY = "encryptionKey";
 
@@ -186,7 +185,7 @@ public class ItemWirelessEssentiaTerminal extends ItemBase
     @Override
     public double injectAEPower(ItemStack stack, double amount, Actionable mode) {
         double current = this.getAECurrentPower(stack);
-        double newTotal = Math.min(MAX_POWER, current + amount);
+        double newTotal = Math.min(this.getAEMaxPower(stack), current + amount);
         double accepted = newTotal - current;
         if (mode == Actionable.MODULATE) this.setCurrentPower(stack, newTotal);
         return amount - accepted;
@@ -202,7 +201,7 @@ public class ItemWirelessEssentiaTerminal extends ItemBase
 
     @Override
     public double getAEMaxPower(ItemStack stack) {
-        return MAX_POWER;
+        return ThEApi.instance().config().wirelessEssentiaTerminalMaxPower();
     }
 
     @Override
