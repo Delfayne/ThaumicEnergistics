@@ -37,7 +37,10 @@ import thaumicenergistics.network.packets.PacketMEEssentiaUpdate;
 import thaumicenergistics.network.packets.PacketUIAction;
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ForgeUtil;
+import thaumicenergistics.util.ThELog;
 
+import java.io.IOException;
+import java.nio.BufferOverflowException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -267,9 +270,24 @@ public class ContainerWirelessEssentiaTerminal extends ContainerBaseTerminal
     private void sendInventory(IContainerListener listener) {
         if (ForgeUtil.isClient() || !(listener instanceof EntityPlayer) || this.monitor == null)
             return;
-        IItemList<IAEEssentiaStack> storage = this.monitor.getStorageList();
-        PacketMEEssentiaUpdate packet = new PacketMEEssentiaUpdate();
-        for (IAEEssentiaStack stack : storage) packet.appendStack(stack);
-        PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
+
+        try {
+            PacketMEEssentiaUpdate packet = new PacketMEEssentiaUpdate();
+            IItemList<IAEEssentiaStack> storage = this.monitor.getStorageList();
+
+            for (IAEEssentiaStack stack : storage) {
+                try {
+                    packet.appendStack(stack);
+                } catch (BufferOverflowException e) {
+                    PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
+
+                    packet = new PacketMEEssentiaUpdate();
+                    packet.appendStack(stack);
+                }
+            }
+            PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
+        } catch (IOException e) {
+            ThELog.error("sendInventory", e);
+        }
     }
 }

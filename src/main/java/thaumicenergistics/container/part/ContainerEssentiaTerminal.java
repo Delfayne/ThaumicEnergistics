@@ -37,7 +37,10 @@ import thaumicenergistics.part.PartBase;
 import thaumicenergistics.part.PartEssentiaTerminal;
 import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ForgeUtil;
+import thaumicenergistics.util.ThELog;
 
+import java.io.IOException;
+import java.nio.BufferOverflowException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -223,25 +226,29 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
             // here, once per tick, containing only those changed stacks - not the whole network's
             // essentia list on every single change notification.
             if (!this.items.isEmpty()) {
-                IItemList<IAEEssentiaStack> monitorCache = this.monitor.getStorageList();
-                PacketMEEssentiaUpdate packet = new PacketMEEssentiaUpdate();
+                try {
+                    IItemList<IAEEssentiaStack> monitorCache = this.monitor.getStorageList();
+                    PacketMEEssentiaUpdate packet = new PacketMEEssentiaUpdate();
 
-                for (IAEEssentiaStack is : this.items) {
-                    IAEEssentiaStack send = monitorCache.findPrecise(is);
-                    if (send == null) {
-                        is.setStackSize(0);
-                        packet.appendStack(is);
-                    } else {
-                        packet.appendStack(send);
+                    for (IAEEssentiaStack is : this.items) {
+                        IAEEssentiaStack send = monitorCache.findPrecise(is);
+                        if (send == null) {
+                            is.setStackSize(0);
+                            packet.appendStack(is);
+                        } else {
+                            packet.appendStack(send);
+                        }
                     }
-                }
 
-                this.items.resetStatus();
+                    this.items.resetStatus();
 
-                for (IContainerListener c : this.listeners) {
-                    if (c instanceof EntityPlayer) {
-                        PacketHandler.sendToPlayer((EntityPlayerMP) c, packet);
+                    for (IContainerListener c : this.listeners) {
+                        if (c instanceof EntityPlayer) {
+                            PacketHandler.sendToPlayer((EntityPlayerMP) c, packet);
+                        }
                     }
+                } catch (IOException e) {
+                    ThELog.error("detectAndSendChanges", e);
                 }
             }
         }
@@ -278,9 +285,24 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
     private void sendInventory(IContainerListener listener) {
         if (ForgeUtil.isClient() || !(listener instanceof EntityPlayer) || this.monitor == null)
             return;
-        IItemList<IAEEssentiaStack> storage = this.monitor.getStorageList();
-        PacketMEEssentiaUpdate packet = new PacketMEEssentiaUpdate();
-        for (IAEEssentiaStack stack : storage) packet.appendStack(stack);
-        PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
+
+        try {
+            PacketMEEssentiaUpdate packet = new PacketMEEssentiaUpdate();
+            IItemList<IAEEssentiaStack> storage = this.monitor.getStorageList();
+
+            for (IAEEssentiaStack stack : storage) {
+                try {
+                    packet.appendStack(stack);
+                } catch (BufferOverflowException e) {
+                    PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
+
+                    packet = new PacketMEEssentiaUpdate();
+                    packet.appendStack(stack);
+                }
+            }
+            PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
+        } catch (IOException e) {
+            ThELog.error("sendInventory", e);
+        }
     }
 }
