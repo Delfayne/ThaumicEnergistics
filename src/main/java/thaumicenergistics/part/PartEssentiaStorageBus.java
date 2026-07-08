@@ -243,8 +243,8 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
     private EssentiaContainerAdapter getHandler() {
         if (this.handler == null) {
             IAspectContainer connectedContainer = this.getConnectedContainer();
-            if (connectedContainer != null)
-                return this.handler =
+            if (connectedContainer != null) {
+                this.handler =
                         new EssentiaContainerAdapter(
                                 connectedContainer,
                                 this.config,
@@ -254,6 +254,13 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
                                 (StorageFilter)
                                         this.getConfigManager().getSetting(Settings.STORAGE_FILTER),
                                 this.priority); // init and cache handler
+                // AE2's own PartStorageBus#getInternalHandler forces a cell update whenever it
+                // (re)builds its handler, rather than trusting a caller to have already done so;
+                // mirror that here so a handler built from a getCellArray() call outside an
+                // active cellUpdate() scan (e.g. a node added while inactive) still registers.
+                this.triggerUpdate();
+                return this.handler;
+            }
             return null;
         }
         return this.handler; // return cached handler
