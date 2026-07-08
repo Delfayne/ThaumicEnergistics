@@ -24,6 +24,7 @@ item.thaumicenergistics.essentia_export.name=МЭ Шина экспорта эс
 item.thaumicenergistics.essentia_storage.name=МЭ Шина хранения эссенции
 item.thaumicenergistics.essentia_level_emitter.name=МЭ Эмиттер уровня эссенции
 item.thaumicenergistics.essentia_terminal.name=Терминал эссенции
+item.thaumicenergistics.wireless_essentia_terminal.name=Беспроводной терминал эссенции
 item.thaumicenergistics.arcane_terminal.name=Мистический терминал создания
 
 item.thaumicenergistics.upgrade_arcane.name=Улучшение для Мистического Заряжателя
@@ -33,6 +34,13 @@ tooltip.thaumicenergistics.wip=РАБОТАЮ НАД ЭТИМ, НЕ ИСПОЛЬ
 tooltip.thaumicenergistics.device_online=Устройство включено
 tooltip.thaumicenergistics.device_offline=Устройство выключено
 tooltip.thaumicenergistics.device_missing_channel=У устройства отсутствует канал
+tooltip.thaumicenergistics.device_not_linked=Терминал не привязан к станции безопасности
+tooltip.thaumicenergistics.device_station_not_found=Привязанная станция безопасности не найдена
+tooltip.thaumicenergistics.device_not_powered=Недостаточно энергии в терминале
+tooltip.thaumicenergistics.device_out_of_range=Терминал вне зоны действия беспроводной сети
+tooltip.thaumicenergistics.device_linked=Привязан
+tooltip.thaumicenergistics.device_unlinked=Не привязан
+tooltip.thaumicenergistics.stored_energy=Накопленная энергия
 
 # GUI
 gui.thaumicenergistics.essentia_import_bus=МЭ Шина импорта эссенции

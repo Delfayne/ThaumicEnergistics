@@ -44,6 +44,7 @@ tooltip.thaumicenergistics.device_not_powered=Terminal has insufficient power
 tooltip.thaumicenergistics.device_out_of_range=Terminal is out of wireless range
 tooltip.thaumicenergistics.device_linked=Linked
 tooltip.thaumicenergistics.device_unlinked=Unlinked
+tooltip.thaumicenergistics.stored_energy=Stored Energy
 tooltip.thaumicenergistics.arcane_assembler.idle=Status: idle
 tooltip.thaumicenergistics.arcane_assembler.prep=Status: prep
 tooltip.thaumicenergistics.arcane_assembler.busy=Status: busy
