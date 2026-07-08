@@ -27,6 +27,7 @@ import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.config.AESettings;
 import thaumicenergistics.container.ActionType;
 import thaumicenergistics.container.ContainerBaseTerminal;
+import thaumicenergistics.integration.appeng.util.ThEActionSource;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.network.packets.PacketInvHeldUpdate;
 import thaumicenergistics.network.packets.PacketMEEssentiaUpdate;
@@ -46,12 +47,14 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
 
     private final PartEssentiaTerminal part;
     private final IEssentiaStorageChannel channel;
+    private final IActionSource playerSource;
     private IMEMonitor<IAEEssentiaStack> monitor;
     private boolean isValidContainer = true;
 
     public ContainerEssentiaTerminal(EntityPlayer player, PartEssentiaTerminal part) {
         super(player, part);
         this.part = part;
+        this.playerSource = new ThEActionSource(player);
         this.channel = AEApi.instance().storage().getStorageChannel(IEssentiaStorageChannel.class);
 
         if (ForgeUtil.isServer()) {
@@ -98,7 +101,7 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
 
             IAEEssentiaStack stack =
                     this.monitor.extractItems(
-                            requestedStack, Actionable.SIMULATE, this.part.source);
+                            requestedStack, Actionable.SIMULATE, this.playerSource);
             if (stack == null || stack.getStackSize() < max) return;
             stack.setStackSize(max);
             containerItem.setAspects(toFill, new AspectList().add(stack.getAspect(), max));
@@ -119,7 +122,8 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
                 filledItem = true;
                 PacketHandler.sendToPlayer(player, new PacketInvHeldUpdate(toFill));
             }
-            if (filledItem) this.monitor.extractItems(stack, Actionable.MODULATE, this.part.source);
+            if (filledItem)
+                this.monitor.extractItems(stack, Actionable.MODULATE, this.playerSource);
         } else if (packet.action == ActionType.EMPTY_ESSENTIA_ITEM) {
             ItemStack toEmpty = inv.getItemStack().copy();
             ResourceLocation registryName = toEmpty.getItem().getRegistryName();
@@ -142,7 +146,7 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
                                 this.monitor.injectItems(
                                         AEUtil.getAEStackFromAspect(aspect, amount),
                                         Actionable.SIMULATE,
-                                        this.part.source);
+                                        this.playerSource);
                         if (stack != null && stack.getStackSize() > 0) canInsert.set(false);
                     });
             if (!canInsert.get()) return;
@@ -167,7 +171,7 @@ public class ContainerEssentiaTerminal extends ContainerBaseTerminal
                             this.monitor.injectItems(
                                     AEUtil.getAEStackFromAspect(aspect, amount),
                                     Actionable.MODULATE,
-                                    this.part.source));
+                                    this.playerSource));
         }
         super.onAction(player, packet);
     }
