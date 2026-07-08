@@ -1,7 +1,5 @@
 package thaumicenergistics.network.packets;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEStack;
@@ -17,6 +15,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.container.ActionType;
 import thaumicenergistics.container.ContainerBase;
@@ -24,21 +23,21 @@ import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ThELog;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author BrockWS
  */
 public class PacketUIAction implements IMessage {
 
+    // Marks which storage channel requestedStack's NBT belongs to. Essentia and item stacks
+    // don't reliably use distinct NBT keys (e.g. both can end up with a "Cnt"/"Count" tag
+    // depending on the AE2 build), so guessing the channel from the NBT shape is unreliable -
+    // instead the sender, which always knows the real type, tags it explicitly.
+    private static final String STACK_CHANNEL_KEY = "stackChannel";
+
     public ActionType action;
     public IAEStack requestedStack;
     public int index = -1;
-    private static final List<IStorageChannel<? extends IAEStack<? extends IAEStack<?>>>>
-            validChannels =
-                    newArrayList(
-                            AEUtil.getStorageChannel(IItemStorageChannel.class),
-                            AEUtil.getStorageChannel(IEssentiaStorageChannel.class));
 
     public PacketUIAction() {}
 
@@ -78,21 +77,17 @@ public class PacketUIAction implements IMessage {
         if (nbt.hasKey("index")) {
             this.index = nbt.getInteger("index");
         }
-        // AE2 items etc use Cnt, Essentia uses Count
-        if (nbt.hasKey("Cnt") || nbt.hasKey("Count")) {
-
-            validChannels.forEach(
-                    channel -> {
-                        if (requestedStack == null) {
-                            try {
-                                requestedStack = channel.createFromNBT(nbt);
-                            } catch (Throwable ignored) {
-                                ThELog.error(
-                                        "Failed to read stack from packet, {}",
-                                        channel.getClass().getSimpleName());
-                            }
-                        }
-                    });
+        if (nbt.hasKey(STACK_CHANNEL_KEY)) {
+            IStorageChannel<?> channel =
+                    nbt.getBoolean(STACK_CHANNEL_KEY)
+                            ? AEUtil.getStorageChannel(IEssentiaStorageChannel.class)
+                            : AEUtil.getStorageChannel(IItemStorageChannel.class);
+            try {
+                requestedStack = channel.createFromNBT(nbt);
+            } catch (Throwable e) {
+                ThELog.error(
+                        "Failed to read stack from packet, {}", channel.getClass().getSimpleName());
+            }
         }
     }
 
@@ -104,6 +99,7 @@ public class PacketUIAction implements IMessage {
         NBTTagCompound nbt = new NBTTagCompound();
         if (requestedStack != null) {
             requestedStack.writeToNBT(nbt);
+            nbt.setBoolean(STACK_CHANNEL_KEY, requestedStack instanceof IAEEssentiaStack);
         }
         if (this.index > -1) {
             nbt.setInteger("index", index);

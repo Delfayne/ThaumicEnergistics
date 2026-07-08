@@ -270,6 +270,15 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
     @Override
     public void detectAndSendChanges() {
         if (ForgeUtil.isServer()) {
+            // Mirrors AE2's own ContainerMEMonitorable: if the grid handed us back a different
+            // monitor instance than the one we're subscribed to (or none at all), don't try to
+            // hot-swap the subscription - just invalidate the container so canInteractWith()
+            // makes vanilla close the GUI. Reopening constructs a fresh container against
+            // whatever the current monitor is.
+            if (this.monitor != this.part.getInventory(this.channel)) {
+                this.setValidContainer(false);
+            }
+
             TileEntity terminal = part.getTile();
             if (terminal != null
                     && terminal.getWorld().getTileEntity(terminal.getPos()) != terminal) {
