@@ -1,3 +1,22 @@
+﻿# 2026/07/08 - 2.4.0
+
+## Features
+
+* Wireless Terminal
+* ME Level Emitter
+
+## Bugs
+
+* Security Terminal works now
+* Oredict works in Arcane Terminal recipes
+* Arcane Assembler now draws power like AE2 crafters
+* Possible fixes on some disconection issues around Arcane terminals
+
+## Misc
+
+* Applied the delta/full inv sent pattern across all terminals. Should be much snappier.
+* Upgrading RFG/Gradle again
+
 ﻿# 2023/04/30 - 2.2.7
 ## Features
 * Jars and Void Jars can now be filled with the Essentia Terminal
