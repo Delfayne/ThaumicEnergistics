@@ -41,6 +41,7 @@ public class ThELang implements IThELang {
     private final IThELangKey deviceOutOfRange;
     private final IThELangKey deviceLinked;
     private final IThELangKey deviceUnlinked;
+    private final IThELangKey storedEnergy;
     private final IThELangKey arcaneAssemblerIdle;
     private final IThELangKey arcaneAssemblerPrep;
     private final IThELangKey arcaneAssemblerBusy;
@@ -121,6 +122,7 @@ public class ThELang implements IThELang {
         this.deviceOutOfRange = new ThELangKey("tooltip.thaumicenergistics.device_out_of_range");
         this.deviceLinked = new ThELangKey("tooltip.thaumicenergistics.device_linked");
         this.deviceUnlinked = new ThELangKey("tooltip.thaumicenergistics.device_unlinked");
+        this.storedEnergy = new ThELangKey("tooltip.thaumicenergistics.stored_energy");
         this.arcaneAssemblerIdle =
                 new ThELangKey("tooltip.thaumicenergistics.arcane_assembler.idle");
         this.arcaneAssemblerPrep =
@@ -326,6 +328,11 @@ public class ThELang implements IThELang {
     @Override
     public IThELangKey deviceUnlinked() {
         return this.deviceUnlinked;
+    }
+
+    @Override
+    public IThELangKey storedEnergy() {
+        return this.storedEnergy;
     }
 
     @Override

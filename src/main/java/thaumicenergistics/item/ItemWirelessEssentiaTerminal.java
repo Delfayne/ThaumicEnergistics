@@ -3,11 +3,16 @@ package thaumicenergistics.item;
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
+import appeng.api.config.PowerUnits;
 import appeng.api.features.ILocatable;
 import appeng.api.features.IWirelessTermHandler;
 import appeng.api.implementations.items.IAEItemPowerStorage;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,6 +23,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,6 +37,7 @@ import thaumicenergistics.config.AESettings;
 import thaumicenergistics.init.ModGUIs;
 import thaumicenergistics.integration.appeng.util.ThEConfigManager;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -39,8 +46,9 @@ import javax.annotation.Nullable;
 /**
  * @author Alex811
  */
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles")
 public class ItemWirelessEssentiaTerminal extends ItemBase
-        implements IAEItemPowerStorage, IWirelessTermHandler, IThEModel {
+        implements IAEItemPowerStorage, IWirelessTermHandler, IThEModel, IBauble {
 
     public static final double MAX_POWER = 200_000.0;
     private static final String TAG_POWER = "internalCurrentPower";
@@ -108,11 +116,29 @@ public class ItemWirelessEssentiaTerminal extends ItemBase
     public void addInformation(
             ItemStack stack, @Nullable World world, List<String> lines, ITooltipFlag flag) {
         super.addInformation(stack, world, lines, flag);
+
+        double current = this.getAECurrentPower(stack);
+        double max = this.getAEMaxPower(stack);
+        double percent = max > 0 ? current / max : 0;
+        lines.add(
+                ThEApi.instance().lang().storedEnergy().getLocalizedKey()
+                        + ':'
+                        + MessageFormat.format(" {0,number,#} ", current)
+                        + I18n.format(PowerUnits.AE.unlocalizedName)
+                        + " - "
+                        + MessageFormat.format(" {0,number,#.##%} ", percent));
+
         boolean linked = !this.getEncryptionKey(stack).isEmpty();
         lines.add(
                 linked
                         ? ThEApi.instance().lang().deviceLinked().getLocalizedKey()
                         : ThEApi.instance().lang().deviceUnlinked().getLocalizedKey());
+    }
+
+    @Optional.Method(modid = "baubles")
+    @Override
+    public BaubleType getBaubleType(ItemStack itemStack) {
+        return BaubleType.TRINKET;
     }
 
     @Override
