@@ -10,7 +10,6 @@ import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AEPartLocation;
-import appeng.core.AELog;
 
 import com.google.common.collect.Lists;
 
@@ -50,6 +49,7 @@ import thaumicenergistics.container.ContainerBaseTerminal;
 import thaumicenergistics.container.DummyContainer;
 import thaumicenergistics.container.ICraftingContainer;
 import thaumicenergistics.container.IPartContainer;
+import thaumicenergistics.container.ThETerminalNetworkSync;
 import thaumicenergistics.container.crafting.ContainerCraftAmountBridge;
 import thaumicenergistics.container.slot.SlotArcaneMatrix;
 import thaumicenergistics.container.slot.SlotArcaneResult;
@@ -67,8 +67,6 @@ import thaumicenergistics.part.PartSharedTerminal;
 import thaumicenergistics.util.*;
 import thaumicenergistics.util.inventory.ThEInternalInventory;
 
-import java.io.IOException;
-import java.nio.BufferOverflowException;
 import java.util.Objects;
 
 /**
@@ -86,6 +84,8 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
     protected final IActionSource playerSource;
     private final IItemList<IAEItemStack> items =
             AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+    private final ThETerminalNetworkSync<IAEItemStack, PacketMEItemUpdate> networkSync =
+            new ThETerminalNetworkSync<>(PacketMEItemUpdate::new);
     protected IInventory craftingResult;
     protected SlotArcaneResult resultSlot;
     private boolean isValidContainer = true;
@@ -290,35 +290,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
             if (this.player instanceof IContainerListener)
                 this.sendVisInfo((IContainerListener) this.player);
 
-            if (!this.items.isEmpty()) {
-                try {
-                    final IItemList<IAEItemStack> monitorCache = this.monitor.getStorageList();
-
-                    final PacketMEItemUpdate packet = new PacketMEItemUpdate();
-
-                    for (final IAEItemStack is : this.items) {
-                        final IAEItemStack send = monitorCache.findPrecise(is);
-                        if (send == null) {
-                            is.setStackSize(0);
-                            packet.appendStack(is);
-                        } else {
-                            packet.appendStack(send);
-                        }
-                    }
-
-                    if (!packet.isEmpty()) {
-                        this.items.resetStatus();
-
-                        for (final Object c : this.listeners) {
-                            if (c instanceof EntityPlayer) {
-                                PacketHandler.sendToPlayer((EntityPlayerMP) c, packet);
-                            }
-                        }
-                    }
-                } catch (final IOException e) {
-                    AELog.debug(e);
-                }
-            }
+            this.networkSync.sendDelta(this.items, this.monitor, this.listeners);
 
             super.detectAndSendChanges();
         }
@@ -682,27 +654,8 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
     }
 
     protected void sendInventory(IContainerListener listener) {
-        if (ForgeUtil.isClient() || !(listener instanceof EntityPlayerMP) || this.monitor == null)
-            return;
-
-        try {
-            PacketMEItemUpdate packet = new PacketMEItemUpdate();
-            IItemList<IAEItemStack> storage = monitor.getStorageList();
-
-            for (IAEItemStack stack : storage) {
-                try {
-                    packet.appendStack(stack);
-                } catch (BufferOverflowException e) {
-                    PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
-
-                    packet = new PacketMEItemUpdate();
-                    packet.appendStack(stack);
-                }
-            }
-            PacketHandler.sendToPlayer((EntityPlayerMP) listener, packet);
-        } catch (IOException e) {
-            ThELog.error("sendInventory", e);
-        }
+        if (ForgeUtil.isClient() || this.monitor == null) return;
+        this.networkSync.sendFull(listener, this.monitor);
     }
 
     private InventoryCrafting getInvCrafting(IItemHandler handler, IRecipe recipe) {

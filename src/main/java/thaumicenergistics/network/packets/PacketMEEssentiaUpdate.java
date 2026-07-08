@@ -27,7 +27,7 @@ import java.util.zip.GZIPOutputStream;
 /**
  * @author BrockWS
  */
-public class PacketMEEssentiaUpdate implements IMessage {
+public class PacketMEEssentiaUpdate implements IMessage, IStackUpdatePacket<IAEEssentiaStack> {
 
     private static final int UNCOMPRESSED_PACKET_BYTE_LIMIT = 16 * 1024 * 1024;
     private static final int OPERATION_BYTE_LIMIT = 2 * 1024;
@@ -102,6 +102,7 @@ public class PacketMEEssentiaUpdate implements IMessage {
         }
     }
 
+    @Override
     public void appendStack(IAEEssentiaStack stack) throws IOException, BufferOverflowException {
         ByteBuf tmp = Unpooled.buffer(OPERATION_BYTE_LIMIT);
         stack.writeToPacket(tmp);
@@ -136,6 +137,7 @@ public class PacketMEEssentiaUpdate implements IMessage {
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return this.empty;
     }
