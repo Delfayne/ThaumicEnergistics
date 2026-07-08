@@ -440,6 +440,33 @@ public class ThEThaumcraft implements IThEIntegration {
                                                 ItemsTC.salisMundus)));
         ThEApi.instance()
                 .items()
+                .essentiaLevelEmitter()
+                .maybeItem()
+                .ifPresent(
+                        item ->
+                                ThaumcraftApi.addArcaneCraftingRecipe(
+                                        new ResourceLocation(
+                                                Reference.MOD_ID, "essentia_level_emitter"),
+                                        new ShapelessArcaneRecipe(
+                                                recipeGroup,
+                                                "ESSENTIABUSES@2",
+                                                15,
+                                                new AspectList(),
+                                                item,
+                                                AEApi.instance()
+                                                        .definitions()
+                                                        .parts()
+                                                        .levelEmitter()
+                                                        .maybeStack(1)
+                                                        .orElse(ItemStack.EMPTY),
+                                                ThEApi.instance()
+                                                        .items()
+                                                        .diffusionCore()
+                                                        .maybeStack(1)
+                                                        .orElse(ItemStack.EMPTY),
+                                                ItemsTC.salisMundus)));
+        ThEApi.instance()
+                .items()
                 .essentiaTerminal()
                 .maybeItem()
                 .ifPresent(

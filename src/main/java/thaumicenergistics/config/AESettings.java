@@ -21,7 +21,8 @@ public final class AESettings {
         ESSENTIA_TERMINAL,
         ESSENTIA_IMPORT_BUS,
         ESSENTIA_EXPORT_BUS,
-        ESSENTIA_STORAGE_BUS
+        ESSENTIA_STORAGE_BUS,
+        ESSENTIA_LEVEL_EMITTER
     }
 
     static {
@@ -41,6 +42,11 @@ public final class AESettings {
                 SUBJECT.ESSENTIA_STORAGE_BUS,
                 Settings.STORAGE_FILTER,
                 StorageFilter.EXTRACTABLE_ONLY);
+
+        addSetting(
+                SUBJECT.ESSENTIA_LEVEL_EMITTER,
+                Settings.REDSTONE_EMITTER,
+                RedstoneMode.HIGH_SIGNAL);
     }
 
     private static void addSetting(SUBJECT settingSubject, Settings setting, Enum<?> def) {

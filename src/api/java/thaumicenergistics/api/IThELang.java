@@ -40,6 +40,8 @@ public interface IThELang {
 
     IThELangKey itemEssentiaStorageBus();
 
+    IThELangKey itemEssentiaLevelEmitter();
+
     IThELangKey itemEssentiaTerminal();
 
     IThELangKey itemArcaneTerminal();
@@ -75,6 +77,8 @@ public interface IThELang {
     IThELangKey guiEssentiaExportBus();
 
     IThELangKey guiEssentiaStorageBus();
+
+    IThELangKey guiEssentiaLevelEmitter();
 
     IThELangKey guiEssentiaTerminal();
 

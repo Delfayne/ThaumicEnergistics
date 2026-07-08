@@ -58,6 +58,7 @@ public class ThEItems implements IThEItems {
     private final IItemDefinition itemEssentiaImportBus;
     private final IItemDefinition itemEssentiaExportBus;
     private final IItemDefinition itemEssentiaStorageBus;
+    private final IItemDefinition itemEssentiaLevelEmitter;
     private final IItemDefinition itemEssentiaTerminal;
     private final IItemDefinition itemArcaneTerminal;
     private final IItemDefinition itemArcaneInscriber;
@@ -84,6 +85,8 @@ public class ThEItems implements IThEItems {
                 ThEItems.createItem(new ItemEssentiaExportBus("essentia_export"));
         this.itemEssentiaStorageBus =
                 ThEItems.createItem(new ItemEssentiaStorageBus("essentia_storage"));
+        this.itemEssentiaLevelEmitter =
+                ThEItems.createItem(new ItemEssentiaLevelEmitter("essentia_level_emitter"));
         this.itemEssentiaTerminal =
                 ThEItems.createItem(new ItemEssentiaTerminal("essentia_terminal"));
         this.itemArcaneTerminal = ThEItems.createItem(new ItemArcaneTerminal("arcane_terminal"));
@@ -144,6 +147,11 @@ public class ThEItems implements IThEItems {
     @Override
     public IItemDefinition essentiaStorageBus() {
         return this.itemEssentiaStorageBus;
+    }
+
+    @Override
+    public IItemDefinition essentiaLevelEmitter() {
+        return this.itemEssentiaLevelEmitter;
     }
 
     @Override
