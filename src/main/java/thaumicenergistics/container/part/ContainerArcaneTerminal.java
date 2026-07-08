@@ -378,7 +378,6 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
             ItemStack invExtract = ItemHandlerUtil.extract(playerInv, stack, false);
             if (!invExtract.isEmpty()) crafting.insertItem(slot, invExtract, false);
         }
-        ThELog.debug("Failed to find valid item");
     }
 
     @Override
