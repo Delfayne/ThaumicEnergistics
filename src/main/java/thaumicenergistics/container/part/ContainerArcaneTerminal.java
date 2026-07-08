@@ -54,6 +54,7 @@ import thaumicenergistics.container.slot.SlotArcaneMatrix;
 import thaumicenergistics.container.slot.SlotArcaneResult;
 import thaumicenergistics.container.slot.SlotUpgrade;
 import thaumicenergistics.init.ModGUIs;
+import thaumicenergistics.integration.appeng.util.ThEActionSource;
 import thaumicenergistics.integration.thaumcraft.TCCraftingManager;
 import thaumicenergistics.network.PacketHandler;
 import thaumicenergistics.network.packets.PacketInvHeldUpdate;
@@ -81,6 +82,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
     protected PartSharedTerminal part;
     protected IItemStorageChannel channel;
     protected IMEMonitor<IAEItemStack> monitor;
+    protected final IActionSource playerSource;
     private final IItemList<IAEItemStack> items =
             AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
     protected IInventory craftingResult;
@@ -90,6 +92,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
     public ContainerArcaneTerminal(EntityPlayer player, PartSharedTerminal part) {
         super(player, part);
         this.part = part;
+        this.playerSource = new ThEActionSource(player);
 
         if (ForgeUtil.isServer()) {
             this.channel = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class);
@@ -124,7 +127,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
             if (player.inventory.getItemStack().isEmpty() && requestedStack != null) { // PICKUP
                 IAEItemStack stack = requestedStack.copy();
                 stack.setStackSize(stack.getDefinition().getMaxStackSize());
-                stack = AEUtil.inventoryExtract(stack, this.monitor, this.part.source);
+                stack = AEUtil.inventoryExtract(stack, this.monitor, this.playerSource);
 
                 if (stack != null) player.inventory.setItemStack(stack.createItemStack());
                 else player.inventory.setItemStack(ItemStack.EMPTY);
@@ -132,7 +135,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
                         player, new PacketInvHeldUpdate(player.inventory.getItemStack()));
             } else if (!player.inventory.getItemStack().isEmpty()) { // Set down
                 IAEItemStack stack = this.channel.createStack(player.inventory.getItemStack());
-                stack = AEUtil.inventoryInsert(stack, this.monitor, this.part.source);
+                stack = AEUtil.inventoryInsert(stack, this.monitor, this.playerSource);
 
                 if (stack != null) player.inventory.setItemStack(stack.createItemStack());
                 else player.inventory.setItemStack(ItemStack.EMPTY);
@@ -148,14 +151,14 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
                         AEUtil.inventoryExtract(
                                 stack,
                                 this.monitor,
-                                this.part.source,
+                                this.playerSource,
                                 Actionable.SIMULATE); // Double check how much we have available
 
                 if (stack != null) {
                     long toPull = (long) Math.ceil((double) stack.getStackSize() / 2);
                     stack =
                             AEUtil.inventoryExtract(
-                                    stack.setStackSize(toPull), this.monitor, this.part.source);
+                                    stack.setStackSize(toPull), this.monitor, this.playerSource);
                 }
 
                 if (stack != null) player.inventory.setItemStack(stack.createItemStack());
@@ -165,7 +168,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
             } else if (!player.inventory.getItemStack().isEmpty()) { // Drop single
                 IAEItemStack stack = this.channel.createStack(player.inventory.getItemStack());
                 Objects.requireNonNull(stack).setStackSize(1);
-                stack = AEUtil.inventoryInsert(stack, this.monitor, this.part.source);
+                stack = AEUtil.inventoryInsert(stack, this.monitor, this.playerSource);
                 if (stack == null) {
                     ItemStack stack2 = player.inventory.getItemStack();
                     stack2.setCount(stack2.getCount() - 1);
@@ -184,7 +187,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
                 return;
             IAEItemStack stack = requestedStack.copy();
             stack.setStackSize(1);
-            stack = AEUtil.inventoryExtract(stack, this.monitor, this.part.source);
+            stack = AEUtil.inventoryExtract(stack, this.monitor, this.playerSource);
             if (stack != null) {
                 if (!held.isEmpty()) held.grow(1);
                 else held = stack.createItemStack();
@@ -198,7 +201,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
             IAEItemStack is = this.channel.createStack(held);
             Objects.requireNonNull(is);
             is.setStackSize(1);
-            is = AEUtil.inventoryInsert(is, this.monitor, this.part.source, Actionable.MODULATE);
+            is = AEUtil.inventoryInsert(is, this.monitor, this.playerSource, Actionable.MODULATE);
             // Failed to insert one item
             if (is != null) {
                 return;
@@ -221,7 +224,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
 
             is = ForgeUtil.addStackToPlayerInventory(player, is, true);
             if (!is.isEmpty()) stack.setStackSize(stack.getStackSize() - is.getCount());
-            stack = AEUtil.inventoryExtract(stack, this.monitor, this.part.source);
+            stack = AEUtil.inventoryExtract(stack, this.monitor, this.playerSource);
             if (stack != null)
                 ForgeUtil.addStackToPlayerInventory(player, stack.createItemStack(), false);
         } else if (packet.action == ActionType.AUTO_CRAFT) {
@@ -243,7 +246,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
     }
 
     protected void clearCrafting() {
-        AEUtil.clearIntoMEInventory(this.getInventory("crafting"), this.monitor, this.part.source);
+        AEUtil.clearIntoMEInventory(this.getInventory("crafting"), this.monitor, this.playerSource);
     }
 
     @Override
@@ -256,7 +259,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
                     AEUtil.inventoryInsert(
                             this.channel.createStack(slot.getStack()),
                             this.monitor,
-                            this.part.source,
+                            this.playerSource,
                             Actionable.MODULATE);
             slot.putStack(remaining == null ? ItemStack.EMPTY : remaining.createItemStack());
             this.detectAndSendChanges();
@@ -327,7 +330,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
 
         boolean clearSuccess =
                 AEUtil.clearIntoMEInventory(
-                        this.getInventory("crafting"), this.monitor, this.part.source);
+                        this.getInventory("crafting"), this.monitor, this.playerSource);
         this.onMatrixChanged();
         if (!clearSuccess) return;
 
@@ -365,7 +368,7 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
                     continue;
                 }
                 IAEItemStack aeExtract =
-                        AEUtil.inventoryExtract(aeStack, this.monitor, this.part.source);
+                        AEUtil.inventoryExtract(aeStack, this.monitor, this.playerSource);
                 if (aeExtract != null && aeExtract.getStackSize() > 0)
                     crafting.insertItem(slot, aeExtract.createItemStack(), false);
 
@@ -666,12 +669,12 @@ public class ContainerArcaneTerminal extends ContainerBaseTerminal
         // TODO: Fuzzy selection
         IAEItemStack aeStack =
                 this.monitor.extractItems(
-                        this.channel.createStack(stack), Actionable.SIMULATE, this.part.source);
+                        this.channel.createStack(stack), Actionable.SIMULATE, this.playerSource);
         if (aeStack != null
                 && aeStack.getStackSize()
                         == stack.getCount()) { // Make sure we actually have enough to pull
             return this.monitor
-                    .extractItems(aeStack, Actionable.MODULATE, this.part.source)
+                    .extractItems(aeStack, Actionable.MODULATE, this.playerSource)
                     .createItemStack();
         }
         return ItemStack.EMPTY;
