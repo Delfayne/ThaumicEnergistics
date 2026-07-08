@@ -24,6 +24,7 @@ public class ThELang implements IThELang {
     private final IThELangKey itemEssentiaImportBus;
     private final IThELangKey itemEssentiaExportBus;
     private final IThELangKey itemEssentiaStorageBus;
+    private final IThELangKey itemEssentiaLevelEmitter;
     private final IThELangKey itemEssentiaTerminal;
     private final IThELangKey itemArcaneTerminal;
     private final IThELangKey itemArcaneChargingUpgrade;
@@ -42,6 +43,7 @@ public class ThELang implements IThELang {
     private final IThELangKey guiEssentiaImportBus;
     private final IThELangKey guiEssentiaExportBus;
     private final IThELangKey guiEssentiaStorageBus;
+    private final IThELangKey guiEssentiaLevelEmitter;
     private final IThELangKey guiEssentiaTerminal;
     private final IThELangKey guiArcaneTerminal;
     private final IThELangKey guiArcaneInscriber;
@@ -86,6 +88,8 @@ public class ThELang implements IThELang {
         this.itemEssentiaExportBus = new ThELangKey("item.thaumicenergistics.essentia_export.name");
         this.itemEssentiaStorageBus =
                 new ThELangKey("item.thaumicenergistics.essentia_storage.name");
+        this.itemEssentiaLevelEmitter =
+                new ThELangKey("item.thaumicenergistics.essentia_level_emitter.name");
         this.itemEssentiaTerminal =
                 new ThELangKey("item.thaumicenergistics.essentia_terminal.name");
         this.itemArcaneTerminal = new ThELangKey("item.thaumicenergistics.arcane_terminal.name");
@@ -117,6 +121,8 @@ public class ThELang implements IThELang {
         this.guiEssentiaImportBus = new ThELangKey("gui.thaumicenergistics.essentia_import_bus");
         this.guiEssentiaExportBus = new ThELangKey("gui.thaumicenergistics.essentia_export_bus");
         this.guiEssentiaStorageBus = new ThELangKey("gui.thaumicenergistics.essentia_storage_bus");
+        this.guiEssentiaLevelEmitter =
+                new ThELangKey("gui.thaumicenergistics.essentia_level_emitter");
         this.guiEssentiaTerminal = new ThELangKey("gui.thaumicenergistics.essentia_terminal");
         this.guiArcaneTerminal = new ThELangKey("gui.thaumicenergistics.arcane_terminal");
         this.guiArcaneInscriber = new ThELangKey("gui.thaumicenergistics.arcane_inscriber");
@@ -222,6 +228,11 @@ public class ThELang implements IThELang {
     }
 
     @Override
+    public IThELangKey itemEssentiaLevelEmitter() {
+        return this.itemEssentiaLevelEmitter;
+    }
+
+    @Override
     public IThELangKey itemEssentiaTerminal() {
         return this.itemEssentiaTerminal;
     }
@@ -309,6 +320,11 @@ public class ThELang implements IThELang {
     @Override
     public IThELangKey guiEssentiaStorageBus() {
         return this.guiEssentiaStorageBus;
+    }
+
+    @Override
+    public IThELangKey guiEssentiaLevelEmitter() {
+        return this.guiEssentiaLevelEmitter;
     }
 
     @Override
