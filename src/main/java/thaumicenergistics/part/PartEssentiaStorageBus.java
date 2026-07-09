@@ -301,7 +301,6 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
 
     @Override
     public List<IMEInventoryHandler> getCellArray(IStorageChannel<?> channel) {
-        // ThELog.info("getCellArray");
         if (channel != this.getChannel() || this.getHandler() == null)
             return Collections.emptyList();
         // We need to "open" the connected IAspectContainer as a "cell" (IMEInventoryHandler)
@@ -321,6 +320,13 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
         else if (this.handler instanceof EssentiaInterfaceHandler)
             ((EssentiaInterfaceHandler) this.handler).setPriority(i);
         this.host.markForSave();
+        // A priority change alone doesn't restructure our own handler, but AE2's network only
+        // sorts cell providers into priority buckets when it rescans getCellArray() (on a
+        // MENetworkCellArrayUpdate) -- without this, the network keeps using whatever ordering it
+        // captured at the last structural update, ignoring later priority changes entirely.
+        // Mirrors AE2's own PartStorageBus#setPriority(), which calls resetCache(true) for the
+        // same reason.
+        this.triggerUpdate();
     }
 
     @Override
