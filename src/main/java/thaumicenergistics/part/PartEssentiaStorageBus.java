@@ -94,18 +94,24 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
     @Override
     public void settingChanged(Settings setting) {
         super.settingChanged(setting);
-        // ACCESS/STORAGE_FILTER only apply to the direct-container path (EssentiaContainerAdapter)
-        // for now; the subnetworking path (EssentiaInterfaceHandler) is fixed read-only until
-        // insertion is added.
-        if (!(this.handler instanceof EssentiaContainerAdapter)) return;
-        EssentiaContainerAdapter handler = (EssentiaContainerAdapter) this.handler;
-        if (setting == Settings.ACCESS)
-            handler.setBaseAccess(
-                    (AccessRestriction) this.getConfigManager().getSetting(Settings.ACCESS));
-        else if (setting == Settings.STORAGE_FILTER)
-            handler.setReportInaccessible(
-                    (StorageFilter) this.getConfigManager().getSetting(Settings.STORAGE_FILTER));
-        else return;
+        if (setting == Settings.ACCESS) {
+            AccessRestriction access =
+                    (AccessRestriction) this.getConfigManager().getSetting(Settings.ACCESS);
+            if (this.handler instanceof EssentiaContainerAdapter)
+                ((EssentiaContainerAdapter) this.handler).setBaseAccess(access);
+            else if (this.handler instanceof EssentiaInterfaceHandler)
+                ((EssentiaInterfaceHandler) this.handler).setAccess(access);
+            else return;
+        } else if (setting == Settings.STORAGE_FILTER) {
+            // STORAGE_FILTER (report-inaccessible) only applies to the direct-container path --
+            // the bridge always reports what the remote monitor itself reports, there's no
+            // separate "hidden but present" concept for it.
+            if (!(this.handler instanceof EssentiaContainerAdapter)) return;
+            ((EssentiaContainerAdapter) this.handler)
+                    .setReportInaccessible(
+                            (StorageFilter)
+                                    this.getConfigManager().getSetting(Settings.STORAGE_FILTER));
+        } else return;
         this.triggerUpdate();
     }
 
@@ -379,7 +385,9 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
                             this.source,
                             this.config,
                             !this.hasInverterCard(),
-                            this.priority);
+                            this.priority,
+                            (AccessRestriction)
+                                    this.getConfigManager().getSetting(Settings.ACCESS));
             this.handler = ifaceHandler;
             this.registeredMonitor = monitor;
             // Event-driven rather than polled: the remote monitor calls our postChange() whenever

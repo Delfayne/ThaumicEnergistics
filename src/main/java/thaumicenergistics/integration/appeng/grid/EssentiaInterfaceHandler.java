@@ -34,6 +34,7 @@ public class EssentiaInterfaceHandler implements IMEInventoryHandler<IAEEssentia
     private final EssentiaFilter config;
     private IncludeExclude whitelistMode;
     private int priority;
+    private AccessRestriction access;
 
     public EssentiaInterfaceHandler(
             IEssentiaStorageMonitorable target,
@@ -41,13 +42,19 @@ public class EssentiaInterfaceHandler implements IMEInventoryHandler<IAEEssentia
             IActionSource requesterSource,
             EssentiaFilter config,
             boolean whitelist,
-            int priority) {
+            int priority,
+            AccessRestriction access) {
         this.target = target;
         this.requesterGrid = requesterGrid;
         this.requesterSource = requesterSource;
         this.config = config;
         this.setWhitelist(whitelist);
         this.priority = priority;
+        this.access = access;
+    }
+
+    public void setAccess(AccessRestriction access) {
+        this.access = access;
     }
 
     public void setWhitelist(boolean whitelist) {
@@ -73,13 +80,24 @@ public class EssentiaInterfaceHandler implements IMEInventoryHandler<IAEEssentia
     @Override
     public IAEEssentiaStack injectItems(
             IAEEssentiaStack input, Actionable type, IActionSource src) {
-        return input; // insertion is a later feature slice
+        if (input == null
+                || !this.access.hasPermission(AccessRestriction.WRITE)
+                || !this.passesFilter(input.getAspect())) return input;
+        IMEMonitor<IAEEssentiaStack> monitor = this.monitor();
+        if (monitor == null) return input;
+        // Deliberately no manual notify-own-network call here, matching extractItems() below: the
+        // remote monitor's own postAlterationOfStoredItems (triggered inside whatever cell
+        // provider backs it, e.g. EssentiaContainerAdapter) already reaches our own network
+        // through the listener registration set up in PartEssentiaStorageBus#getHandler().
+        return monitor.injectItems(input, type, src);
     }
 
     @Override
     public IAEEssentiaStack extractItems(
             IAEEssentiaStack request, Actionable mode, IActionSource src) {
-        if (request == null || !this.passesFilter(request.getAspect())) return null;
+        if (request == null
+                || !this.access.hasPermission(AccessRestriction.READ)
+                || !this.passesFilter(request.getAspect())) return null;
         IMEMonitor<IAEEssentiaStack> monitor = this.monitor();
         if (monitor == null) return null;
         // Deliberately no manual notify-own-network call here: the owning PartEssentiaStorageBus
@@ -102,7 +120,7 @@ public class EssentiaInterfaceHandler implements IMEInventoryHandler<IAEEssentia
 
     @Override
     public AccessRestriction getAccess() {
-        return AccessRestriction.READ; // extract-only until insertion is added
+        return this.access;
     }
 
     @Override
@@ -112,7 +130,10 @@ public class EssentiaInterfaceHandler implements IMEInventoryHandler<IAEEssentia
 
     @Override
     public boolean canAccept(IAEEssentiaStack input) {
-        return false; // insertion is a later feature slice
+        if (input == null || !this.access.hasPermission(AccessRestriction.WRITE)) return false;
+        if (!this.passesFilter(input.getAspect())) return false;
+        IMEMonitor<IAEEssentiaStack> monitor = this.monitor();
+        return monitor != null && monitor.canAccept(input);
     }
 
     @Override
