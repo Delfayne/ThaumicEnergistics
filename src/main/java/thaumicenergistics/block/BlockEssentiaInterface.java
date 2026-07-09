@@ -61,6 +61,7 @@ public class BlockEssentiaInterface extends BlockNetwork implements IThEModel {
             }
             return true;
         }
+
         return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
     }
 
