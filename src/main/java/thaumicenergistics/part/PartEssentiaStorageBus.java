@@ -12,6 +12,7 @@ import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IBaseMonitor;
 import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.networking.ticking.ITickManager;
 import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.parts.IPartCollisionHelper;
@@ -119,6 +120,20 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
     }
 
     @Override
+    protected void filterChanged() {
+        super.filterChanged();
+        // An aspect being added to, removed from, or cleared from the filter changes what this
+        // cell contributes to the network (e.g. EssentiaInterfaceHandler#passesFilter() gates
+        // getAvailableItems()), the same class of change ACCESS/STORAGE_FILTER settings already
+        // force a refresh for above. Without this, the filter logic itself is still correctly
+        // enforced live on every extractItems()/getAvailableItems() call, but the network's own
+        // cached/displayed list (what a terminal shows) never gets told to recompute -- it was
+        // only ever refreshed by coincidence, whenever some unrelated event happened to post a
+        // MENetworkCellArrayUpdate around the same time.
+        this.triggerUpdate();
+    }
+
+    @Override
     public void addToWorld() {
         super.addToWorld();
         this.lastConnectedTE = this.getConnectedTE();
@@ -136,11 +151,33 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
     @Nonnull
     @Override
     public TickingRequest getTickingRequest(@Nonnull IGridNode node) {
+        // This isSleeping value is only ever consulted once, at the moment AE2's TickManagerCache
+        // first registers this node -- it is NOT re-evaluated afterwards. If the connected
+        // container isn't resolvable yet at that exact moment (e.g. grid still booting), we'd be
+        // marked permanently asleep and never polled again unless something explicitly calls
+        // ITickManager#wakeDevice(). See setTickingAwake(), called from getHandler()/wipeHandler(),
+        // for the ongoing half of this (mirroring AE2's own PartSharedItemBus#updateState()).
         return new TickingRequest(
                 ThEApi.instance().config().tickTimeEssentiaStorageBusMin(),
                 ThEApi.instance().config().tickTimeEssentiaStorageBusMax(),
-                this.getHandler() == null,
+                !this.needsTicking(),
                 false);
+    }
+
+    /**
+     * True if we should be actively ticking: either polling an EssentiaContainerAdapter for
+     * external changes, or retrying a subnetworking connection that hasn't succeeded yet. The
+     * latter matters because, unlike a jar (a plain tile, connectable the instant it exists), an
+     * Essentia Interface is itself a grid node -- freshly placed, its OWN grid needs at least a
+     * tick to boot before IEssentiaStorageMonitorable#getEssentiaInventory() will stop refusing us.
+     * onNeighborChanged fires synchronously with placement, before that boot completes, so the
+     * first getHandler() attempt is expected to fail; without retrying, we'd be stuck permanently
+     * disconnected since nothing on the remote grid notifies OUR grid when it finishes booting.
+     */
+    private boolean needsTicking() {
+        IMEInventoryHandler<IAEEssentiaStack> handler = this.getHandler();
+        if (handler instanceof EssentiaContainerAdapter) return true;
+        return handler == null && this.getConnectedTE() != null;
     }
 
     @Override
@@ -166,6 +203,12 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
         // polling/diffing a whole other network's storage every tick would be expensive and is
         // exactly the kind of thing that caused the lag bug this session started by fixing.
         IMEInventoryHandler<IAEEssentiaStack> handler = this.getHandler();
+        if (handler == null && this.getConnectedTE() != null) {
+            // Something's physically connected (e.g. an Essentia Interface whose grid hasn't
+            // finished booting yet) but we couldn't build a handler for it -- keep retrying at a
+            // backed-off rate instead of sleeping with nothing left to wake us back up.
+            return TickRateModulation.SLOWER;
+        }
         if (!(handler instanceof EssentiaContainerAdapter)) return TickRateModulation.SLEEP;
 
         List<IAEEssentiaStack> changes =
@@ -204,7 +247,17 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
 
     @Override
     public void onListUpdate() {
-        // Ignored
+        // Reached only via the subnetworking path (EssentiaInterfaceHandler), when the remote
+        // network's own NetworkMonitor#forceUpdate() fires after a MENetworkCellArrayUpdate on
+        // THAT grid (e.g. a jar backing it was broken) -- AE2 calls onListUpdate() rather than
+        // postChange() in that case specifically because it has no discrete delta to report, only
+        // "the storage structure changed, re-sync". We can't diff the remote monitor ourselves
+        // without polling its (potentially huge) full contents every tick -- exactly what this
+        // session's original lag fix removed -- so instead treat it the same way AE2 treats a
+        // genuine structural change on our OWN network: post our own MENetworkCellArrayUpdate,
+        // which forces our own monitor to recompute and, in turn, calls onListUpdate() on OUR OWN
+        // listeners (e.g. a subnet terminal), cascading the re-sync the same way.
+        this.triggerUpdate();
     }
 
     @Override
@@ -327,6 +380,7 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
             // its contents change, instead of us diffing its (potentially huge) contents every
             // tick -- see tickingRequest().
             monitor.addListener(this, ifaceHandler);
+            this.setTickingAwake(false);
             this.triggerUpdate();
             return this.handler;
         }
@@ -347,6 +401,11 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
             // mirror that here so a handler built from a getCellArray() call outside an
             // active cellUpdate() scan (e.g. a node added while inactive) still registers.
             this.triggerUpdate();
+            // TickingRequest#isSleeping is only consulted once, at initial node registration --
+            // if this handler is being (re)built afterwards (e.g. a jar placed against an already
+            // -registered bus), the tick manager may still think we're asleep from that first
+            // call. Explicitly wake it, mirroring AE2's own PartSharedItemBus#updateState().
+            this.setTickingAwake(true);
             return this.handler;
         }
 
@@ -360,6 +419,27 @@ public class PartEssentiaStorageBus extends PartSharedEssentiaBus
             this.registeredMonitor = null;
         }
         this.handler = null;
+        // Keep ticking if something is still physically connected -- e.g. an Essentia Interface
+        // was just placed but its grid hasn't booted yet, so the very next getHandler() attempt
+        // is expected to fail; tickingRequest()'s retry branch needs to keep running until it
+        // eventually succeeds. Only truly sleep once nothing is connected at all.
+        this.setTickingAwake(this.getConnectedTE() != null);
+    }
+
+    /**
+     * Explicitly wakes/sleeps this node's ticking via ITickManager, since TickingRequest#isSleeping
+     * is only read once at initial registration and never re-polled afterwards -- AE2's own
+     * PartSharedItemBus#updateState() does the same thing whenever its handler validity changes.
+     */
+    private void setTickingAwake(boolean awake) {
+        if (this.gridNode == null) return;
+        IGrid grid = this.gridNode.getGrid();
+        //noinspection ConstantConditions
+        if (grid == null) return;
+        ITickManager tickManager = grid.getCache(ITickManager.class);
+        if (tickManager == null) return;
+        if (awake) tickManager.wakeDevice(this.gridNode);
+        else tickManager.sleepDevice(this.gridNode);
     }
 
     @Override
