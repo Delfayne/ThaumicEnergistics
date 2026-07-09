@@ -3,6 +3,7 @@ itemGroup.ThaumicEnergistics=Thaumic Energistics
 
 # Блоки
 tile.thaumicenergistics.infusion_provider.name=Поставщик наполнения эссенции
+tile.thaumicenergistics.essentia_interface.name=Интерфейс эссенции
 
 # Предметы
 item.thaumicenergistics.diffusion_core.name=Ядро рассеивания

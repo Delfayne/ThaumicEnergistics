@@ -5,7 +5,10 @@ import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.config.IncludeExclude;
 import appeng.api.config.StorageFilter;
+import appeng.api.networking.IGrid;
+import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionSource;
+import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.data.IItemList;
@@ -43,6 +46,10 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
     private boolean hasWriteAccess;
     private boolean reportInaccessible;
     private int priority;
+    // Deliberately the NODE, not its IGrid: IGridNode#getGrid() "can change at a moment's notice"
+    // (its own javadoc) as the network paths/boots/restructures, so caching the IGrid itself would
+    // go stale the moment the grid gets rebuilt -- re-resolve it fresh on every notify instead.
+    private final IGridNode ownerNode;
 
     // Snapshot of the container's contents as of our own last committed inject/extract (or
     // construction). Only ever compared against in pollForExternalChanges() -- kept in sync with
@@ -57,13 +64,15 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
             boolean whitelist,
             AccessRestriction access,
             StorageFilter filter,
-            int priority) {
+            int priority,
+            IGridNode ownerNode) {
         this.container = container;
         this.config = config;
         this.setWhitelist(whitelist);
         this.setBaseAccess(access);
         this.setReportInaccessible(filter);
         this.priority = priority;
+        this.ownerNode = ownerNode;
         this.lastKnownAspects = container.getAspects().copy();
     }
 
@@ -91,6 +100,11 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
                     input.getAspect(), (int) input.getStackSize() - notAdded);
         } else {
             this.resyncSnapshot(); // MODULATE actually committed a change
+            long added = input.getStackSize() - notAdded;
+            if (added > 0) {
+                this.notifyOwnerNetwork(
+                        AEUtil.getAEStackFromAspect(input.getAspect(), (int) added), src);
+            }
         }
         // Didn't add it all
         if (notAdded > 0) {
@@ -117,8 +131,29 @@ public class EssentiaContainerAdapter implements IMEInventoryHandler<IAEEssentia
         boolean worked = this.container.takeFromContainer(aspect, max);
         if (!worked) return null;
         this.resyncSnapshot(); // MODULATE actually committed a change
+        this.notifyOwnerNetwork(AEUtil.getAEStackFromAspect(aspect, -max), src);
 
         return request.setStackSize(max);
+    }
+
+    /**
+     * A successful inject/extract here doesn't automatically notify our OWN network's listeners
+     * (e.g. an open terminal on this same network) -- that only happens for the specific terminal
+     * that initiated the request, not for the network's cell providers in general. AE2's own
+     * ItemHandlerAdapter has the identical pattern (explicitly calling postDifference() after every
+     * successful MODULATE); without it, this network's own displayed total only catches up whenever
+     * some unrelated event happens to refresh it.
+     */
+    private void notifyOwnerNetwork(IAEEssentiaStack delta, IActionSource src) {
+        if (this.ownerNode == null) return;
+        IGrid ownerGrid = this.ownerNode.getGrid();
+        //noinspection ConstantConditions
+        if (ownerGrid == null) return;
+        IStorageGrid storageGrid = ownerGrid.getCache(IStorageGrid.class);
+        if (storageGrid != null) {
+            storageGrid.postAlterationOfStoredItems(
+                    this.getChannel(), Collections.singletonList(delta), src);
+        }
     }
 
     @Override

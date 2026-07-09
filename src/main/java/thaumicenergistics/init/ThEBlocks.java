@@ -17,11 +17,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import thaumicenergistics.api.IThEBlocks;
 import thaumicenergistics.block.BlockArcaneAssembler;
 import thaumicenergistics.block.BlockBase;
+import thaumicenergistics.block.BlockEssentiaInterface;
 import thaumicenergistics.block.BlockInfusionProvider;
 import thaumicenergistics.client.render.IThEModel;
 import thaumicenergistics.definitions.ThEBlockDefinition;
 import thaumicenergistics.definitions.ThETileDefinition;
 import thaumicenergistics.tile.TileArcaneAssembler;
+import thaumicenergistics.tile.TileEssentiaInterface;
 import thaumicenergistics.tile.TileInfusionProvider;
 
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class ThEBlocks implements IThEBlocks {
 
     private final ITileDefinition infusionProvider;
     private final ITileDefinition arcaneAssembler;
+    private final ITileDefinition essentiaInterface;
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -87,6 +90,10 @@ public class ThEBlocks implements IThEBlocks {
         this.arcaneAssembler =
                 ThEBlocks.createTile(
                         new BlockArcaneAssembler("arcane_assembler"), TileArcaneAssembler.class);
+        this.essentiaInterface =
+                ThEBlocks.createTile(
+                        new BlockEssentiaInterface("essentia_interface"),
+                        TileEssentiaInterface.class);
     }
 
     @Override
@@ -97,5 +104,10 @@ public class ThEBlocks implements IThEBlocks {
     @Override
     public ITileDefinition arcaneAssembler() {
         return this.arcaneAssembler;
+    }
+
+    @Override
+    public ITileDefinition essentiaInterface() {
+        return this.essentiaInterface;
     }
 }

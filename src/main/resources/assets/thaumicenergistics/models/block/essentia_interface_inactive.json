@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "thaumicenergistics:block/essentia_interface_inactive"
+  }
+}

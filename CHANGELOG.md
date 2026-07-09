@@ -7,6 +7,7 @@
 
 ## Bugs
 
+a
 * Security Terminal works now
 * Oredict works in Arcane Terminal recipes
 * Arcane Assembler now draws power like AE2 crafters

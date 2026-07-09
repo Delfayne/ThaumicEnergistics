@@ -4,6 +4,7 @@ itemGroup.ThaumicEnergistics=神秘能源
 # Blocks
 tile.thaumicenergistics.infusion_provider.name=源质供应器
 tile.thaumicenergistics.arcane_assembler.name=奥术装配器
+tile.thaumicenergistics.essentia_interface.name=源质接口
 
 # Items
 item.thaumicenergistics.diffusion_core.name=扩散核心

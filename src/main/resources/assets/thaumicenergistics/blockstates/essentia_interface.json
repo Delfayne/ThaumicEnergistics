@@ -1,0 +1,30 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "thaumicenergistics:essentia_interface"
+  },
+  "variants": {
+    "normal": [
+      {}
+    ],
+    "inventory": [
+      {}
+    ],
+    "active=false,powered=false": [
+      {}
+    ],
+    "active=true,powered=false": [
+      {}
+    ],
+    "active=false,powered=true": [
+      {
+        "model": "thaumicenergistics:essentia_interface_inactive"
+      }
+    ],
+    "active=true,powered=true": [
+      {
+        "model": "thaumicenergistics:essentia_interface_active"
+      }
+    ]
+  }
+}

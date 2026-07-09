@@ -4,6 +4,7 @@ itemGroup.ThaumicEnergistics=Thaumic Energistics
 # Blocks
 tile.thaumicenergistics.infusion_provider.name=Essentia Infusion Provider
 tile.thaumicenergistics.arcane_assembler.name=Arcane Assembler
+tile.thaumicenergistics.essentia_interface.name=Essentia Interface
 
 # Items
 item.thaumicenergistics.diffusion_core.name=Diffusion Core
