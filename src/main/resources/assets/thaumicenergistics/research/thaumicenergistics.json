@@ -344,6 +344,44 @@
       ]
     },
     {
+      "key": "ESSENTIAINTERFACE",
+      "name": "research.essentiainterface.title",
+      "icons": [
+        "thaumicenergistics:essentia_interface"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        4,
+        -4
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "INFUSIONPROVIDER",
+        "ESSENTIABUSES"
+      ],
+      "stages": [
+        {
+          "text": "research.essentiainterface.stage.1",
+          "required_knowledge": [
+            "THEORY;THAUMICENERGISTICS;3"
+          ],
+          "required_research": [
+            "INFUSIONPROVIDER",
+            "ESSENTIABUSES"
+          ]
+        },
+        {
+          "text": "research.essentiainterface.stage.2",
+          "recipes": [
+            "thaumicenergistics:essentia_interface"
+          ],
+          "warp": 3
+        }
+      ]
+    },
+    {
       "key": "ARCANETERMINAL",
       "name": "research.arcaneterminal.title",
       "icons": [

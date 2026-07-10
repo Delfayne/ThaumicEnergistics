@@ -10,7 +10,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -232,9 +232,8 @@ public class ThaumicEnergistics {
                 event.setCanceled(true);
             } else if (aspects != null && aspects.size() > 1) {
                 player.sendMessage(
-                        new TextComponentString(
-                                "[ThE-DEBUG] That item holds multiple aspects -- use a"
-                                        + " single-aspect item to configure this side."));
+                        new TextComponentTranslation(
+                                "tooltip.thaumicenergistics.essentia_interface.multi_aspect_item"));
                 event.setCancellationResult(EnumActionResult.SUCCESS);
                 event.setCanceled(true);
             }

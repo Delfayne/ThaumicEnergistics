@@ -52,6 +52,10 @@ tooltip.thaumicenergistics.arcane_assembler.busy=Status: busy
 tooltip.thaumicenergistics.arcane_assembler.progress=Progress:
 tooltip.thaumicenergistics.arcane_assembler.no_aspect=Error: out of aspect
 tooltip.thaumicenergistics.arcane_assembler.no_vis=Error: out of Vis
+tooltip.thaumicenergistics.essentia_interface.side_input=[ThE-DEBUG] Essentia Interface [%s]: INPUT (any aspect)
+tooltip.thaumicenergistics.essentia_interface.side_output=[ThE-DEBUG] Essentia Interface [%s]: OUTPUT (%s)
+tooltip.thaumicenergistics.essentia_interface.side_disabled=[ThE-DEBUG] Essentia Interface [%s]: DISABLED
+tooltip.thaumicenergistics.essentia_interface.multi_aspect_item=[ThE-DEBUG] That item holds multiple aspects -- use a single-aspect item to configure this side.
 
 # GUI
 gui.thaumicenergistics.essentia_import_bus=ME Essentia Import Bus
@@ -143,6 +147,11 @@ research.essentiaterminal.stage.2=The ME Essentia Terminal allows me to see all 
 research.infusionprovider.title=Infusion Provider
 research.infusionprovider.stage.1=While being able to manipulate essentia with my ME system has proven invaluable, I am frustrated with the process required for Infusion - I have to extract all my essentia into jars on-site. Perhaps if I could expose my essentia to the Runic Matrix similar to the Essentia Terminal...
 research.infusionprovider.stage.2=Success! The Essentia Infusion Provider will expose the entire ME network's essentia to the Infusion process! As a bonus, it also works with my ME Essentia Storage Buses, allowing me to create essentia subnetworks, should I ever need those.
+
+# Research Essentia Interface
+research.essentiainterface.title=Essentia Interface
+research.essentiainterface.stage.1=I did, in fact, end up needing those essentia subnetworks - my Infusion Provider trick works, but it is a fragile improvisation, held together by a Storage Bus pointed at an altar I would rather not be disassembling for its parts. I want a device built for exactly this job: something that lets an Essentia Storage Bus on one ME network see cleanly into another, with no Infusion altar standing in the middle as an unwilling intermediary.
+research.essentiainterface.stage.2=The Essentia Interface does precisely that. Point an Essentia Storage Bus at it from either side and the two networks' essentia inventories become visible to each other, bridged directly. It even accepts essentia straight from a jar or tube, and can feed one back out again, making it as much a citizen of the wider world of essentia as it is of my ME network.
 
 # Research Arcane Crafting Terminal
 research.arcaneterminal.title=Arcane Crafting Terminal

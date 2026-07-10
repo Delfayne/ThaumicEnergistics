@@ -21,7 +21,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
@@ -35,6 +35,7 @@ import thaumicenergistics.util.AEUtil;
 import thaumicenergistics.util.ForgeUtil;
 import thaumicenergistics.util.ThELog;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -127,7 +128,11 @@ public class TileEssentiaInterface extends TileNetwork
         this.outputAspects.remove(side);
         this.markDirty();
         this.notifyNeighborOfConnectivityChange();
-        this.notifyModeChange(side, player, "INPUT (any aspect)");
+        this.notifyModeChange(
+                side,
+                player,
+                "tooltip.thaumicenergistics.essentia_interface.side_input",
+                side.getName());
     }
 
     public void setSideOutput(EnumFacing side, Aspect aspect, @Nullable EntityPlayer player) {
@@ -135,7 +140,12 @@ public class TileEssentiaInterface extends TileNetwork
         this.outputAspects.put(side, aspect);
         this.markDirty();
         this.notifyNeighborOfConnectivityChange();
-        this.notifyModeChange(side, player, "OUTPUT (" + aspect.getName() + ")");
+        this.notifyModeChange(
+                side,
+                player,
+                "tooltip.thaumicenergistics.essentia_interface.side_output",
+                side.getName(),
+                aspect.getName());
     }
 
     public void disableSide(EnumFacing side, @Nullable EntityPlayer player) {
@@ -143,7 +153,11 @@ public class TileEssentiaInterface extends TileNetwork
         this.outputAspects.remove(side);
         this.markDirty();
         this.notifyNeighborOfConnectivityChange();
-        this.notifyModeChange(side, player, "DISABLED");
+        this.notifyModeChange(
+                side,
+                player,
+                "tooltip.thaumicenergistics.essentia_interface.side_disabled",
+                side.getName());
     }
 
     /**
@@ -174,10 +188,9 @@ public class TileEssentiaInterface extends TileNetwork
 
     // TODO: this is a placeholder debug readout until per-side graphics are added -- see #47.
     private void notifyModeChange(
-            EnumFacing side, @Nullable EntityPlayer player, String description) {
-        String msg = "[ThE-DEBUG] Essentia Interface [" + side + "]: " + description;
-        if (player != null) player.sendMessage(new TextComponentString(msg));
-        ThELog.debug(msg);
+            EnumFacing side, @Nullable EntityPlayer player, String langKey, Object... args) {
+        if (player != null) player.sendMessage(new TextComponentTranslation(langKey, args));
+        ThELog.debug("Essentia Interface [" + side + "]: " + langKey + " " + Arrays.toString(args));
     }
 
     // ---- Side-config (de)serialization, shared between world-save NBT and the live client-sync
