@@ -9,6 +9,7 @@ import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.security.ISecurityGrid;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.networking.ticking.IGridTickable;
+import appeng.api.networking.ticking.ITickManager;
 import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.storage.IMEMonitor;
@@ -128,6 +129,7 @@ public class TileEssentiaInterface extends TileNetwork
         this.outputAspects.remove(side);
         this.markDirty();
         this.notifyNeighborOfConnectivityChange();
+        this.updateTickingState();
         this.notifyModeChange(
                 side,
                 player,
@@ -140,6 +142,7 @@ public class TileEssentiaInterface extends TileNetwork
         this.outputAspects.put(side, aspect);
         this.markDirty();
         this.notifyNeighborOfConnectivityChange();
+        this.updateTickingState();
         this.notifyModeChange(
                 side,
                 player,
@@ -153,11 +156,34 @@ public class TileEssentiaInterface extends TileNetwork
         this.outputAspects.remove(side);
         this.markDirty();
         this.notifyNeighborOfConnectivityChange();
+        this.updateTickingState();
         this.notifyModeChange(
                 side,
                 player,
                 "tooltip.thaumicenergistics.essentia_interface.side_disabled",
                 side.getName());
+    }
+
+    /**
+     * AE2 only reads {@link #getTickingRequest}'s isSleeping once, at initial grid-node
+     * registration -- an interface placed with no INPUT sides registers asleep and never wakes on
+     * its own just because sideModes changed afterward. Mirrors AE2's own
+     * PartSharedItemBus#updateState(): explicitly wake/sleep the tick manager whenever a side
+     * change could flip {@link #hasInputSides()}.
+     */
+    private void updateTickingState() {
+        try {
+            IGrid grid = GridUtil.getGrid(this);
+            if (grid == null) return;
+            IGridNode node = this.getActionableNode();
+            if (node == null) return;
+            ITickManager tickManager = grid.getCache(ITickManager.class);
+            if (tickManager == null) return;
+            if (this.hasInputSides()) tickManager.wakeDevice(node);
+            else tickManager.sleepDevice(node);
+        } catch (GridAccessException e) {
+            // No grid yet -- nothing to wake/sleep.
+        }
     }
 
     /**
