@@ -36,10 +36,10 @@ item.thaumicenergistics.blank_knowledge_core.name=空白知识核心
 
 # Tooltips
 tooltip.thaumicenergistics.wip=未完成，请勿使用
-tooltip.thaumicenergistics.device_online=设备开启
-tooltip.thaumicenergistics.device_offline=设备关闭
+tooltip.thaumicenergistics.device_online=设备在线
+tooltip.thaumicenergistics.device_offline=设备离线
 tooltip.thaumicenergistics.device_missing_channel=设备缺少频道
-tooltip.thaumicenergistics.device_not_linked=终端没有与安全终端链接
+tooltip.thaumicenergistics.device_not_linked=终端未链接到安全终端
 tooltip.thaumicenergistics.device_station_not_found=无法定位链接的安全终端
 tooltip.thaumicenergistics.device_not_powered=终端能量不足
 tooltip.thaumicenergistics.device_out_of_range=终端超出无线信号范围
