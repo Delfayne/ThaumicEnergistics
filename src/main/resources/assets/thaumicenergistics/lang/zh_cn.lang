@@ -153,6 +153,7 @@ research.infusionprovider.stage.2=我现在可以制作注魔供应器
 research.essentiainterface.title=源质接口
 research.essentiainterface.stage.1=我确实用上了这些源质子网络——注魔供应器这个小把戏虽然管用，但终究是权宜之计，靠的是一条指向祭坛的源质存储总线，我可不想为了拆零件而把它拆掉。我想要一个专门为此设计的装置：让一个ME网络上的源质存储总线能直接看到另一个网络，不必再让注魔祭坛充当不情愿的中间人。
 research.essentiainterface.stage.2=源质接口正是如此。从任意一侧用源质存储总线指向它，两个网络的源质库存就会彼此可见，直接桥接。它甚至可以直接从广口瓶或导管接收源质，也能反向输出，让它既是我ME网络的一员，也是源质世界的一员。
+research.essentiainterface.addenda.1=每个面都可以独立配置，而且不需要额外的工具，用手头现成的东西就行。以施法护手催动一个面，就能让它从那一侧的导管接收任意气息。换成将装有单一气息的瓶子或水晶贴附其上，则会把这个面变成只输出那种气息的源头。若是蹲下时这样做，那个面则会被禁用。
 
 # Research Arcane Crafting Terminal
 research.arcaneterminal.title=奥术合成终端

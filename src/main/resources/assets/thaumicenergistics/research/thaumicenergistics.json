@@ -411,6 +411,11 @@
           ],
           "warp": 3
         }
+      ],
+      "addenda": [
+        {
+          "text": "research.essentiainterface.addenda.1"
+        }
       ]
     },
     {

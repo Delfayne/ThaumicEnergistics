@@ -157,6 +157,7 @@ research.infusionprovider.stage.2=Success! The Essentia Infusion Provider will e
 research.essentiainterface.title=Essentia Interface
 research.essentiainterface.stage.1=I did, in fact, end up needing those essentia subnetworks - my Infusion Provider trick works, but it is a fragile improvisation, held together by a Storage Bus pointed at an altar I would rather not be disassembling for its parts. I want a device built for exactly this job: something that lets an Essentia Storage Bus on one ME network see cleanly into another, with no Infusion altar standing in the middle as an unwilling intermediary.
 research.essentiainterface.stage.2=The Essentia Interface does precisely that. Point an Essentia Storage Bus at it from either side and the two networks' essentia inventories become visible to each other, bridged directly. It even accepts essentia straight from a jar or tube, and can feed one back out again, making it as much a citizen of the wider world of essentia as it is of my ME network.
+research.essentiainterface.addenda.1=Each face configures independently, and needs no tool beyond what I'd already be carrying. Invoking a face with my Casting Gauntlet opens it to accept any aspect from a tube on that side. Applying a phial or crystal holding a single aspect to a face instead turns it into a source for just that aspect, feeding it back out. Crouching while I do either disables the face instead.
 
 # Research Arcane Crafting Terminal
 research.arcaneterminal.title=Arcane Crafting Terminal
