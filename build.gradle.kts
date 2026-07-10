@@ -129,6 +129,7 @@ dependencies {
     implementation(libs.curse.top)
 
     compileOnly(libs.curse.inventoryTweaks)
+    compileOnly(libs.curse.mouseTweaks)
     api(
         rfg.deobf(
             libs.curse.baubles

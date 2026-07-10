@@ -1,6 +1,18 @@
+# 2026/07/10 - 2.5.1
+
+## Bugs
+
+* Wake up interface if it falls asleep
+
+## Misc
+
+* Min AE2uel version rolled back to 0.56.4 from 0.56.5
+
 # 2026/07/09 - 2.5.0
 
-## Essentia Interface added, allowing for subnets. It can also drain or provide essentia via tubes.
+## Essentia
+
+* Interface added, allowing for subnets. It can also drain or provide essentia via tubes.
 
 ## Bugs
 
