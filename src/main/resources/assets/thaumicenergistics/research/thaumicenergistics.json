@@ -276,6 +276,38 @@
       ]
     },
     {
+      "key": "ESSENTIALEVELEMITTER",
+      "name": "research.essentialevelemitter.title",
+      "icons": [
+        "thaumicenergistics:essentia_level_emitter"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        6,
+        -2
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "ESSENTIABUSES"
+      ],
+      "stages": [
+        {
+          "text": "research.essentialevelemitter.stage.1",
+          "required_knowledge": [
+            "OBSERVATION;THAUMICENERGISTICS;1"
+          ]
+        },
+        {
+          "text": "research.essentialevelemitter.stage.2",
+          "recipes": [
+            "thaumicenergistics:essentia_level_emitter"
+          ]
+        }
+      ]
+    },
+    {
       "key": "ESSENTIATERMINAL",
       "name": "research.essentiaterminal.title",
       "icons": [
@@ -340,6 +372,49 @@
             "thaumicenergistics:infusion_provider"
           ],
           "warp": 2
+        }
+      ]
+    },
+    {
+      "key": "ESSENTIAINTERFACE",
+      "name": "research.essentiainterface.title",
+      "icons": [
+        "thaumicenergistics:essentia_interface"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        4,
+        -4
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "INFUSIONPROVIDER",
+        "ESSENTIABUSES"
+      ],
+      "stages": [
+        {
+          "text": "research.essentiainterface.stage.1",
+          "required_knowledge": [
+            "THEORY;THAUMICENERGISTICS;3"
+          ],
+          "required_research": [
+            "INFUSIONPROVIDER",
+            "ESSENTIABUSES"
+          ]
+        },
+        {
+          "text": "research.essentiainterface.stage.2",
+          "recipes": [
+            "thaumicenergistics:essentia_interface"
+          ],
+          "warp": 3
+        }
+      ],
+      "addenda": [
+        {
+          "text": "research.essentiainterface.addenda.1"
         }
       ]
     },

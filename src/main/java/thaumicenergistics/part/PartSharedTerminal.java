@@ -69,4 +69,9 @@ public abstract class PartSharedTerminal extends PartBase implements IThETermina
     public int getLightLevel() {
         return this.blockLight(this.isPowered() ? 9 : 0);
     }
+
+    @Override
+    protected boolean emitsLight() {
+        return true;
+    }
 }

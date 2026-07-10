@@ -245,7 +245,6 @@ public class GuiEssentiaTerminal
     }
 
     public void onMEStorageUpdate(IItemList<IAEEssentiaStack> list) {
-        this.repo.clear();
         for (IAEEssentiaStack stack : list) this.repo.postUpdate(stack);
         this.repo.updateView();
         this.updateScroll();

@@ -57,6 +57,7 @@ public abstract class PartSharedEssentiaBus extends PartBase
                     protected void onContentsChanged() {
                         super.onContentsChanged();
                         PartSharedEssentiaBus.this.host.markForSave();
+                        PartSharedEssentiaBus.this.filterChanged();
                     }
                 };
         this.upgrades =
@@ -70,6 +71,14 @@ public abstract class PartSharedEssentiaBus extends PartBase
                     }
                 };
     }
+
+    /**
+     * Called whenever an aspect is added to, removed from, or cleared from the filter (config),
+     * regardless of which happened -- override to refresh the network when a filter change alters
+     * what this part contributes/exposes (e.g. PartEssentiaStorageBus forces a cell array update,
+     * the same way it already does for the ACCESS/STORAGE_FILTER settings).
+     */
+    protected void filterChanged() {}
 
     protected int calculateAmountToSend() {
         // A jar can hold 250 essentia

@@ -93,6 +93,12 @@ public class ThEConfig implements IThEConfig {
         @Name("Arcane Assembler Max")
         public int tickTimeArcaneAssemblerMax = 40;
 
+        @Name("Essentia Interface Min")
+        public int tickTimeEssentiaInterfaceMin = 5;
+
+        @Name("Essentia Interface Max")
+        public int tickTimeEssentiaInterfaceMax = 40;
+
         private TickRates() {}
     }
 
@@ -147,6 +153,16 @@ public class ThEConfig implements IThEConfig {
     @Override
     public int tickTimeArcaneAssemblerMax() {
         return tickRates.tickTimeArcaneAssemblerMax;
+    }
+
+    @Override
+    public int tickTimeEssentiaInterfaceMin() {
+        return tickRates.tickTimeEssentiaInterfaceMin;
+    }
+
+    @Override
+    public int tickTimeEssentiaInterfaceMax() {
+        return tickRates.tickTimeEssentiaInterfaceMax;
     }
 
     @Override

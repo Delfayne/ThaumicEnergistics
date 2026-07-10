@@ -449,7 +449,7 @@ public class ThEThaumcraft implements IThEIntegration {
                                                 Reference.MOD_ID, "essentia_level_emitter"),
                                         new ShapelessArcaneRecipe(
                                                 recipeGroup,
-                                                "ESSENTIABUSES@2",
+                                                "ESSENTIALEVELEMITTER@2",
                                                 15,
                                                 new AspectList(),
                                                 item,
@@ -731,6 +731,51 @@ public class ThEThaumcraft implements IThEIntegration {
                                                 TCUtil.getCrystalWithAspect(Aspect.FIRE),
                                                 ItemsTC.salisMundus,
                                                 TCUtil.getCrystalWithAspect(Aspect.ORDER))));
+        ThEApi.instance()
+                .blocks()
+                .essentiaInterface()
+                .maybeStack(1)
+                .ifPresent(
+                        stack ->
+                                ThaumcraftApi.addInfusionCraftingRecipe(
+                                        new ResourceLocation(
+                                                Reference.MOD_ID, "essentia_interface"),
+                                        new InfusionRecipe(
+                                                "ESSENTIAINTERFACE@2",
+                                                stack,
+                                                8,
+                                                new AspectList()
+                                                        .add(Aspect.MECHANISM, 20)
+                                                        .add(Aspect.EXCHANGE, 30)
+                                                        .add(Aspect.MAGIC, 20)
+                                                        .add(Aspect.MOTION, 15),
+                                                AEApi.instance()
+                                                        .definitions()
+                                                        .blocks()
+                                                        .iface()
+                                                        .maybeBlock()
+                                                        .orElseThrow(
+                                                                () ->
+                                                                        new NullPointerException(
+                                                                                "Missing interface block for recipe")),
+                                                ThEApi.instance()
+                                                        .items()
+                                                        .coalescenceCore()
+                                                        .maybeStack(1)
+                                                        .orElse(ItemStack.EMPTY),
+                                                ItemsTC.salisMundus,
+                                                ThEApi.instance()
+                                                        .items()
+                                                        .diffusionCore()
+                                                        .maybeStack(1)
+                                                        .orElse(ItemStack.EMPTY),
+                                                ItemsTC.salisMundus,
+                                                BlocksTC.tube,
+                                                ThEApi.instance()
+                                                        .items()
+                                                        .essentiaStorageBus()
+                                                        .maybeStack(1)
+                                                        .orElse(ItemStack.EMPTY))));
     }
 
     private void addFakeCrafting(ResourceLocation resourceLocation) {

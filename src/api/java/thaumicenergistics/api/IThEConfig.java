@@ -31,6 +31,10 @@ public interface IThEConfig {
 
     int tickTimeArcaneAssemblerMax();
 
+    int tickTimeEssentiaInterfaceMin();
+
+    int tickTimeEssentiaInterfaceMax();
+
     TerminalStyle terminalStyle();
 
     SearchBoxMode searchBoxMode();

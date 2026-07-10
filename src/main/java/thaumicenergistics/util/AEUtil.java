@@ -35,6 +35,9 @@ import thaumicenergistics.api.storage.IAEEssentiaStack;
 import thaumicenergistics.api.storage.IEssentiaStorageChannel;
 import thaumicenergistics.integration.appeng.AEEssentiaStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author BrockWS
  */
@@ -265,12 +268,42 @@ public class AEUtil {
         return true;
     }
 
+    private static final String[] WRENCH_INTERFACE_NAMES = {
+        "mekanism.api.IMekWrench", "buildcraft.api.tools.IToolWrench", "cofh.api.item.IToolHammer",
+    };
+
+    private static Class<?>[] wrenchInterfaceClasses;
+
+    private static Class<?>[] resolveWrenchInterfaceClasses() {
+        if (wrenchInterfaceClasses == null) {
+            List<Class<?>> resolved = new ArrayList<>();
+            for (String name : WRENCH_INTERFACE_NAMES) {
+                try {
+                    resolved.add(Class.forName(name));
+                } catch (ClassNotFoundException ignored) {
+                    // That mod (or its API-only stub) isn't present -- nothing to detect.
+                }
+            }
+            wrenchInterfaceClasses = resolved.toArray(new Class<?>[0]);
+        }
+        return wrenchInterfaceClasses;
+    }
+
     public static boolean isWrench(ItemStack stack, EntityPlayer player, BlockPos pos) {
         if (stack.isEmpty()) return false;
-        if (stack.getItem() instanceof IAEWrench) {
-            return ((IAEWrench) stack.getItem()).canWrench(stack, player, pos);
+        Item item = stack.getItem();
+        if (item instanceof IAEWrench) {
+            return ((IAEWrench) item).canWrench(stack, player, pos);
         }
-        // TODO: Add other wrench types
+        // Forge's own generic tool-class registration -- catches anything that calls
+        // setHarvestLevel("wrench", ...) (e.g. CoFH's wrenches), with zero dependency on whatever
+        // mod registered it.
+        if (item.getToolClasses(stack).contains("wrench")) {
+            return true;
+        }
+        for (Class<?> wrenchInterface : resolveWrenchInterfaceClasses()) {
+            if (wrenchInterface.isInstance(item)) return true;
+        }
         return false;
     }
 }

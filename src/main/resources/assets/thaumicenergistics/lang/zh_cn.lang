@@ -4,6 +4,7 @@ itemGroup.ThaumicEnergistics=神秘能源
 # Blocks
 tile.thaumicenergistics.infusion_provider.name=源质供应器
 tile.thaumicenergistics.arcane_assembler.name=奥术装配器
+tile.thaumicenergistics.essentia_interface.name=源质接口
 
 # Items
 item.thaumicenergistics.diffusion_core.name=扩散核心
@@ -23,7 +24,7 @@ item.thaumicenergistics.essentia_cell_creative.name=创造ME源质储存元件
 item.thaumicenergistics.essentia_import.name=ME源质输入总线
 item.thaumicenergistics.essentia_export.name=ME源质输出总线
 item.thaumicenergistics.essentia_storage.name=ME源质存储总线
-item.thaumicenergistics.essentia_level_emitter.name=ME源质电平发射器
+item.thaumicenergistics.essentia_level_emitter.name=ME源质阈值发射器
 item.thaumicenergistics.essentia_terminal.name=ME源质终端
 item.thaumicenergistics.wireless_essentia_terminal.name=无线ME源质终端
 item.thaumicenergistics.arcane_terminal.name=奥术合成终端
@@ -56,7 +57,7 @@ tooltip.thaumicenergistics.arcane_assembler.no_vis=错误：缺少Vis
 gui.thaumicenergistics.essentia_import_bus=ME源质输入总线
 gui.thaumicenergistics.essentia_export_bus=ME源质输出总线
 gui.thaumicenergistics.essentia_storage_bus=ME源质存储总线
-gui.thaumicenergistics.essentia_level_emitter=ME源质电平发射器
+gui.thaumicenergistics.essentia_level_emitter=ME源质阈值发射器
 gui.thaumicenergistics.essentia_terminal=源质终端
 gui.thaumicenergistics.arcane_terminal=奥术合成终端
 gui.thaumicenergistics.arcane_inscriber=奥术记录仪
@@ -133,6 +134,11 @@ research.essentiabuses.title=数码源质传输
 research.essentiabuses.stage.1=现在我可以将源质数码化了，是时候将这项技术付诸实践了
 research.essentiabuses.stage.2=我现在可以制作源质总线
 
+# Research Essentia Level Emitter
+research.essentialevelemitter.title=源质阈值发射器
+research.essentialevelemitter.stage.1=我的源质总线毫无怨言地把源质搬进搬出我的网络，但它们做得很盲目——某种气息快用完，或者堆积得超出我的预期时，我都没法自动作出反应。我应该把ME阈值发射器背后的原理用到源质数量上，而不只是物品。
+research.essentialevelemitter.stage.2=源质阈值发射器监视单一气息的储量，一旦它越过我设定的阈值（可选高于或低于）就会发出红石信号——原理和物品版一模一样，只是换成了监视源质。
+
 # Research Essentia Terminal
 research.essentiaterminal.title=源质监控
 research.essentiaterminal.stage.1=现在我可以将源质数码化了，是时候将这项技术付诸实践了
@@ -142,6 +148,12 @@ research.essentiaterminal.stage.2=我现在可以制作源质终端
 research.infusionprovider.title=注魔供应器
 research.infusionprovider.stage.1=现在我可以将源质数码化了，是时候将这项技术付诸实践了
 research.infusionprovider.stage.2=我现在可以制作注魔供应器
+
+# Research Essentia Interface
+research.essentiainterface.title=源质接口
+research.essentiainterface.stage.1=我确实用上了这些源质子网络——注魔供应器这个小把戏虽然管用，但终究是权宜之计，靠的是一条指向祭坛的源质存储总线，我可不想为了拆零件而把它拆掉。我想要一个专门为此设计的装置：让一个ME网络上的源质存储总线能直接看到另一个网络，不必再让注魔祭坛充当不情愿的中间人。
+research.essentiainterface.stage.2=源质接口正是如此。从任意一侧用源质存储总线指向它，两个网络的源质库存就会彼此可见，直接桥接。它甚至可以直接从广口瓶或导管接收源质，也能反向输出，让它既是我ME网络的一员，也是源质世界的一员。
+research.essentiainterface.addenda.1=每个面都可以独立配置，而且不需要额外的工具，用手头现成的东西就行。以施法护手催动一个面，就能让它从那一侧的导管接收任意气息。换成将装有单一气息的瓶子或水晶贴附其上，则会把这个面变成只输出那种气息的源头。若是蹲下时这样做，那个面则会被禁用。
 
 # Research Arcane Crafting Terminal
 research.arcaneterminal.title=奥术合成终端

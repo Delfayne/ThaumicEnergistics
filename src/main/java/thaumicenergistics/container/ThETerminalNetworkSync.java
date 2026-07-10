@@ -15,6 +15,7 @@ import thaumicenergistics.util.ThELog;
 
 import java.io.IOException;
 import java.nio.BufferOverflowException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,6 +52,7 @@ public final class ThETerminalNetworkSync<
     /**
      * Sends only the stacks accumulated in {@code items} (via {@code postChange}) since the last
      * call, looked up fresh against the monitor's current values, then clears the accumulator.
+     * Splits across multiple packets if the packet size cap is hit, same as {@link #sendFull}.
      */
     public void sendDelta(
             IItemList<T> items, IMEMonitor<T> monitor, List<IContainerListener> listeners) {
@@ -58,24 +60,35 @@ public final class ThETerminalNetworkSync<
 
         try {
             IItemList<T> monitorCache = monitor.getStorageList();
+            List<P> packets = new ArrayList<>();
             P packet = this.packetFactory.create();
+            packets.add(packet);
 
             for (T is : items) {
                 T send = monitorCache.findPrecise(is);
                 if (send == null) {
                     is.setStackSize(0);
-                    packet.appendStack(is);
-                } else {
+                    send = is;
+                }
+
+                try {
                     packet.appendStack(send);
+                } catch (BufferOverflowException e) {
+                    packet = this.packetFactory.create();
+                    packet.appendStack(send);
+                    packets.add(packet);
                 }
             }
 
-            if (!packet.isEmpty()) {
+            packets.removeIf(P::isEmpty);
+            if (!packets.isEmpty()) {
                 items.resetStatus();
 
-                for (IContainerListener c : listeners) {
-                    if (c instanceof EntityPlayer) {
-                        PacketHandler.sendToPlayer((EntityPlayerMP) c, packet);
+                for (P p : packets) {
+                    for (IContainerListener c : listeners) {
+                        if (c instanceof EntityPlayer) {
+                            PacketHandler.sendToPlayer((EntityPlayerMP) c, p);
+                        }
                     }
                 }
             }
