@@ -45,6 +45,7 @@ import thaumicenergistics.api.ThEApi;
 import thaumicenergistics.client.ThEItemColors;
 import thaumicenergistics.client.gui.GuiHandler;
 import thaumicenergistics.client.render.ArcaneAssemblerRenderer;
+import thaumicenergistics.client.render.EssentiaInterfaceRenderer;
 import thaumicenergistics.command.CommandAddVis;
 import thaumicenergistics.command.CommandDrainVis;
 import thaumicenergistics.init.ModGlobals;
@@ -270,6 +271,8 @@ public class ThaumicEnergistics {
             // Init TESR
             ClientRegistry.bindTileEntitySpecialRenderer(
                     TileArcaneAssembler.class, new ArcaneAssemblerRenderer());
+            ClientRegistry.bindTileEntitySpecialRenderer(
+                    TileEssentiaInterface.class, new EssentiaInterfaceRenderer());
         }
 
         public EntityPlayer getPlayerEntFromCtx(MessageContext ctx) {

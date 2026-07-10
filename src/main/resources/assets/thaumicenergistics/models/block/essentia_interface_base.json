@@ -1,0 +1,256 @@
+{
+  "textures": {
+    "particle": "thaumicenergistics:block/essentia_interface_casing"
+  },
+  "elements": [
+    {
+      "__comment": "Outer casing -- full-size cube so collision/selection stays a normal block.",
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "down": {
+          "texture": "#casing"
+        },
+        "up": {
+          "texture": "#casing"
+        },
+        "north": {
+          "texture": "#casing"
+        },
+        "south": {
+          "texture": "#casing"
+        },
+        "west": {
+          "texture": "#casing"
+        },
+        "east": {
+          "texture": "#casing"
+        }
+      }
+    },
+    {
+      "__comment": "Raised screen, north face -- widened pearl w/ centered tube socket.",
+      "from": [
+        3,
+        3,
+        -0.75
+      ],
+      "to": [
+        13,
+        13,
+        0
+      ],
+      "faces": {
+        "down": {
+          "texture": "#screen"
+        },
+        "up": {
+          "texture": "#screen"
+        },
+        "north": {
+          "texture": "#screen",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#screen"
+        },
+        "east": {
+          "texture": "#screen"
+        }
+      }
+    },
+    {
+      "__comment": "Raised screen, south face.",
+      "from": [
+        3,
+        3,
+        16
+      ],
+      "to": [
+        13,
+        13,
+        16.75
+      ],
+      "faces": {
+        "down": {
+          "texture": "#screen"
+        },
+        "up": {
+          "texture": "#screen"
+        },
+        "south": {
+          "texture": "#screen",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#screen"
+        },
+        "east": {
+          "texture": "#screen"
+        }
+      }
+    },
+    {
+      "__comment": "Raised screen, west face.",
+      "from": [
+        -0.75,
+        3,
+        3
+      ],
+      "to": [
+        0,
+        13,
+        13
+      ],
+      "faces": {
+        "down": {
+          "texture": "#screen"
+        },
+        "up": {
+          "texture": "#screen"
+        },
+        "north": {
+          "texture": "#screen"
+        },
+        "south": {
+          "texture": "#screen"
+        },
+        "west": {
+          "texture": "#screen",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        }
+      }
+    },
+    {
+      "__comment": "Raised screen, east face.",
+      "from": [
+        16,
+        3,
+        3
+      ],
+      "to": [
+        16.75,
+        13,
+        13
+      ],
+      "faces": {
+        "down": {
+          "texture": "#screen"
+        },
+        "up": {
+          "texture": "#screen"
+        },
+        "north": {
+          "texture": "#screen"
+        },
+        "south": {
+          "texture": "#screen"
+        },
+        "east": {
+          "texture": "#screen",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        }
+      }
+    },
+    {
+      "__comment": "Raised screen, up face.",
+      "from": [
+        3,
+        16,
+        3
+      ],
+      "to": [
+        13,
+        16.75,
+        13
+      ],
+      "faces": {
+        "up": {
+          "texture": "#screen",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "north": {
+          "texture": "#screen"
+        },
+        "south": {
+          "texture": "#screen"
+        },
+        "west": {
+          "texture": "#screen"
+        },
+        "east": {
+          "texture": "#screen"
+        }
+      }
+    },
+    {
+      "__comment": "Raised screen, down face.",
+      "from": [
+        3,
+        -0.75,
+        3
+      ],
+      "to": [
+        13,
+        0,
+        13
+      ],
+      "faces": {
+        "down": {
+          "texture": "#screen",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "north": {
+          "texture": "#screen"
+        },
+        "south": {
+          "texture": "#screen"
+        },
+        "west": {
+          "texture": "#screen"
+        },
+        "east": {
+          "texture": "#screen"
+        }
+      }
+    }
+  ]
+}
