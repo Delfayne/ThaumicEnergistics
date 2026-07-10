@@ -56,9 +56,11 @@ public class TileEssentiaInterface extends TileNetwork
     }
 
     // INPUT comfortably outpulls jars/tubes so essentia in a tube network flows toward us; OUTPUT
-    // stays at 0 so it never wins a pull contest, it only ever gets drained by real consumers.
+    // sits below every real consumer (Thaumcraft's pull comparisons are strict "<", and most
+    // devices sit at suction 0 or above) so it never wins a pull contest -- it's a pure source,
+    // only ever drained by whatever's on the other end.
     private static final int INPUT_SUCTION = 128;
-    private static final int OUTPUT_SUCTION = 0;
+    private static final int OUTPUT_SUCTION = -1;
     private static final int MINIMUM_SUCTION = 1;
 
     private final Map<EnumFacing, SideMode> sideModes = new EnumMap<>(EnumFacing.class);
