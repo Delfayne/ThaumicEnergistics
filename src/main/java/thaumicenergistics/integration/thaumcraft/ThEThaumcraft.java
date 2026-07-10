@@ -449,7 +449,7 @@ public class ThEThaumcraft implements IThEIntegration {
                                                 Reference.MOD_ID, "essentia_level_emitter"),
                                         new ShapelessArcaneRecipe(
                                                 recipeGroup,
-                                                "ESSENTIABUSES@2",
+                                                "ESSENTIALEVELEMITTER@2",
                                                 15,
                                                 new AspectList(),
                                                 item,

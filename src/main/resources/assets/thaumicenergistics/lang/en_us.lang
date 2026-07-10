@@ -138,6 +138,11 @@ research.essentiabuses.title=Digisentia Transportation
 research.essentiabuses.stage.1=Now that I have the components to safely transport essentia with my ME system, I can now work on creating buses for essentia.
 research.essentiabuses.stage.2=I can now make Import, Export, and Storage Buses. They all function exactly like their item counterparts.
 
+# Research Essentia Level Emitter
+research.essentialevelemitter.title=Essentia Level Emitter
+research.essentialevelemitter.stage.1=My Essentia Buses move essentia in and out of my network without complaint, but they do so blindly - I have no way to react automatically when a particular aspect runs low, or floods past where I'd like it to. I should adapt the principles behind my ME Level Emitter to watch essentia quantities instead of items.
+research.essentialevelemitter.stage.2=The Essentia Level Emitter watches a single aspect's stored quantity and emits a redstone signal once it crosses a threshold I set, comparing it as either above or below - exactly like its item counterpart, just tuned to essentia instead.
+
 # Research Essentia Terminal
 research.essentiaterminal.title=Essentia Monitoring
 research.essentiaterminal.stage.1=While I can now digitize essentia, I have realized this means I can no longer observe the quantities of essentia I have digitalized - an urgent problem.

@@ -276,6 +276,38 @@
       ]
     },
     {
+      "key": "ESSENTIALEVELEMITTER",
+      "name": "research.essentialevelemitter.title",
+      "icons": [
+        "thaumicenergistics:essentia_level_emitter"
+      ],
+      "category": "THAUMICENERGISTICS",
+      "location": [
+        6,
+        -2
+      ],
+      "meta": [
+        "ROUND"
+      ],
+      "parents": [
+        "ESSENTIABUSES"
+      ],
+      "stages": [
+        {
+          "text": "research.essentialevelemitter.stage.1",
+          "required_knowledge": [
+            "OBSERVATION;THAUMICENERGISTICS;1"
+          ]
+        },
+        {
+          "text": "research.essentialevelemitter.stage.2",
+          "recipes": [
+            "thaumicenergistics:essentia_level_emitter"
+          ]
+        }
+      ]
+    },
+    {
       "key": "ESSENTIATERMINAL",
       "name": "research.essentiaterminal.title",
       "icons": [
