@@ -1,3 +1,9 @@
+# 2026/07/12 - 2.5.2
+
+## Misc
+
+* Updated Chinese translation submission from ZHAY10086
+
 # 2026/07/10 - 2.5.1
 
 ## Bugs
