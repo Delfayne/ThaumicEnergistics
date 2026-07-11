@@ -2,35 +2,35 @@
 itemGroup.ThaumicEnergistics=神秘能源
 
 # Blocks
-tile.thaumicenergistics.infusion_provider.name=源质供应器
-tile.thaumicenergistics.arcane_assembler.name=奥术装配器
+tile.thaumicenergistics.infusion_provider.name=源质注魔供应器
+tile.thaumicenergistics.arcane_assembler.name=奥术装配室
 tile.thaumicenergistics.essentia_interface.name=源质接口
 
 # Items
 item.thaumicenergistics.diffusion_core.name=扩散核心
 item.thaumicenergistics.coalescence_core.name=聚集核心
 
-item.thaumicenergistics.essentia_component_1k.name=1k-ME源质储存组件
-item.thaumicenergistics.essentia_component_4k.name=4k-ME源质储存组件
-item.thaumicenergistics.essentia_component_16k.name=16k-ME源质储存组件
-item.thaumicenergistics.essentia_component_64k.name=64k-ME源质储存组件
+item.thaumicenergistics.essentia_component_1k.name=1k-ME源质存储组件
+item.thaumicenergistics.essentia_component_4k.name=4k-ME源质存储组件
+item.thaumicenergistics.essentia_component_16k.name=16k-ME源质存储组件
+item.thaumicenergistics.essentia_component_64k.name=64k-ME源质存储组件
 
-item.thaumicenergistics.essentia_cell_1k.name=1k-ME源质储存元件
-item.thaumicenergistics.essentia_cell_4k.name=4k-ME源质储存元件
-item.thaumicenergistics.essentia_cell_16k.name=16k-ME源质储存元件
-item.thaumicenergistics.essentia_cell_64k.name=64k-ME源质储存元件
-item.thaumicenergistics.essentia_cell_creative.name=创造ME源质储存元件
+item.thaumicenergistics.essentia_cell_1k.name=1k-ME源质存储元件
+item.thaumicenergistics.essentia_cell_4k.name=4k-ME源质存储元件
+item.thaumicenergistics.essentia_cell_16k.name=16k-ME源质存储元件
+item.thaumicenergistics.essentia_cell_64k.name=64k-ME源质存储元件
+item.thaumicenergistics.essentia_cell_creative.name=创造型ME源质存储元件
 
 item.thaumicenergistics.essentia_import.name=ME源质输入总线
 item.thaumicenergistics.essentia_export.name=ME源质输出总线
 item.thaumicenergistics.essentia_storage.name=ME源质存储总线
-item.thaumicenergistics.essentia_level_emitter.name=ME源质阈值发射器
+item.thaumicenergistics.essentia_level_emitter.name=ME源质发信器
 item.thaumicenergistics.essentia_terminal.name=ME源质终端
-item.thaumicenergistics.wireless_essentia_terminal.name=无线ME源质终端
+item.thaumicenergistics.wireless_essentia_terminal.name=无线源质终端
 item.thaumicenergistics.arcane_terminal.name=奥术合成终端
 item.thaumicenergistics.arcane_inscriber.name=奥术记录仪
 
-item.thaumicenergistics.upgrade_arcane.name=奥术合成升级
+item.thaumicenergistics.upgrade_arcane.name=奥术充能升级
 item.thaumicenergistics.knowledge_core.name=知识核心
 item.thaumicenergistics.blank_knowledge_core.name=空白知识核心
 
@@ -39,45 +39,49 @@ tooltip.thaumicenergistics.wip=未完成，请勿使用
 tooltip.thaumicenergistics.device_online=设备在线
 tooltip.thaumicenergistics.device_offline=设备离线
 tooltip.thaumicenergistics.device_missing_channel=设备缺少频道
-tooltip.thaumicenergistics.device_not_linked=终端未连接到安全站
-tooltip.thaumicenergistics.device_station_not_found=找不到已连接的安全站
+tooltip.thaumicenergistics.device_not_linked=终端未链接到安全终端
+tooltip.thaumicenergistics.device_station_not_found=无法定位链接的安全终端
 tooltip.thaumicenergistics.device_not_powered=终端能量不足
-tooltip.thaumicenergistics.device_out_of_range=终端超出无线范围
-tooltip.thaumicenergistics.device_linked=已连接
-tooltip.thaumicenergistics.device_unlinked=未连接
-tooltip.thaumicenergistics.stored_energy=存储能量
-tooltip.thaumicenergistics.arcane_assembler.idle=状态：待机
-tooltip.thaumicenergistics.arcane_assembler.prep=状态：预备
-tooltip.thaumicenergistics.arcane_assembler.busy=状态：工作
-tooltip.thaumicenergistics.arcane_assembler.progress=正在处理：%s
+tooltip.thaumicenergistics.device_out_of_range=终端超出无线信号范围
+tooltip.thaumicenergistics.device_linked=已链接
+tooltip.thaumicenergistics.device_unlinked=未链接
+tooltip.thaumicenergistics.stored_energy=已存储能源
+tooltip.thaumicenergistics.arcane_assembler.idle=状态：闲置
+tooltip.thaumicenergistics.arcane_assembler.prep=状态：准备
+tooltip.thaumicenergistics.arcane_assembler.busy=状态：繁忙
+tooltip.thaumicenergistics.arcane_assembler.progress=正在处理：
 tooltip.thaumicenergistics.arcane_assembler.no_aspect=错误：缺少源质
 tooltip.thaumicenergistics.arcane_assembler.no_vis=错误：缺少Vis
+tooltip.thaumicenergistics.essentia_interface.side_input=[ThE-DEBUG] 源质接口 [%s]：输入（任意源质）
+tooltip.thaumicenergistics.essentia_interface.side_output=[ThE-DEBUG] 源质接口 [%s]：输出（%s）
+tooltip.thaumicenergistics.essentia_interface.side_disabled=[ThE-DEBUG] 源质接口 [%s]：已禁用
+tooltip.thaumicenergistics.essentia_interface.multi_aspect_item=[ThE-DEBUG] 该物品拥有多种要素——请使用单一要素物品来配置该面。
 
 # GUI
 gui.thaumicenergistics.essentia_import_bus=ME源质输入总线
 gui.thaumicenergistics.essentia_export_bus=ME源质输出总线
 gui.thaumicenergistics.essentia_storage_bus=ME源质存储总线
-gui.thaumicenergistics.essentia_level_emitter=ME源质阈值发射器
-gui.thaumicenergistics.essentia_terminal=源质终端
+gui.thaumicenergistics.essentia_level_emitter=ME源质发信器
+gui.thaumicenergistics.essentia_terminal=ME源质终端
 gui.thaumicenergistics.arcane_terminal=奥术合成终端
 gui.thaumicenergistics.arcane_inscriber=奥术记录仪
 
 gui.thaumicenergistics.vis_required=Vis消耗：%s
 gui.thaumicenergistics.vis_required_out_of=Vis消耗：%s/%s
-gui.thaumicenergistics.vis_available=%s剩余
-gui.thaumicenergistics.vis_discount=%s%%减免
+gui.thaumicenergistics.vis_available=%s 可用
+gui.thaumicenergistics.vis_discount=%s%% 减免
 
 gui.thaumicenergistics.insert_knowledge_core=插入一个知识核心
-gui.thaumicenergistics.knowledge_core_is_blank=知识核心是空白的
+gui.thaumicenergistics.knowledge_core_is_blank=知识核心空白
 gui.thaumicenergistics.recipe_already_stored=配方已存储
-gui.thaumicenergistics.recipe_not_arcane=这个配方不属于奥术工作台
-gui.thaumicenergistics.no_recipe=无配方选定
+gui.thaumicenergistics.recipe_not_arcane=非奥术配方
+gui.thaumicenergistics.no_recipe=无选中配方
 
 gui.thaumicenergistics.out_of_aspect=缺少源质！
 gui.thaumicenergistics.out_of_vis=缺少Vis！
 
-card.tinkerae.name=修复物质/能量
-card.tinkerae.text=尝试将源质转化为与当前物质/能量网络类似的能量。获得10-25能量。
+card.tinkerae.name=捣鼓ME网络
+card.tinkerae.text=尝试将源质转化为能量，就像你的ME网络一样。获得10到25点 能源学 进度。
 
 # FROM THAUMCRAFT en_US.lang
 # BEST TO RECHECK THE LATEST LANG FILE FOR CHANGED FORMATTING
@@ -100,80 +104,80 @@ card.tinkerae.text=尝试将源质转化为与当前物质/能量网络类似的
 #                   <IMG>thaumcraft:textures/items/alumentum.png:0:0:255:255:0.0625</IMG>     <-- alumentum item icon
 
 # Research Category
-tc.research_category.THAUMICENERGISTICS=神秘能源
+tc.research_category.THAUMICENERGISTICS=能源学
 
 # Research Basics
-research.base_energistics.title=源质数位化
-research.base_energistics.stage.1=作为一名科学家和神秘学者，我假设必须能够以稳定和富有成效的方式将科技与魔法结合起来。<BR>我应该详细研究物质和能量转换的原理来实现。很可能神秘学的某些方面可以实现，以及能够做到这一点的科技。<BR>这需要进行广泛的研究，但我相信这将是我值得投入的时间。
+research.base_energistics.title=神秘能源
+research.base_energistics.stage.1=作为一名科学家兼神秘学者，我设想有方法将科技与魔法稳定且有效地结合起来。<BR>我应该仔细研究物质和能量互相转换的原理来实现它。似乎神秘学中有要素可以做到，科技中也有方法做到同样的事。<BR>这需要进行大量的研究，但我相信这样投入时间是值得的。
 
 # Research Digisentia
 research.digisentia.title=源质数位化
-research.digisentia.stage.1=完成要素蒸馏的研究后你突然想到可以数字化储存要素源质。<BR>测试了§l成型核心§r和§l破坏核心§r后你意识到仅需小改动就能做到在源质与数位格式之间转化。<BR>由于某些源质天生具有腐蚀性,就需要在电路表面覆上一层水银来预防侵蚀。
-research.digisentia.stage.2=§l组件§r<BR>存储组件以数位格式存储源质。单独是无法操作的，它们需要元件外壳才能与数字网络进行交互。<LINE>§l元件外壳§r<BR>为存储组件提供了接口以及保护。<BR>§l源质元件工作台§r<BR>这个元件工作台可以让你指定何种要素源质可以存储于这个元件之中。
+research.digisentia.stage.1=完成要素蒸馏的研究后，我突然想到，也许能将其数位化存储。<BR>测试§l成型核心§r和§l破坏核心§r时，我意识到只要稍加修改，它们就可以作为将源质与数字格式间相互转换的一种手段。<BR>由于某些源质天生具有腐蚀性，需要在电路表面覆上一层水银以防止腐蚀。
+research.digisentia.stage.2=§l扩散核心§r<BR>液态源质具有相对较高的挥发性和巨大的能量，这使得需先将其扩散稀释，然后再数位化。这时候就需要某种缓冲器来容纳这些扩散的源质。<PAGE><LINE>§l聚集核心§r<BR>压缩并将分散的源质重塑凝为原先的液态。很可能也需要这样一个缓冲器。
 
 # Research Digisentia Storage
 # 1k
-research.essentiastorage1k.title=数码源质存储
-research.essentiastorage1k.stage.1=在检查现有的数码存储介质时，我得出的结论是，我实际上可以存储数码化的源质。<BR>通过将§l赛特斯石英§r与§l世界盐§r一起使用，它应该能够存储源质，即使在数码形式下它仍然非常活跃。<BR>我认为§l世界盐§r的浓度越高，它应该能够存储得越多，尽管石英本身可以储存的数量有继承限制。
-research.essentiastorage1k.stage.2=我设法创建了一个能够以数码方式存储少量源质的存储设备，也许我可以组合多个组件以增加存储空间？
+research.essentiastorage1k.title=数位化源质存储
+research.essentiastorage1k.stage.1=在检查了现有的数位化存储介质后，我得出结论，我实际上可以存储数位化的源质。<BR>§l赛特斯石英§r通过注入§l世界盐§r，就应该会获得存储源质的能力，在数位化的格式下也十分有效。<BR>我认为注入的§l世界盐§r的浓度越高，它能储存的东西应该就越多，尽管这一数值还会受到石英本身的限制。
+research.essentiastorage1k.stage.2=我已经成功地制造出了一个能够数位化存储少量源质的存储元件，也许可以组合多个组件以增加存储空间？
 # 4k
-research.essentiastorage4k.title=大数码源质存储
-research.essentiastorage4k.stage.1=也许我可以使用一些不同的处理组件将多个存储组件组合在一起
-research.essentiastorage4k.stage.2=我现在可以通过使用一些计算处理单元以数码方式存储相当数量的源质，以允许组件相互通信
+research.essentiastorage4k.title=加大数位化源质存储
+research.essentiastorage4k.stage.1=也许我可以使用一些不同的处理器，将多个存储组件组合在一起。
+research.essentiastorage4k.stage.2=通过使用一些运算处理器，让各个组件之间能够相互通信，我现在可以数位化存储相当数量的源质。
 # 16k
-research.essentiastorage16k.title=更大的数码源质存储
-research.essentiastorage16k.stage.1=就像我之前尝试获得更大的存储组件一样，我可以使用一些高端处理器将多个存储组件组合在一起
-research.essentiastorage16k.stage.2=使用其他类型的处理单元，我现在可以存储16倍原始存储系统的源质数量于存储组件中
+research.essentiastorage16k.title=大量数位化源质存储
+research.essentiastorage16k.stage.1=就像之前试图获得更大的存储组件一样，我可以使用一些高端处理器将多个存储组件组合在一起。
+research.essentiastorage16k.stage.2=通过使用另一种处理器，我现在可以存储刚开始使用简陋存储网络时16倍的源质数量于一个存储组件中。
 # 64k
-research.essentiastorage64k.title=海量数码源质存储
-research.essentiastorage64k.stage.1=我目前的存储需求是不够的，我希望我仍然可以将存储组件组合起来创建一个更大的存储组件，同时占用相同的空间……
-research.essentiastorage64k.stage.2=我现在可以在存储组件上存储大量的源质，但我觉得这是技术的极限
+research.essentiastorage64k.title=海量数位化源质存储
+research.essentiastorage64k.stage.1=我目前的存储需求还未被满足。希望我仍能将存储组件组合起来，在占用相同空间的情况下创造一个更大的存储组件……
+research.essentiastorage64k.stage.2=我现在可以在存储组件上存储大量的源质，但我觉得这已经是这项技术的极限了。
 
 # Research Essentia Buses
-research.essentiabuses.title=数码源质传输
-research.essentiabuses.stage.1=现在我可以将源质数码化了，是时候将这项技术付诸实践了
-research.essentiabuses.stage.2=我现在可以制作源质总线
+research.essentiabuses.title=数位化源质传输
+research.essentiabuses.stage.1=我现在已经拥有了用ME网络安全运输源质的存储组件，可以着手于创造源质总线了。
+research.essentiabuses.stage.2=我现在可以合成源质输入、输出和存储总线了。它们的功能与物品总线完全相同。
 
 # Research Essentia Level Emitter
-research.essentialevelemitter.title=源质阈值发射器
-research.essentialevelemitter.stage.1=我的源质总线毫无怨言地把源质搬进搬出我的网络，但它们做得很盲目——某种气息快用完，或者堆积得超出我的预期时，我都没法自动作出反应。我应该把ME阈值发射器背后的原理用到源质数量上，而不只是物品。
-research.essentialevelemitter.stage.2=源质阈值发射器监视单一气息的储量，一旦它越过我设定的阈值（可选高于或低于）就会发出红石信号——原理和物品版一模一样，只是换成了监视源质。
+research.essentialevelemitter.title=源质发信器
+research.essentialevelemitter.stage.1=源质总线毫无怨言地将源质移入和移出网络，但它们都是盲目运作的——当某一种要素存量过低，或是超出我期望的阈值时，我无法让它自动做出反应。我应该借鉴ME发信器的原理，将其改为监控源质数量而非物品。
+research.essentialevelemitter.stage.2=源质发信器监控单一要素的存储量，并在其越过——高于或低于——我设定的阈值时发出红石信号。这与其物品版完全一致，只是将监控对象换成了源质。
 
 # Research Essentia Terminal
 research.essentiaterminal.title=源质监控
-research.essentiaterminal.stage.1=现在我可以将源质数码化了，是时候将这项技术付诸实践了
-research.essentiaterminal.stage.2=我现在可以制作源质终端
+research.essentiaterminal.stage.1=虽然我现在可以将源质数位化，但我意识到这意味着我无法再观察到已经数位化的源质的数量了——这是个紧迫的问题。
+research.essentiaterminal.stage.2=通过ME源质终端，我可以看到ME网络可访问的所有源质。此外，我还可以通过它用玻璃安瓿存入和取出要素。
 
 # Research Infusion Provider
 research.infusionprovider.title=注魔供应器
-research.infusionprovider.stage.1=现在我可以将源质数码化了，是时候将这项技术付诸实践了
-research.infusionprovider.stage.2=我现在可以制作注魔供应器
+research.infusionprovider.stage.1=虽然能够用我的ME网络操纵源质已非常宝贵，但我对注魔所需的过程感到失望——我必须现场将所有要素提取到源质罐子里。如果能把我的源质供应给符文矩阵，就像源质终端一样的话……
+research.infusionprovider.stage.2=大功告成！源质注魔供应器可将整个ME网络的源质供应给注魔进程！此外，它还能与我的ME源质存储总线配合使用，让我可以创建源质子网络，以备不时之需。
 
 # Research Essentia Interface
 research.essentiainterface.title=源质接口
-research.essentiainterface.stage.1=我确实用上了这些源质子网络——注魔供应器这个小把戏虽然管用，但终究是权宜之计，靠的是一条指向祭坛的源质存储总线，我可不想为了拆零件而把它拆掉。我想要一个专门为此设计的装置：让一个ME网络上的源质存储总线能直接看到另一个网络，不必再让注魔祭坛充当不情愿的中间人。
-research.essentiainterface.stage.2=源质接口正是如此。从任意一侧用源质存储总线指向它，两个网络的源质库存就会彼此可见，直接桥接。它甚至可以直接从广口瓶或导管接收源质，也能反向输出，让它既是我ME网络的一员，也是源质世界的一员。
-research.essentiainterface.addenda.1=每个面都可以独立配置，而且不需要额外的工具，用手头现成的东西就行。以施法护手催动一个面，就能让它从那一侧的导管接收任意气息。换成将装有单一气息的瓶子或水晶贴附其上，则会把这个面变成只输出那种气息的源头。若是蹲下时这样做，那个面则会被禁用。
+ research.essentiainterface.stage.1=事实上，我的确需要那些源质子网络——源质注魔供应器的把戏虽然管用，但它终究是个脆弱的权宜之计，全靠一根指向注魔祭坛的存储总线勉强维系着，而我可不想把祭坛拆成零件。我需要一台专为此而生的设备：让某个ME网络上的源质存储总线能够清晰地望见另一个网络，中间无需站着一个心不甘情不愿的注魔祭坛充当桥梁。
+ research.essentiainterface.stage.2=源质接口正是为此而生。从任一侧将源质存储总线对准它，两个网络的源质存储便彼此可见，直接连通。它甚至可以直接从源质罐或源质管道中接收源质，也能将源质输出回去——它既是ME网络的一员，也是广袤源质世界的一份子。
+ research.essentiainterface.addenda.1=每个面均可独立配置，且无需我随身工具之外的任何东西。用法师护手对任意侧面施法，即可将其开启，接受来自该侧管道的任意要素。将装有单一要素的源质安瓿或魔力水晶碎片应用于一面，则将那一面变为仅输出该要素的供应源。潜行执行上述任一操作则会禁用该面。
 
 # Research Arcane Crafting Terminal
 research.arcaneterminal.title=奥术合成终端
-research.arcaneterminal.stage.1=也许我可以将一个ME终端和奥术工作台结合起来，以获得一些能帮助我完成奥术工作的东西
-research.arcaneterminal.stage.2=我现在可以制作奥术合成终端
-research.arcaneterminal.addenda.1=我可以升级我的奥术合成终端以增加其 Vis 抽取范围
+research.arcaneterminal.stage.1=每次合成，我都不得不在我的ME网络和奥术工作台之间跳来跳去，真令人丧气。虽然它比单纯的合成终端复杂得多，但我应该可以用相同的原理将我的奥术工作台连接到ME网络上。
+research.arcaneterminal.stage.2=奥术合成终端可以让我的奥术工作台充分利用我的ME网络。
+research.arcaneterminal.addenda.1=我可以用奥术充能升级来升级我的奥术合成终端，以允许它从所有邻近的区块中抽取Vis。
 
 # Research Arcane Assembler
-research.arcaneassembler.title=奥术装配器
-research.arcaneassembler.stage.1=事实证明，将技术和魔术进行融合是一个挑战，但到目前为止，它进展顺利，所以如果我更进一步，可能会出错吗？我目前已经厌倦了必须自己制作一堆东西，当然我可以想出一种方法来使分子汇编器能够制作奥术物体！
-research.arcaneassembler.stage.2=正如我所怀疑的那样，神秘时代的配方不能很好地与物质/能量设备配合使用，爆炸可能已经发生。不过，我相信我会找到一种方法来最终实现它。然而，就目前而言，在研究了一堆物质/能量之后，我想出了一个可以使用魔力水晶碎片的分子组装器的设计。不过，还有另一个问题.……它不知道如何制作我知道如何制作的东西。这就像它缺少了什么。
-research.arcaneassembler.addenda.1=我可以升级我的奥术装配器以增加其 Vis 抽取范围，就像我的奥术合成终端一样
-research.arcaneassembler.addenda.2=注意：当我要求制作某些东西时，我的ME系统不会显示Vis和魔力水晶碎片的成本，即使它们仍然是必需的。如果我在制作东西时遇到问题，我应该看看奥术装配器的界面，因为它可能有答案。最后，我可以用加速卡升级奥术装配器，使其更快。
+research.arcaneassembler.title=奥术装配室
+research.arcaneassembler.stage.1=尽管ME网络对手动合成奥术物品很有用，但ME的真正力量在于它的自动合成。我应该想办法让分子装配室能够合成奥术物品。
+research.arcaneassembler.stage.2=一切都应是正常的——它可以获得物品、Vis、魔力水晶碎片和能量。然而，它甚至没有尝试合成！我发明的不过是一个沉重的镇纸，一个可以使用几张加速卡强化的镇纸。这令我非常失望。
+research.arcaneassembler.addenda.1=我可以用奥术充能升级来升级我的奥术装配室，以允许它从所有邻近的区块中抽取Vis。
+research.arcaneassembler.addenda.2=现在我看到了奥术装配室的使用情况，我意识到了两个问题。第一个问题是自动合成时，Vis的消耗速度惊人，经常会大大减慢合成；第二个问题是魔力水晶碎片没有显示在合成消耗中。我需要想办法来避免这两个问题，以便高效地进行自动合成。
 
 # Research Knowledge Core
 research.knowledgecore.title=知识核心
-research.knowledgecore.stage.1=我一直在思考我现在的镇纸：奥术装配器。我一直在思考这个问题……好多。低语也无济于事。我想我的头脑需要休息一下，但在我弄清楚点一点之前，我无法入睡！嗯，介意……我无法将我的大脑融合到奥术装配器中，这不是我的目的，我仍然需要它。我不能教奥术汇编器我所知道的，因为它没有大脑。也许我可以解决这个问题。是的！睡眠可以等，我必须寻找奥术装配器的大脑！我有实验要做，有研究要做。
-research.knowledgecore.stage.2=这是一场胜利！在将一堆大脑和电路砸碎了几个小时后，我发现了如何使这台机器工作。我想出了一种我称之为知识核心的设备。该设备适用于神秘的配方，但我不能将其用于其他任何事情，当我尝试时，其中的大脑会爆炸成碎片，但我会确保这不会发生。我已经清理了我的罐子够多次了。哦，对了大脑！我忘了提，我需要一个新鲜的大脑。嗯，足够新鲜。我敢肯定，不死族的大脑不会介意在未来几年里，在我的命令下为我制作东西。
+research.knowledgecore.stage.1=我一直在对现在的镇纸思考——奥术装配室。也许问题在于它不知道如何合成——毕竟它没有花几个小时来研究。我应该想办法让奥术装配室进行研究。
+research.knowledgecore.stage.2=我知道了！我不需要让奥术装配室进行研究——这很可能是一项不可能完成的任务，只需创造一个能记住我做过的合成的东西，并以完全相同的方式进行合成。僵尸之脑就非常适合做这件事。而我所要做的，就是教它完全按照我展示给它的配方去做。
 
 # Research Arcane Inscriber
 research.arcaneinscriber.title=奥术记录仪
-research.arcaneinscriber.stage.1=睡了一会儿后，我意识到了一些事情。看来不死族不是很聪明。我已经和这个知识核心交谈了一段时间，但它似乎没有学到我教它的任何东西。按照这个速度，我永远不会有一台机器为我制作东西。我需要找到一种方法，将我的知识直接强加到知识核心中。
-research.arcaneinscriber.stage.2=我成功了！我设计了一种终端，它不仅可以制作东西，还可以将配方教给知识核心。我也可以查看他们所知道的或让他们忘记的东西，你永远不知道什么时候会派上用场。这些核心可以学习的数量不是无限的，但它仍然比与他们交谈多年或自己制作所有东西要好。我还应该指出，我只能教知识核心我已经知道的东西，但不能再多了。
+research.arcaneinscriber.stage.1=看来亡灵不是很聪明。我试着教这个知识核心合成已经有一段时间了，但它什么也没学会。得想办法强迫它学习。
+research.arcaneinscriber.stage.2=在ME样板终端的基础上，我成功地设计出了一种可以向知识核心传授合成配方的终端。只需将配方载入网格，然后保存即可！我还可以查看保存到知识核心中的配方。如果需要的话，还可以从它的记忆中删除配方。虽然单个僵尸之脑能记住的配方有限，但它数量很多。
