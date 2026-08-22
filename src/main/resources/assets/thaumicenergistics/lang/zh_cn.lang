@@ -53,6 +53,8 @@ tooltip.thaumicenergistics.arcane_assembler.progress=正在处理：
 tooltip.thaumicenergistics.arcane_assembler.no_aspect=错误：缺少源质
 tooltip.thaumicenergistics.arcane_assembler.no_vis=错误：缺少Vis
 tooltip.thaumicenergistics.essentia_interface.multi_aspect_item=该物品拥有多种要素——请使用单一要素物品来配置该面。
+tooltip.thaumicenergistics.knowledge_core.recipes=已存储配方：%d
+tooltip.thaumicenergistics.knowledge_core.hold_shift=按住Shift展开列表
 tooltip.thaumicenergistics.essentia_cell_creative.description=包含所有类型的源质
 
 # GUI
@@ -161,13 +163,13 @@ research.essentiainterface.addenda.1=每个面均可独立配置，且无需我�
 research.arcaneterminal.title=奥术合成终端
 research.arcaneterminal.stage.1=每次合成，我都不得不在我的ME网络和奥术工作台之间跳来跳去，真令人丧气。虽然它比单纯的合成终端复杂得多，但我应该可以用相同的原理将我的奥术工作台连接到ME网络上。
 research.arcaneterminal.stage.2=奥术合成终端可以让我的奥术工作台充分利用我的ME网络。
-research.arcaneterminal.addenda.1=我可以用奥术充能升级来升级我的奥术合成终端，以允许它从所有邻近的区块中抽取Vis。
+research.arcaneterminal.addenda.1=我可以用奥术充能卡来升级我的奥术合成终端，以允许它从所有邻近的区块中抽取Vis。
 
 # Research Arcane Assembler
 research.arcaneassembler.title=奥术装配室
 research.arcaneassembler.stage.1=尽管ME网络对手动合成奥术物品很有用，但ME的真正力量在于它的自动合成。我应该想办法让分子装配室能够合成奥术物品。
 research.arcaneassembler.stage.2=一切都应是正常的——它可以获得物品、Vis、魔力水晶碎片和能量。然而，它甚至没有尝试合成！我发明的不过是一个沉重的镇纸，一个可以使用几张加速卡强化的镇纸。这令我非常失望。
-research.arcaneassembler.addenda.1=我可以用奥术充能升级来升级我的奥术装配室，以允许它从所有邻近的区块中抽取Vis。
+research.arcaneassembler.addenda.1=我可以用奥术充能卡来升级我的奥术装配室，以允许它从所有邻近的区块中抽取Vis。
 research.arcaneassembler.addenda.2=现在我看到了奥术装配室的使用情况，我意识到了两个问题。第一个问题是自动合成时，Vis的消耗速度惊人，经常会大大减慢合成；第二个问题是魔力水晶碎片没有显示在合成消耗中。我需要想办法来避免这两个问题，以便高效地进行自动合成。
 
 # Research Knowledge Core
